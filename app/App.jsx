@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import createStore from './store';
 
 import initTranslation from './components/Common/localize';
 import initLoadThemes from './components/Common/load-themes';
@@ -21,10 +23,14 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
     options.async = true;
 });
 
+const store = createStore();
+
 ReactDOM.render((
     // specify basename below if running
     // in a subdirectory or set as "/" if app runs in root
-    <BrowserRouter basename={WP_BASE_HREF}>
-        <Routes />
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter basename={WP_BASE_HREF}>
+            <Routes />
+        </BrowserRouter>
+    </Provider>
 ), document.getElementById('app'))

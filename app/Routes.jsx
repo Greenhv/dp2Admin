@@ -5,8 +5,9 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Base from './components/Layout/Base';
 import BasePage from './components/Layout/BasePage';
 import BaseHorizontal from './components/Layout/BaseHorizontal';
-
 import DashboardV1 from './components/Dashboard/DashboardV1';
+import FormStandard from './components/Forms/FormStandard';
+import FormValidation from './components/Forms/FormValidation';
 
 import Login from './components/Pages/Login';
 import Register from './components/Pages/Register';
@@ -15,6 +16,9 @@ import Lock from './components/Pages/Lock';
 import NotFound from './components/Pages/NotFound';
 import Error500 from './components/Pages/Error500';
 import Maintenance from './components/Pages/Maintenance';
+
+import pages from './Pages';
+import { getNumber } from './Utils/randomizer';
 
 // List of routes that uses the page layout
 // listed here to Switch between layouts
@@ -71,7 +75,15 @@ const Routes = ({ location }) => {
                         <Switch location={location}>
                             {/*Dashboard*/}
                             <Route path="/dashboard" component={DashboardV1}/>
-                            {/* <Route path="/categoria-de-producto" component={ProductCategory}/> */ }
+                            <Route path="/form-standard" component={FormStandard}/>
+                            <Route path="/form-validation" component={FormValidation}/>
+                            { pages.map(page => (
+                                <Route
+                                    key={getNumber()}
+                                    path={page.path}
+                                    component={page.component}
+                                />
+                            )) }
                             <Redirect to="/dashboard" />
                         </Switch>
                     </div>

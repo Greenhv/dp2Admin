@@ -73,31 +73,24 @@ class Header extends React.Component {
                                 </a>
                             </li>
                             { /* END User avatar toggle */ }
-                            { /* START lock screen */ }
-                            <li>
-                                <Link to="lock" title="Lock screen">
-                                    <em className="icon-lock"></em>
-                                </Link>
-                            </li>
-                            { /* END lock screen */ }
                         </ul>
                         { /* END Left navbar */ }
                         { /* START Right Navbar */ }
                         <ul className="nav navbar-nav navbar-right">
                             { /* Search icon */ }
-                            <li>
+                            { /*<li>
                                 <a href="#" data-search-open="">
                                     <em className="icon-magnifier"></em>
                                 </a>
-                            </li>
+                            </li>*/ }
                             { /* Fullscreen (only desktops) */ }
-                            <li className="visible-lg">
+                            { /*<li className="visible-lg">
                                 <a href="#" data-toggle-fullscreen="">
                                     <em className="fa fa-expand"></em>
                                 </a>
-                            </li>
+                            </li>*/ }
                             { /* START Alert menu */ }
-                            <NavDropdown noCaret eventKey={ 3 } title={ ddAlertTitle } className="dropdown-list" id="basic-nav-dropdown" >
+                           { /*<NavDropdown noCaret eventKey={ 3 } title={ ddAlertTitle } className="dropdown-list" id="basic-nav-dropdown" >
                               <CustomListGroup>
                                 <ListGroupItem href="javascript:void(0)">
                                      <div className="media-box">
@@ -144,15 +137,8 @@ class Header extends React.Component {
                                 </ListGroupItem>
 
                               </CustomListGroup>
-                            </NavDropdown>
+                            </NavDropdown>*/ }
                             { /* END Alert menu */ }
-                            { /* START Offsidebar button */ }
-                            <li>
-                                <a href="#" data-toggle-state="offsidebar-open" data-no-persist="true">
-                                    <em className="icon-notebook"></em>
-                                </a>
-                            </li>
-                            { /* END Offsidebar menu */ }
                         </ul>
                         { /* END Right Navbar */ }
                     </div>

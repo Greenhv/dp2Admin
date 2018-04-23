@@ -19,7 +19,9 @@ module.exports = {
         extensions: ['.js', '.jsx'],
         alias: {
             moment$: 'moment/moment.js',
-            d3$: 'd3/d3.min.js'
+            d3$: 'd3/d3.min.js',
+            Components: path.join(__dirname, 'app/components/'),
+            Modules: path.join(__dirname, 'app/modules/'),
         }
     },
 
