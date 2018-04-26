@@ -1,50 +1,25 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { fetchProducts, selectProduct } from 'Modules/products';
+import { Link } from 'react-router-dom';
+import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
 
-class ListPage extends PureComponent {
-  componentDidMount() {
-    const {
-      getProducts,
-    } = this.props;
+import DataTableWithProducts from '../containers/DataTableWithProducts.jsx';
 
-    getProducts();
-  };
+const ListPage = ({ match }) => (
+  <Grid fluid>
+    <Row>
+      <Col lg={12}>
+        <Panel>
+          <div>
+            <Link to={`${match.url}/nuevo`}>
+              <Button>Nuevo Producto</Button>
+            </Link>
+          </div>
+          <DataTableWithProducts />
+        </Panel>
+      </Col>
+    </Row>
+  </Grid>
+);
 
-  render() {
-    const {
-      products,
-      onSelectProduct,
-    } = this.props;
-
-    return (
-      <div>
-        1
-      </div>
-    );
-  }
-}
-
-ListPage.propTypes = {
-  products: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    description: PropTypes.string,
-  })).isRequired,
-  getProducts: PropTypes.func.isRequired,
-  onSelectProduct: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = ({ products }) => ({
-  products: products.products,
-});
-
-const mapDispatchToProps = dispatch => ({
-  getProducts: () => { dispatch(fetchProducts()) },
-  onSelectProduct: (product) => {
-    dispatch(selectProduct(product));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListPage);
+export default ListPage;

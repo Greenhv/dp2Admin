@@ -2,11 +2,14 @@
 const FETCH = 'admin/products/FETCH';
 const ADD = 'admin/products/ADD';
 const SELECT = 'admin/products/SELECT';
+const EDIT = 'admin/products/EDIT';
+const DELETE = 'admin/products/DELETE';
 
 // Initial State
 const initialState = {
   products: [],
   selectedProduct: {},
+  isModalOpen: true,
 };
 
 // Reducer
@@ -19,9 +22,15 @@ export default (state = initialState, action = {}) => {
     case ADD:
       return {
         ...state,
-        products: [...actions.products],
+        products: [...action.products],
       };
       break;
+    case DELETE:
+      return {
+        ...state,
+        products: [...state.products]
+          .filter(product => product.id !== action.productId),
+      };
     case SELECT:
       return {
         ...state,
@@ -44,6 +53,11 @@ export const addProducts = products => ({
 
 export const selectProduct = productId => ({
   type: SELECT,
+  productId,
+});
+
+export const deleteProduct = productId => ({
+  type: DELETE,
   productId,
 });
 
