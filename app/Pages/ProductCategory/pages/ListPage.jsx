@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
 
-import DataTableWithProducts from '../containers/DataTableWithProducts.jsx';
+import DataTableWithProducts from '../containers/DataTableWithProductCategories.jsx';
 
 const ListPage = ({ match }) => (
   <Grid fluid>

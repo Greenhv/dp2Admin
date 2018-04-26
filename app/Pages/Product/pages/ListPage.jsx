@@ -1,16 +1,27 @@
-import React from 'react';
+
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
 
-const ListPage = () => {
-  return (
-    <div>
-      1
-    </div>
-  )
-}
+import DataTableWithProducts from '../containers/DataTableWithProducts.jsx';
 
-ListPage.propTypes = {
-
-}
+const ListPage = ({ match }) => (
+  <Grid fluid>
+    <Row>
+      <Col lg={12}>
+        <Panel>
+          <div>
+            <Link to={`${match.url}/nuevo`}>
+              <Button>Nueva Categoria de Producto</Button>
+            </Link>
+          </div>
+          <DataTableWithProducts />
+        </Panel>
+      </Col>
+    </Row>
+  </Grid>
+);
 
 export default ListPage;
+
