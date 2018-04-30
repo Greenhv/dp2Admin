@@ -1,3 +1,4 @@
+import fetchStatusHandler from 'Utils/fetchStatusHandler';
 
 // Actions
 const FETCH = 'admin/productCategories/FETCH';
@@ -5,27 +6,35 @@ const ADD = 'admin/productCategories/ADD';
 const SELECT = 'admin/productCategories/SELECT';
 const EDIT = 'admin/productCategories/EDIT';
 const DELETE = 'admin/productCategories/DELETE';
+const ERROR = 'admin/productCategories/ERROR';
 
 // Initial State
 const initialState = {
   productCategories: [],
   selectedCategory: {},
+  isLoading: false,
+  error: '',
   isModalOpen: true,
 };
 
 // Reducer
 
+const defaultUrl = process.env.API_BASE_URL;
+
 export default (state = initialState, action = {}) => {
   switch(action.type) {
     case FETCH:
-      return state;
-      break;
+      return {
+        ...state,
+        isLoading: true,
+      };
     case ADD:
       return {
         ...state,
         productCategories: [...action.productCategories],
+        isLoading: false,
+        error: '',
       };
-      break;
     case DELETE:
       return {
         ...state,
@@ -38,10 +47,13 @@ export default (state = initialState, action = {}) => {
         selectedCategory: state.productCategories
           .filter(category => category.id === action.categoryId)[0],
       };
-      break;
+    case ERROR:
+      return {
+        ...state,
+        error: action.error,
+      };
     default:
       return state;
-      break;
   }
 };
 
@@ -62,17 +74,19 @@ export const deleteProductCategories = categoryId => ({
   categoryId,
 });
 
-export const fetchProductCategories = () => {
-  getProductCategories();
+export const fetchProductCategories = () => ({
+  type: FETCH,
+});
 
-  return {
-    type: FETCH,
-  };
-}
+export const setError = (error) => ({
+  type: ERROR,
+  error,
+});
 
 // Side effects
 
-const getProductCategories = () => dispatch => fetch('someurl')
+export const getProductCategories = () => dispatch => fetch(`${defaultUrl}/product_categories`)
+  .then(fetchStatusHandler)
   .then(response => response.data)
   .then(data => dispatch(addProductCategories(data)))
-  .catch(error => { console.log(error); });
+  .catch(error => { dispatch(setError('Error al cargar las categorias, recarga la pagina porfavor')); });

@@ -2,8 +2,16 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import DataTables from '../../../shared/DataTable.jsx';
-import { fetchProducts, selectProduct, deleteProduct } from 'Modules/products';
+import {
+  fetchProducts,
+  selectProduct,
+  deleteProduct,
+  getProducts as requestProducst,
+} from 'Modules/products';
+import DataTables from 'Shared/DataTable.jsx';
+import Loader from 'Shared/Loader.jsx';
+import 'Components/Common/notify';
+import { productType } from '../types';
 
 class DataTableWithProducts extends PureComponent {
   componentDidMount() {
@@ -17,13 +25,21 @@ class DataTableWithProducts extends PureComponent {
   render() {
     const {
       products,
+      isLoadingProducts,
+      productsError,
       selectProduct,
       deleteProduct,
     } = this.props;
 
+    if (productsError) {
+      $.notify(productsError, 'danger');
+    }
+
     return (
       <div>
-        { products.length > 0 ? (
+        { isLoadingProducts ? (
+          <Loader />
+        ) : (
           <DataTables
             headers={[{ key: 'name', title: 'Nombre' }, { key: 'brand', title: 'Marca' }]}
             elements={products}
@@ -31,8 +47,6 @@ class DataTableWithProducts extends PureComponent {
             onEdit={selectProduct}
             onDelete={deleteProduct}
           />
-        ) : (
-          <div>No hay ningun producto para mostrar</div>
         ) }
       </div>
     );
@@ -40,21 +54,24 @@ class DataTableWithProducts extends PureComponent {
 }
 
 DataTableWithProducts.propTypes = {
-  products: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    description: PropTypes.string,
-  })).isRequired,
+  products: PropTypes.arrayOf(productType).isRequired,
+  isLoadingProducts: PropTypes.bool.isRequired,
+  productsError: PropTypes.string.isRequired,
   getProducts: PropTypes.func.isRequired,
   selectProduct: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = ({ products }) => ({
-  products: products.products,
+const mapStateToProps = ({ products: { products, isLoading, error } }) => ({
+  products,
+  isLoadingProducts: isLoading,
+  productsError: error,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProducts: () => { dispatch(fetchProducts()) },
+  getProducts: () => {
+    dispatch(fetchProducts());
+    dispatch(requestProducst());
+  },
   selectProduct: product => () => {
     dispatch(selectProduct(product));
   },

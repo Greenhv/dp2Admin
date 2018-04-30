@@ -12,7 +12,7 @@ const ListPage = ({ match }) => (
         <Panel>
           <div>
             <Link to={`${match.url}/nuevo`}>
-              <Button>Nuevo Producto</Button>
+              <Button>Nueva Categoria de Productos</Button>
             </Link>
           </div>
           <DataTableWithProducts />

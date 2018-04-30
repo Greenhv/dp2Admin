@@ -3,6 +3,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
+var Dotenv = require('dotenv-webpack');
 var pkgBower = require('./package.json');
 
 var baseHref = process.env.WP_BASE_HREF ? process.env.WP_BASE_HREF : '/';
@@ -20,9 +21,10 @@ module.exports = {
         alias: {
             moment$: 'moment/moment.js',
             d3$: 'd3/d3.min.js',
-            Components: path.join(__dirname, 'app/components/'),
-            Modules: path.join(__dirname, 'app/modules/'),
-            Shared: path.join(__dirname, 'app/shared/')
+            Components: path.join(__dirname, 'app/Components/'),
+            Modules: path.join(__dirname, 'app/Modules/'),
+            Utils: path.join(__dirname, 'app/Utils/'),
+            Shared: path.join(__dirname, 'app/Shared/')
         }
     },
 
@@ -123,8 +125,6 @@ module.exports = {
         }),
         // https://github.com/moment/moment/issues/2979#issuecomment-189899510
         new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/),
-        new webpack.DefinePlugin({
-            WP_BASE_HREF: JSON.stringify(baseHref)
-        })
+        new Dotenv(),
     ]
 };

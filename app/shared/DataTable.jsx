@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
+import { getNumber } from 'Utils/randomizer';
 
 class DataTable extends PureComponent {
   constructor(props) {
@@ -56,25 +57,25 @@ class DataTable extends PureComponent {
         <thead>
           <tr>
             { headers.map(header => (
-              <th>{ header.title }</th>
+              <th key={getNumber()}>{ header.title }</th>
             )) }
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          { products.map(product => (
-            <tr>
+          { elements.map(element => (
+            <tr key={getNumber()}>
               { headers.map(header => (
-                <td>{ product[header.key] }</td>
+                <td key={getNumber()}>{ element[header.key] }</td>
               )) }
               <td>
-                <Button onClick={onView && onView(product.id)}>
+                <Button onClick={onView && onView(element.id)}>
                   <em className="fa fa-eye"></em>
                 </Button>
-                <Button onClick={onEdit && onEdit(product.id)}>
+                <Button onClick={onEdit && onEdit(element.id)}>
                   <em className="fa fa-pencil"></em>
                 </Button>
-                <Button onClick={onDelete && onDelete(product.id)}>
+                <Button onClick={onDelete && onDelete(element.id)}>
                   <em className="fa fa-remove"></em>
                 </Button>
               </td>

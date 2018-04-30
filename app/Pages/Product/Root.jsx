@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router';
 
-import ContentWrapper from '../../components/Layout/ContentWrapper'
+import ContentWrapper from 'Components/Layout/ContentWrapper'
 import ListPage from './pages/ListPage';
 import ProductFormPage from './pages/ProductFormPage';
 

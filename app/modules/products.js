@@ -1,30 +1,40 @@
+import fetchStatusHandler from 'Utils/fetchStatusHandler';
+
 // Actions
 const FETCH = 'admin/products/FETCH';
 const ADD = 'admin/products/ADD';
 const SELECT = 'admin/products/SELECT';
 const EDIT = 'admin/products/EDIT';
 const DELETE = 'admin/products/DELETE';
+const ERROR = 'admin/products/ERROR';
 
 // Initial State
 const initialState = {
   products: [],
   selectedProduct: {},
+  isLoading: false,
+  error: '',
   isModalOpen: true,
 };
 
 // Reducer
 
+const defaultUrl = process.env.API_BASE_URL;
+
 export default (state = initialState, action = {}) => {
   switch(action.type) {
     case FETCH:
-      return state;
-      break;
+      return {
+        ...state,
+        isLoading: true,
+      };
     case ADD:
       return {
         ...state,
         products: [...action.products],
+        isLoading: false,
+        error: '',
       };
-      break;
     case DELETE:
       return {
         ...state,
@@ -37,10 +47,13 @@ export default (state = initialState, action = {}) => {
         selectedProduct: state.products
           .filter(product => product.id === action.productId)[0],
       };
-      break;
+    case ERROR:
+      return {
+        ...state,
+        error: action.error,
+      };
     default:
       return state;
-      break;
   }
 };
 
@@ -61,17 +74,19 @@ export const deleteProduct = productId => ({
   productId,
 });
 
-export const fetchProducts = () => {
-  getProducts();
+export const fetchProducts = () => ({
+  type: FETCH,
+});
 
-  return {
-    type: FETCH,
-  };
-}
+export const setError = (error) => ({
+  type: ERROR,
+  error,
+});
 
 // Side effects
 
-const getProducts = () => dispatch => fetch('someurl')
+export const getProducts = () => dispatch => fetch(`${defaultUrl}/products`)
+  .then(fetchStatusHandler)
   .then(response => response.data)
   .then(data => dispatch(addProducts(data)))
-  .catch(error => { console.log(error); });
+  .catch(error => { dispatch(setError('Error al cargar los productos, recarga la pagina porfavor')); });

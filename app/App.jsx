@@ -29,7 +29,7 @@ ReactDOM.render((
     // specify basename below if running
     // in a subdirectory or set as "/" if app runs in root
     <Provider store={store}>
-        <BrowserRouter basename={WP_BASE_HREF}>
+        <BrowserRouter basename={process.env.WP_BASE_HREF}>
             <Routes />
         </BrowserRouter>
     </Provider>

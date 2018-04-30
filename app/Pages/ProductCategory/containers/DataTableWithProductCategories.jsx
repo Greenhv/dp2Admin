@@ -2,63 +2,77 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import DataTables from '../../../shared/DataTable.jsx';
 import {
   deleteProductCategories,
   fetchProductCategories,
   selectProductCategories,
+  getProductCategories as requestCategories,
 } from 'Modules/productCategories';
+import DataTables from 'Shared/DataTable.jsx';
+import Loader from 'Shared/Loader.jsx';
+import 'Components/Common/notify';
+import { productCategoryType } from '../types';
 
-class DataTableWithProducts extends PureComponent {
+class DataTableWithProductCategories extends PureComponent {
   componentDidMount() {
     const {
-      getProducts,
+      getProductCategories,
     } = this.props;
 
-    getProducts();
+    getProductCategories();
   }
 
   render() {
     const {
-      products,
-      selectProduct,
-      deleteProduct,
+      productCategories,
+      isLoadingCategories,
+      categoriesError,
+      selectProductCategories,
+      deleteProductCategories,
     } = this.props;
+
+    if (categoriesError) {
+      $.notify(categoriesError, 'danger');
+    }
 
     return (
       <div>
-        { products.length > 0 ? (
-          <DataTables
-            headers={[{ key: 'name', title: 'Nombre' }, { key: 'brand', title: 'Marca' }]}
-            elements={products}
-            onView={selectProduct}
-            onEdit={selectProduct}
-            onDelete={deleteProduct}
-          />
+        { isLoadingCategories ? (
+          <Loader />
         ) : (
-          <div>No hay ningun producto para mostrar</div>
+          <DataTables
+            headers={[{ key: 'name', title: 'Nombre' }, { key: 'description', title: 'Descripcion' }]}
+            elements={productCategories}
+            onView={selectProductCategories}
+            onEdit={selectProductCategories}
+            onDelete={deleteProductCategories}
+          />
         ) }
       </div>
     );
   }
 }
 
-DataTableWithProducts.propTypes = {
-  products: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    description: PropTypes.string,
-  })).isRequired,
-  getProducts: PropTypes.func.isRequired,
-  selectProduct: PropTypes.func.isRequired,
+DataTableWithProductCategories.propTypes = {
+  productCategories: PropTypes.arrayOf(productCategoryType).isRequired,
+  isLoadingCategories: PropTypes.bool.isRequired,
+  categoriesError: PropTypes.string.isRequired,
+  selectProductCategories: PropTypes.func.isRequired,
+  deleteProductCategories: PropTypes.func.isRequired,
+  getProductCategories: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = ({ productCategories: { productCategories } }) => ({
+const mapStateToProps = ({ productCategories: { productCategories, isLoading, error } }) => ({
   productCategories,
+  isLoadingCategories: isLoading,
+  categoriesError: error,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProducts: () => { dispatch(fetchProductCategories()) },
+  getProductCategories: () => {
+    dispatch(fetchProductCategories())
+    dispatch(requestCategories());
+  },
   selectProductCategories: category => () => {
     dispatch(selectProductCategories(category));
   },
@@ -67,4 +81,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataTableWithProducts);
+export default connect(mapStateToProps, mapDispatchToProps)(DataTableWithProductCategories);
