@@ -84,10 +84,10 @@ export const setError = (error) => ({
 });
 
 // Side effects
-
 export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}/store_categories`)
   .then(fetchStatusHandler)
   .then(response => response.json())
   .then(json => json.store_categories)
   .then(data => dispatch(addStoreCategories(data)))
-  .catch(error => { console.log(error); setError('Error al cargar las categorias, recarga la pagina porfavor'); });
+  .catch(error => { console.log(error); dispatch(setError('Error al cargar las categorias, recarga la pagina porfavor')); });
+ 
