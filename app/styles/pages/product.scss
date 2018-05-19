@@ -1,0 +1,12 @@
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+};
+
+.form-button {
+  margin-right: 15px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+};
