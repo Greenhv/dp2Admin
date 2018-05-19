@@ -1,5 +1,5 @@
 import React from 'react';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import WidgetsRun from './Widgets.run';
 import { Tabs, Tab } from 'react-bootstrap'
 

@@ -26,7 +26,7 @@ class ProductFormPage extends PureComponent {
     // fetch(`${process.env.API_BASE_URL}/products`, {
       // method: 'POST',
       // data: values.data,
-    })
+    // })
      // this.goToProductsPage();
     
   }

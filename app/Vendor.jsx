@@ -57,8 +57,8 @@ import '../node_modules/blueimp-file-upload/js/jquery.fileupload.js';
 import '../node_modules/jquery-steps/build/jquery.steps.min.js';
 // Validation
 import '../node_modules/jquery-validation/dist/jquery.validate.js';
-import '../node_modules/bootstrap/js/tooltip.js';
-import '../node_modules/bootstrap/js/popover.js';
+import '../node_modules/bootstrap/js/src/tooltip.js';
+import '../node_modules/bootstrap/js/src/popover.js';
 // Parsley
 import '../node_modules/parsleyjs/dist/parsley.min.js';
 // Datetime picker

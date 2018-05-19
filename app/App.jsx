@@ -26,11 +26,9 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 const store = createStore();
 
 ReactDOM.render((
-    // specify basename below if running
-    // in a subdirectory or set as "/" if app runs in root
-    <Provider store={store}>
-        <BrowserRouter basename={process.env.WP_BASE_HREF}>
-            <Routes />
-        </BrowserRouter>
-    </Provider>
+  <Provider store={store}>
+    <BrowserRouter basename={process.env.WP_BASE_HREF}>
+      <Routes />
+    </BrowserRouter>
+  </Provider>
 ), document.getElementById('app'))

@@ -1,5 +1,5 @@
 import React from 'react';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import SortableRun from './Sortable.run';
 

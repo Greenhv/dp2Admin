@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var commonConfig = require('./webpack.common.js');
 var Dotenv = require('dotenv-webpack');
@@ -9,6 +10,7 @@ var path = require('path');
 module.exports = webpackMerge(commonConfig, {
     // devtool: 'source-map',
 
+    mode: "production",
     output: {
         path: path.join(process.cwd(), '/dist'),
         // publicPath: '/',
@@ -16,14 +18,10 @@ module.exports = webpackMerge(commonConfig, {
     },
 
     plugins: [
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: {
-                keep_fnames: true,
-                except: ['$super']
-            }
+        new MiniCssExtractPlugin({
+            filename: '[name].[hash].css',
+            chunkFilename: '[id].[hash].css',
         }),
-        new ExtractTextPlugin('[name].[hash].css'),
         new OptimizeCssAssetsPlugin({
             cssProcessor: require('cssnano'),
             cssProcessorOptions: {
@@ -34,5 +32,5 @@ module.exports = webpackMerge(commonConfig, {
             },
             canPrint: true
         }),
-    ]
+    ],
 });

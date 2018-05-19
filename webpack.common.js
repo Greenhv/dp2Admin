@@ -38,16 +38,8 @@ module.exports = {
             }, {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
-                use: 'react-hot-loader'
-            }, {
-                test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
-                    query: {
-                        presets: ['es2015', 'react', 'stage-0'],
-                        compact: false
-                    }
                 }
             }, {
                 test: /\.css$/,
@@ -97,8 +89,20 @@ module.exports = {
         }
     },
 
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendors: {
+                    chunks: "initial",
+                    minChunks: 3,
+                    name: "vendor",
+                    enforce: true,
+                },
+            },
+        },
+    },
+
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor[hash:6].js' }),
         new HtmlWebpackPlugin({
             template: 'app/index.html',
             baseUrl: baseHref
