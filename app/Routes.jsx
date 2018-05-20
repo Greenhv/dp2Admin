@@ -2,20 +2,20 @@ import React from 'react';
 import { BrowserRouter, withRouter, Switch, Route, Redirect, Miss } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-import Base from './components/Layout/Base';
-import BasePage from './components/Layout/BasePage';
-import BaseHorizontal from './components/Layout/BaseHorizontal';
-import DashboardV1 from './components/Dashboard/DashboardV1';
-import FormStandard from './components/Forms/FormStandard';
-import FormValidation from './components/Forms/FormValidation';
+import Base from './Components/Layout/Base';
+import BasePage from './Components/Layout/BasePage';
+import BaseHorizontal from './Components/Layout/BaseHorizontal';
+import DashboardV1 from './Components/Dashboard/DashboardV1';
+import FormStandard from './Components/Forms/FormStandard';
+import FormValidation from './Components/Forms/FormValidation';
 
-import Login from './components/Pages/Login';
-import Register from './components/Pages/Register';
-import Recover from './components/Pages/Recover';
-import Lock from './components/Pages/Lock';
-import NotFound from './components/Pages/NotFound';
-import Error500 from './components/Pages/Error500';
-import Maintenance from './components/Pages/Maintenance';
+import Login from './Components/Pages/Login';
+import Register from './Components/Pages/Register';
+import Recover from './Components/Pages/Recover';
+import Lock from './Components/Pages/Lock';
+import NotFound from './Components/Pages/NotFound';
+import Error500 from './Components/Pages/Error500';
+import Maintenance from './Components/Pages/Maintenance';
 
 import pages from './Pages';
 import { getNumber } from './Utils/randomizer';

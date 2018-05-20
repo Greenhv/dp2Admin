@@ -87,6 +87,6 @@ export const setError = (error) => ({
 
 export const getProducts = () => dispatch => fetch(`${defaultUrl}/products`)
   .then(fetchStatusHandler)
-  .then(response => response.data)
+  .then(response => response.json())
   .then(data => dispatch(addProducts(data)))
   .catch(error => { dispatch(setError('Error al cargar los productos, recarga la pagina porfavor')); });
