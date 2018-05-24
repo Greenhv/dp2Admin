@@ -21,24 +21,23 @@ class Header extends PureComponent {
         HeaderRun();
     }
 
+    state = {
+        hasError: false,
+    };
+
     toggleUserblock(e) {
         e.preventDefault();
         pubsub.publish('toggleUserblock');
     }
 
-    onError() {
-        return (
-            <div>Header Error!</div>
-        )
-    }
-
     render() {
-        const ddAlertTitle = (
+        const AlertTitle = (
             <span>
                 <em className="icon-bell"></em>
                 <span className="label label-danger">11</span>
             </span>
-        )
+        );
+
         return (
             <header className="topnavbar-wrapper">
                 { /* START Top Navbar */ }

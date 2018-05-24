@@ -101,7 +101,7 @@ import '../node_modules/loaders.css/loaders.css';
 import '../node_modules/spinkit/css/spinkit.css';
 // Bootstrap Tour
 import '../node_modules/bootstrap-tour/build/css/bootstrap-tour-standalone.css';
-// import '../node_modules/bootstrap-tour/build/js/bootstrap-tour-standalone.js';
+import '../node_modules/bootstrap-tour/build/js/bootstrap-tour-standalone.js';
 // Sortable
 window.sortable = require('html5sortable');
 // Nestable

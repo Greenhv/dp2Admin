@@ -2,16 +2,17 @@ var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var path = require('path');
 var Dotenv = require('dotenv-webpack');
 var pkgBower = require('./package.json');
 
 var baseHref = process.env.WP_BASE_HREF ? process.env.WP_BASE_HREF : '/';
+var devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
 
     entry: {
-        'vendor': './app/Vendor.jsx',
         'app': './app/App.jsx'
     },
 
@@ -34,7 +35,11 @@ module.exports = {
                 use: 'imports-loader?this=>window'
             }, {
                 test: /\.js/,
-                use: 'imports-loader?define=>false'
+                use: [
+                    // 'source-map-loader',
+                    'imports-loader?define=>false',
+                ],
+                enforce: 'pre',
             }, {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
@@ -44,15 +49,26 @@ module.exports = {
             }, {
                 test: /\.css$/,
                 exclude: path.join(process.cwd(), '/app'),
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: {
+                use: [
+                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    {
                         loader: 'css-loader',
                         options: {
-                            sourceMap: true
+                            importLoaders: 1,
+                            minimize: {
+                                presets: 'default',
+                            },
                         }
-                    }
-                })
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: (loader) => [
+                                require('autoprefixer'),
+                            ],
+                        },
+                    },
+                ]
             }, {
                 test: /\.css$/,
                 include: path.join(process.cwd(), '/app'),
@@ -69,10 +85,7 @@ module.exports = {
                         loader: 'style-loader'
                     }, {
                         loader: 'css-loader'
-                    },/*{
-                        loader: 'rtlcss-loader' // uncomment for RTL
-                    },*/
-                    {
+                    }, {
                         loader: 'sass-loader',
                         options: {
                             outputStyle: 'expanded'
@@ -83,11 +96,11 @@ module.exports = {
             // , noParse: [/\.min\.js/]
     },
 
-    resolveLoader: {
-        alias: {
-            'rtlcss-loader': path.join(__dirname, 'rtlcss-loader.js')
-        }
-    },
+    // resolveLoader: {
+    //     alias: {
+    //         'rtlcss-loader': path.join(__dirname, 'rtlcss-loader.js')
+    //     }
+    // },
 
     optimization: {
         splitChunks: {
@@ -106,6 +119,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'app/index.html',
             baseUrl: baseHref
+        }),
+        new MiniCssExtractPlugin({
+            filename: devMode ? '[name].css' : '[name].[hash].css',
+            chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
         }),
         new CopyWebpackPlugin([{
             from: 'img',

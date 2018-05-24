@@ -6,7 +6,7 @@ import { hot } from 'react-hot-loader';
 import Base from './components/Layout/Base';
 import BasePage from './components/Layout/BasePage';
 import BaseHorizontal from './components/Layout/BaseHorizontal';
-import DashboardV1 from './components/Dashboard/DashboardV1';
+// import DashboardV1 from './components/Dashboard/DashboardV1';
 // import FormStandard from './components/Forms/FormStandard';
 // import FormValidation from './components/Forms/FormValidation';
 
@@ -75,7 +75,7 @@ const Routes = ({ location }) => {
                     <div>
                         <Switch location={location}>
                             {/*Dashboard*/}
-                            <Route path="/dashboard" component={DashboardV1}/>
+                            {/* <Route path="/dashboard" component={DashboardV1}/> */}
                             {/* <Route path="/form-standard" component={FormStandard}/>
                             <Route path="/form-validation" component={FormValidation}/> */}
                             { pages.map(page => (

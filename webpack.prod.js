@@ -8,7 +8,7 @@ var Dotenv = require('dotenv-webpack');
 var path = require('path');
 
 module.exports = webpackMerge(commonConfig, {
-    // devtool: 'source-map',
+    devtool: 'source-map',
 
     mode: "production",
     output: {

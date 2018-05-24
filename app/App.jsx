@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import createStore from './store';
+import './Vendor';
 
 import initTranslation from './components/Common/localize';
 import initLoadThemes from './components/Common/load-themes';

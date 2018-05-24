@@ -2,11 +2,10 @@ var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var commonConfig = require('./webpack.common.js');
-var Dotenv = require('dotenv-webpack');
 var path = require('path');
 
 module.exports = webpackMerge(commonConfig, {
-    devtool: '#cheap-module-eval-source-map',
+    devtool: 'cheap-module-source-map',
 
     mode: "development",
     output: {
