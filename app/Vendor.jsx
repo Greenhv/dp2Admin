@@ -121,8 +121,8 @@ import '../node_modules/rickshaw/rickshaw.min.css';
 window.Rickshaw = require('../node_modules/rickshaw/rickshaw.js');
 // Morris.js
 window.Raphael = require('raphael');
-import '../node_modules/morris.js.so/morris.css';
-import '../node_modules/morris.js.so/morris.js';
+// import '../node_modules/morris.js.so/morris.css';
+// import '../node_modules/morris.js.so/morris.js';
 // Chartist
 import '../node_modules/matchmedia/index.js';
 import '../node_modules/chartist/dist/chartist.min.css';

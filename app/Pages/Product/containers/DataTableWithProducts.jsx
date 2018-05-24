@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 
 import {
   fetchProducts,
@@ -8,6 +9,7 @@ import {
   deleteProduct,
   getProducts as requestProducst,
 } from 'Modules/products';
+import { getNumber } from 'Utils/randomizer';
 import DataTables from 'Shared/DataTable.jsx';
 import Loader from 'Shared/Loader.jsx';
 import 'Components/Common/notify';
@@ -17,9 +19,12 @@ class DataTableWithProducts extends PureComponent {
   componentDidMount() {
     const {
       getProducts,
+      products,
     } = this.props;
 
-    getProducts();
+    if (products.length < 1) {
+      getProducts();
+    }
   }
 
   render() {
@@ -42,11 +47,25 @@ class DataTableWithProducts extends PureComponent {
         ) : (
           <DataTables
             headers={[{ key: 'name', title: 'Nombre' }, { key: 'brand', title: 'Marca' }]}
-            elements={products}
-            onView={selectProduct}
-            onEdit={selectProduct}
-            onDelete={deleteProduct}
-          />
+          >
+            { products.map(element => (
+              <tr key={getNumber()}>
+                <td>{ element.name }</td>
+                <td>{ element.brand.name }</td>
+                <td>
+                  <Button onClick={selectProduct && selectProduct(element.id)}>
+                    <em className="fa fa-eye"></em>
+                  </Button>
+                  <Button onClick={selectProduct && selectProduct(element.id)}>
+                    <em className="fa fa-pencil"></em>
+                  </Button>
+                  <Button onClick={deleteProduct && deleteProduct(element.id)}>
+                    <em className="fa fa-remove"></em>
+                  </Button>
+                </td>
+              </tr>
+            )) }
+          </DataTables>
         ) }
       </div>
     );
@@ -77,7 +96,7 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteProduct: product => () => {
     dispatch(deleteProduct(product));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataTableWithProducts);

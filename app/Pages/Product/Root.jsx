@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Route } from 'react-router';
 
 import ContentWrapper from 'Components/Layout/ContentWrapper'
+import ErrorHandler from 'Shared/ErrorHandler';
 import ListPage from './pages/ListPage';
 import ProductFormPage from './pages/ProductFormPage';
 
@@ -12,17 +13,29 @@ const Root = ({ match }) => (
     <Route
       exact
       path={match.url}
-      component={ListPage}
+      component={props => (
+        <ErrorHandler>
+          <ListPage {...props} />
+        </ErrorHandler>
+      )}
     />
     <Route
       exact
       path={`${match.url}/nuevo`}
-      component={ProductFormPage}
+      component={props => (
+        <ErrorHandler>
+          <ProductFormPage {...props} />
+        </ErrorHandler>
+      )}
     />
     <Route
       exact
       path={`${match.url}/:id/editar`}
-      component={ProductFormPage}
+      component={props => (
+        <ErrorHandler>
+          <ProductFormPage {...props} />
+        </ErrorHandler>
+      )}
     />
   </ContentWrapper>
 );

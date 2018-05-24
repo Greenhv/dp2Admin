@@ -2,7 +2,8 @@ import fetchStatusHandler from 'Utils/fetchStatusHandler';
 
 // Actions
 const FETCH = 'admin/products/FETCH';
-const ADD = 'admin/products/ADD';
+const ADD_PRODUCTS = 'admin/products/ADD_PRODUCTS';
+const ADD_PRODUCT = 'admin/products/ADD_PRODUCT';
 const SELECT = 'admin/products/SELECT';
 const EDIT = 'admin/products/EDIT';
 const DELETE = 'admin/products/DELETE';
@@ -28,11 +29,17 @@ export default (state = initialState, action = {}) => {
         ...state,
         isLoading: true,
       };
-    case ADD:
+    case ADD_PRODUCTS:
       return {
         ...state,
-        products: [...action.products],
+        products: [...state.products, ...action.products],
         isLoading: false,
+        error: '',
+      };
+    case ADD_PRODUCT:
+      return {
+        ...state,
+        products: [...state.products, action.product],
         error: '',
       };
     case DELETE:
@@ -60,9 +67,14 @@ export default (state = initialState, action = {}) => {
 // Action Creators
 
 export const addProducts = products => ({
-  type: ADD,
+  type: ADD_PRODUCTS,
   products,
 });
+
+export const addProduct = product => ({
+  type: ADD_PRODUCT,
+  product,
+})
 
 export const selectProduct = productId => ({
   type: SELECT,
@@ -85,8 +97,8 @@ export const setError = (error) => ({
 
 // Side effects
 
-export const getProducts = () => dispatch => fetch(`${defaultUrl}/products`)
+export const getProducts = () => dispatch => fetch(`${defaultUrl}products?store_id=2`)
   .then(fetchStatusHandler)
-  .then(response => response.data)
-  .then(data => dispatch(addProducts(data)))
+  .then(response => response.json())
+  .then(data => dispatch(addProducts(data.products)))
   .catch(error => { dispatch(setError('Error al cargar los productos, recarga la pagina porfavor')); });
