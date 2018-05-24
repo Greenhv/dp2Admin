@@ -43,7 +43,10 @@ class DataTableWithProductCategories extends PureComponent {
           <Loader />
         ) : (
           <DataTables
-            headers={[{ key: 'name', title: 'Nombre' }, { key: 'description', title: 'Descripcion' }]}
+            headers={[
+              { key: 'name', title: 'Nombre' },
+              { key: 'description', title: 'Descripcion' },
+            ]}
           >
             { productCategories.map(element => (
               <tr key={getNumber()}>

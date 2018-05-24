@@ -9,6 +9,7 @@ import initTranslation from './components/Common/localize';
 import initLoadThemes from './components/Common/load-themes';
 
 import Routes from './Routes';
+import { setCurrency } from 'Utils/money';
 
 // Application Styles
 import './styles/bootstrap.scss';
@@ -16,6 +17,7 @@ import './styles/app.scss'
 
 // Init translation system
 initTranslation();
+setCurrency('PE');
 // // Init css loader (for themes)
 // initLoadThemes();
 
