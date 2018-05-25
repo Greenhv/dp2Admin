@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import { Grid, Row, Col, Panel, Button, ButtonGroup, ButtonToolbar, SplitButton, Dropdown, MenuItem, Pagination, Pager, PageItem } from 'react-bootstrap';
 
 class DropdownAnimation extends React.Component {

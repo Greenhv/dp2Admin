@@ -8,9 +8,11 @@ import {
 
 export const productType = shape({
   id: number,
-  brandId: number,
+  brand: {
+    id: number,
+    name: string,
+  },
   image: string,
   name: string,
-  price: number,
-  priceUnitId: number,
+  price: string,
 });

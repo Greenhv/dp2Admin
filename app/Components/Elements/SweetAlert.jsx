@@ -1,5 +1,5 @@
 import React from 'react';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import SweetAlertRun from './SweetAlert.run';
 import { Grid, Row, Col } from 'react-bootstrap';
 
