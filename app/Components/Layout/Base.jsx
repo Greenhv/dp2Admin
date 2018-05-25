@@ -3,6 +3,7 @@ import React from 'react';
 import Header from './Header'
 import Sidebar from './Sidebar'
 import Footer from './Footer'
+import ErrorHandler from 'Shared/ErrorHandler';
 
 class Base extends React.Component {
 
@@ -10,15 +11,21 @@ class Base extends React.Component {
 
         return (
             <div className="wrapper">
-                <Header />
+                <ErrorHandler>
+                    <Header />
+                </ErrorHandler>
 
-                <Sidebar />
+                <ErrorHandler>
+                    <Sidebar />
+                </ErrorHandler>
 
                 <section>
                     { this.props.children }
                 </section>
 
-                <Footer />
+                <ErrorHandler>
+                    <Footer />
+                </ErrorHandler>
             </div>
         );
     }

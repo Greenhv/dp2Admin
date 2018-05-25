@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, withRouter, Switch, Route, Redirect, Miss } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { hot } from 'react-hot-loader';
 
 import Base from 'Components/Layout/Base';
 import BasePage from 'Components/Layout/BasePage';
@@ -8,7 +9,6 @@ import BaseHorizontal from 'Components/Layout/BaseHorizontal';
 import DashboardV1 from 'Components/Dashboard/DashboardV1';
 import FormStandard from 'Components/Forms/FormStandard';
 import FormValidation from 'Components/Forms/FormValidation';
-
 import Login from 'Components/Pages/Login';
 import Register from 'Components/Pages/Register';
 import Recover from 'Components/Pages/Recover';
@@ -74,9 +74,9 @@ const Routes = ({ location }) => {
                     <div>
                         <Switch location={location}>
                             {/*Dashboard*/}
-                            <Route path="/dashboard" component={DashboardV1}/>
-                            <Route path="/form-standard" component={FormStandard}/>
-                            <Route path="/form-validation" component={FormValidation}/>
+                            {/* <Route path="/dashboard" component={DashboardV1}/> */}
+                            {/* <Route path="/form-standard" component={FormStandard}/>
+                            <Route path="/form-validation" component={FormValidation}/> */}
                             { pages.map(page => (
                                 <Route
                                     key={getNumber()}
@@ -94,4 +94,4 @@ const Routes = ({ location }) => {
     }
 }
 
-export default withRouter(Routes);
+export default hot(module)(withRouter(Routes));

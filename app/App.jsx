@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import createStore from './store';
+import './Vendor';
 
 import initTranslation from 'Components/Common/localize';
 import initLoadThemes from 'Components/Common/load-themes';
 
 import Routes from './Routes';
+import { setCurrency } from 'Utils/money';
 
 // Application Styles
 import './styles/bootstrap.scss';
@@ -15,6 +17,7 @@ import './styles/app.scss'
 
 // Init translation system
 initTranslation();
+setCurrency('PE');
 // // Init css loader (for themes)
 // initLoadThemes();
 
@@ -26,11 +29,9 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 const store = createStore();
 
 ReactDOM.render((
-    // specify basename below if running
-    // in a subdirectory or set as "/" if app runs in root
-    <Provider store={store}>
-        <BrowserRouter basename={process.env.WP_BASE_HREF}>
-            <Routes />
-        </BrowserRouter>
-    </Provider>
+  <Provider store={store}>
+    <BrowserRouter basename={process.env.WP_BASE_HREF}>
+      <Routes />
+    </BrowserRouter>
+  </Provider>
 ), document.getElementById('app'))
