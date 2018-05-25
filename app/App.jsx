@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import createStore from './store';
 
-import initTranslation from './components/Common/localize';
-import initLoadThemes from './components/Common/load-themes';
+import initTranslation from 'Components/Common/localize';
+import initLoadThemes from 'Components/Common/load-themes';
 
 import Routes from './Routes';
 
