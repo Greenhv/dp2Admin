@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 
 import {
   deleteProductCategories,
@@ -8,6 +9,7 @@ import {
   selectProductCategories,
   getProductCategories as requestCategories,
 } from 'Modules/productCategories';
+import { getNumber } from 'Utils/randomizer';
 import DataTables from 'Shared/DataTable.jsx';
 import Loader from 'Shared/Loader.jsx';
 import 'Components/Common/notify';
@@ -41,12 +43,29 @@ class DataTableWithProductCategories extends PureComponent {
           <Loader />
         ) : (
           <DataTables
-            headers={[{ key: 'name', title: 'Nombre' }, { key: 'description', title: 'Descripcion' }]}
-            elements={productCategories}
-            onView={selectProductCategories}
-            onEdit={selectProductCategories}
-            onDelete={deleteProductCategories}
-          />
+            headers={[
+              { key: 'name', title: 'Nombre' },
+              { key: 'description', title: 'Descripcion' },
+            ]}
+          >
+            { productCategories.map(element => (
+              <tr key={getNumber()}>
+                <td>{ element.name }</td>
+                <td>{ element.description }</td>
+                <td>
+                  <Button onClick={selectProductCategories && selectProductCategories(element.id)}>
+                    <em className="fa fa-eye"></em>
+                  </Button>
+                  <Button onClick={selectProductCategories && selectProductCategories(element.id)}>
+                    <em className="fa fa-pencil"></em>
+                  </Button>
+                  <Button onClick={deleteProductCategories && deleteProductCategories(element.id)}>
+                    <em className="fa fa-remove"></em>
+                  </Button>
+                </td>
+              </tr>
+            )) }
+          </DataTables>
         ) }
       </div>
     );

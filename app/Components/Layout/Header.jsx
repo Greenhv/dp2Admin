@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import pubsub from 'pubsub-js';
 import HeaderRun from './Header.run'
 import { NavDropdown, MenuItem, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Router, Route, Link, History } from 'react-router-dom';
 
 // Necessary to create listGroup inside navigation items
-class CustomListGroup extends React.Component {
+class CustomListGroup extends PureComponent {
   render() {
     return (
       <ul className="list-group">
@@ -15,13 +15,15 @@ class CustomListGroup extends React.Component {
   }
 }
 
-class Header extends React.Component {
+class Header extends PureComponent {
 
     componentDidMount() {
-
         HeaderRun();
-
     }
+
+    state = {
+        hasError: false,
+    };
 
     toggleUserblock(e) {
         e.preventDefault();
@@ -29,12 +31,13 @@ class Header extends React.Component {
     }
 
     render() {
-        const ddAlertTitle = (
+        const AlertTitle = (
             <span>
                 <em className="icon-bell"></em>
                 <span className="label label-danger">11</span>
             </span>
-        )
+        );
+
         return (
             <header className="topnavbar-wrapper">
                 { /* START Top Navbar */ }

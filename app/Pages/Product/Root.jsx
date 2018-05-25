@@ -1,28 +1,52 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 import ContentWrapper from 'Components/Layout/ContentWrapper'
+import ErrorHandler from 'Shared/ErrorHandler';
 import ListPage from './pages/ListPage';
 import ProductFormPage from './pages/ProductFormPage';
 
-const Root = ({ match }) => (
+const Root = ({ match, location }) => (
   <ContentWrapper>
-    <h3>Productos</h3>
+    <h3 className="header-container">
+      <span>Producto</span>
+      <div>
+        { match.url === location.pathname && (
+          <Link to={`${match.url}/nuevo`}>
+            <Button>Nuevo Producto</Button>
+          </Link>
+        ) }
+      </div>
+    </h3>
     <Route
       exact
       path={match.url}
-      component={ListPage}
+      component={props => (
+        <ErrorHandler>
+          <ListPage {...props} />
+        </ErrorHandler>
+      )}
     />
     <Route
       exact
       path={`${match.url}/nuevo`}
-      component={ProductFormPage}
+      component={props => (
+        <ErrorHandler>
+          <ProductFormPage {...props} />
+        </ErrorHandler>
+      )}
     />
     <Route
       exact
       path={`${match.url}/:id/editar`}
-      component={ProductFormPage}
+      component={props => (
+        <ErrorHandler>
+          <ProductFormPage {...props} />
+        </ErrorHandler>
+      )}
     />
   </ContentWrapper>
 );
