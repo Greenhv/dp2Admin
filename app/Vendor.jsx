@@ -57,8 +57,8 @@ import '../node_modules/blueimp-file-upload/js/jquery.fileupload.js';
 import '../node_modules/jquery-steps/build/jquery.steps.min.js';
 // Validation
 import '../node_modules/jquery-validation/dist/jquery.validate.js';
-import '../node_modules/bootstrap/js/tooltip.js';
-import '../node_modules/bootstrap/js/popover.js';
+import '../node_modules/bootstrap/js/src/tooltip.js';
+import '../node_modules/bootstrap/js/src/popover.js';
 // Parsley
 import '../node_modules/parsleyjs/dist/parsley.min.js';
 // Datetime picker
@@ -101,7 +101,7 @@ import '../node_modules/loaders.css/loaders.css';
 import '../node_modules/spinkit/css/spinkit.css';
 // Bootstrap Tour
 import '../node_modules/bootstrap-tour/build/css/bootstrap-tour-standalone.css';
-// import '../node_modules/bootstrap-tour/build/js/bootstrap-tour-standalone.js';
+import '../node_modules/bootstrap-tour/build/js/bootstrap-tour-standalone.js';
 // Sortable
 window.sortable = require('html5sortable');
 // Nestable
@@ -121,8 +121,8 @@ import '../node_modules/rickshaw/rickshaw.min.css';
 window.Rickshaw = require('../node_modules/rickshaw/rickshaw.js');
 // Morris.js
 window.Raphael = require('raphael');
-import '../node_modules/morris.js.so/morris.css';
-import '../node_modules/morris.js.so/morris.js';
+// import '../node_modules/morris.js.so/morris.css';
+// import '../node_modules/morris.js.so/morris.js';
 // Chartist
 import '../node_modules/matchmedia/index.js';
 import '../node_modules/chartist/dist/chartist.min.css';

@@ -1,5 +1,5 @@
 import React from 'react';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import TourRun from './Tour.run';
 import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
 

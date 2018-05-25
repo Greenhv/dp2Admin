@@ -1,5 +1,5 @@
 import React from 'react';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import { Grid, Row, Col, Panel, PageHeader } from 'react-bootstrap';
 
 class Colors extends React.Component {

@@ -1,5 +1,5 @@
 import React from 'react';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import { Grid, Row, Col, Panel, Button, ButtonGroup, ButtonToolbar, SplitButton, DropdownButton, MenuItem, Pagination, Pager, PageItem, Alert, ProgressBar, OverlayTrigger, Tooltip, Popover, Modal } from 'react-bootstrap';
 
 class Spinner extends React.Component {

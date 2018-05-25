@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import { Grid, Row, Col, Dropdown, MenuItem, Tabs, Tab } from 'react-bootstrap';
 import DashboardRun from './DashboardV3.run';
 

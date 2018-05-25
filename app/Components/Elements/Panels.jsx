@@ -1,5 +1,5 @@
 import React from 'react';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import { Grid, Row, Col, Panel, Accordion, Tabs, Tab, Well, Jumbotron } from 'react-bootstrap';
 import PanelsRun from './Panels.run';
 

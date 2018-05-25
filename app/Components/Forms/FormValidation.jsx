@@ -1,11 +1,11 @@
 import React from 'react';
-import ContentWrapper from '../Layout/ContentWrapper';
+import ContentWrapper from 'Components/Layout/ContentWrapper';
 import { Grid, Row, Col, Panel, Button, FormControl } from 'react-bootstrap';
 import FormValidationRun from './FormValidation.run';
 
 class FormValidation extends React.Component {
     componentDidMount() {
-        FormValidationRun();
+        // FormValidationRun();
     }
     render() {
         return (

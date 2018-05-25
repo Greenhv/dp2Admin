@@ -1,13 +1,14 @@
 import React from 'react';
 import { BrowserRouter, withRouter, Switch, Route, Redirect, Miss } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { hot } from 'react-hot-loader';
 
 import Base from './components/Layout/Base';
 import BasePage from './components/Layout/BasePage';
 import BaseHorizontal from './components/Layout/BaseHorizontal';
-import DashboardV1 from './components/Dashboard/DashboardV1';
-import FormStandard from './components/Forms/FormStandard';
-import FormValidation from './components/Forms/FormValidation';
+// import DashboardV1 from './components/Dashboard/DashboardV1';
+// import FormStandard from './components/Forms/FormStandard';
+// import FormValidation from './components/Forms/FormValidation';
 
 import Login from './components/Pages/Login';
 import Register from './components/Pages/Register';
@@ -74,9 +75,9 @@ const Routes = ({ location }) => {
                     <div>
                         <Switch location={location}>
                             {/*Dashboard*/}
-                            <Route path="/dashboard" component={DashboardV1}/>
-                            <Route path="/form-standard" component={FormStandard}/>
-                            <Route path="/form-validation" component={FormValidation}/>
+                            {/* <Route path="/dashboard" component={DashboardV1}/> */}
+                            {/* <Route path="/form-standard" component={FormStandard}/>
+                            <Route path="/form-validation" component={FormValidation}/> */}
                             { pages.map(page => (
                                 <Route
                                     key={getNumber()}
@@ -94,4 +95,4 @@ const Routes = ({ location }) => {
     }
 }
 
-export default withRouter(Routes);
+export default hot(module)(withRouter(Routes));
