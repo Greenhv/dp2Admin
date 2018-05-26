@@ -22,7 +22,7 @@ const initialState = {
 const defaultUrl = process.env.API_BASE_URL;
 
 export default (state = initialState, action = {}) => {
-  switch(action.type) {
+  switch (action.type) {
     case FETCH:
       return {
         ...state,
@@ -87,7 +87,8 @@ export const setError = (error) => ({
 export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}/store_categories`)
   .then(fetchStatusHandler)
   .then(response => response.json())
-  .then(json => json.store_categories)
-  .then(data => dispatch(addStoreCategories(data)))
-  .catch(error => { console.log(error); dispatch(setError('Error al cargar las categorias, recarga la pagina porfavor')); });
- 
+  .then(data => dispatch(addStoreCategories(data.storeCategories)))
+  .catch(error => {
+    console.log(error);
+    dispatch(setError('Error al cargar las categorias, recarga la pagina porfavor'));
+  });
