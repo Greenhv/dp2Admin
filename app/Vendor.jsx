@@ -44,7 +44,7 @@ require('datatables.net-buttons/js/buttons.colVis.js')(window, $); // Column vis
 require('datatables.net-buttons/js/buttons.html5.js')(window, $); // HTML 5 file export
 require('datatables.net-buttons/js/buttons.flash.js')(window, $); // Flash file export
 require('datatables.net-buttons/js/buttons.print.js')(window, $); // Print view button
-import '../node_modules/dataTables.fontAwesome/dataTables.fontAwesome.css';
+// import '../node_modules/dataTables.fontAwesome/dataTables.fontAwesome.css';
 // JQ Grid
 import '../node_modules/jqGrid/css/ui.jqgrid.css';
 import '../node_modules/jqGrid/js/jquery.jqGrid.js';
@@ -100,8 +100,8 @@ window.swal = require('../node_modules/sweetalert/lib/sweetalert.js');
 import '../node_modules/loaders.css/loaders.css';
 import '../node_modules/spinkit/css/spinkit.css';
 // Bootstrap Tour
-import '../node_modules/bootstrap-tour/build/css/bootstrap-tour-standalone.css';
-import '../node_modules/bootstrap-tour/build/js/bootstrap-tour-standalone.js';
+//import '../node_modules/bootstrap-tour/build/css/bootstrap-tour-standalone.css';
+//import '../node_modules/bootstrap-tour/build/js/bootstrap-tour-standalone.js';
 // Sortable
 window.sortable = require('html5sortable');
 // Nestable
