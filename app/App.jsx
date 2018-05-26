@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import createStore from './store';
 import './Vendor';
 
-import initTranslation from './Components/Common/localize';
-import initLoadThemes from './Components/Common/load-themes';
+import initTranslation from 'Components/Common/localize';
+import initLoadThemes from 'Components/Common/load-themes';
 
 import Routes from './Routes';
 import { setCurrency } from 'Utils/money';
