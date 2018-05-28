@@ -16,7 +16,7 @@ import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
-import { addStoreCategory } from "Modules/storeCategories";
+import { addStoreCategories } from "Modules/storeCategories";
 
 let StoreCategoryForm = props => {
   const { handleSubmit } = props;
@@ -25,8 +25,8 @@ let StoreCategoryForm = props => {
 };
 
 const onStoreCategorySubmit = (values, dispatch) => {
-  if (Object.keys(values).length >= 2) {
-    fetch(`${process.env.API_BASE_URL}produts`, {
+  if (Object.keys(values).length >= 4) {
+    fetch(`${process.env.API_BASE_URL}store-categories`, {
       method: "POST",
       body: JSON.stringify(values),
       headers: {
@@ -35,7 +35,7 @@ const onStoreCategorySubmit = (values, dispatch) => {
     })
       .then(response => response.json())
       .then(data => {
-        dispatch(addStoreCategory(data.storeCategory));
+        dispatch(addStoreCategories(data.storeCategory));
         window.history.back();
       });
   }
@@ -99,11 +99,11 @@ class StoreCategoryFormPage extends PureComponent {
   }
 }
 
-StoreCategoryFormPage .propTypes = {
+StoreCategoryFormPage.propTypes = {
   history: shape({}).isRequired,
 }
 export default reduxForm({
-  form: 'productForm',
+  form: 'storeCategoryForm',
   onSubmit: onStoreCategorySubmit,
 })(StoreCategoryFormPage)
 
