@@ -92,3 +92,5 @@ export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}/store_c
     console.log(error);
     dispatch(setError('Error al cargar las categorias, recarga la pagina porfavor'));
   });
+
+  
