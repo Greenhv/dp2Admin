@@ -7,14 +7,15 @@ import {
   fetchProducts,
   selectProduct,
   deleteProduct,
-  getProducts as requestProducst
-} from "Modules/products";
-import { getNumber } from "Utils/randomizer";
-import { transformToMoney, applyDiscount } from "Utils/money";
-import DataTables from "Shared/DataTable.jsx";
-import Loader from "Shared/Loader.jsx";
-import "Components/Common/notify";
-import { productType } from "../types";
+  getProducts as requestProducst,
+} from 'Modules/products';
+import { getNumber } from 'Utils/randomizer';
+import { transformToMoney, applyDiscount } from 'Utils/money';
+import DataTables from 'Shared/DataTable.jsx';
+import Loader from 'Shared/Loader.jsx';
+import DataTableEmptyMsg from 'Shared/DataTableEmptyMsg.jsx';
+import 'Components/Common/notify';
+import { productType } from '../types';
 
 class DataTableWithProducts extends PureComponent {
   componentDidMount() {
@@ -29,13 +30,45 @@ class DataTableWithProducts extends PureComponent {
     console.log("Modal!");
   };
 
+  renderElements = () => {
+    const {
+      products,
+      selectProduct,
+      deleteProduct,
+    } = this.props;
+
+    return products.map(product => (
+      <tr key={getNumber()}>
+        <td>{ product.name }</td>
+        <td>{ transformToMoney(product.price) }</td>
+        <td>{ product.promotion.value }</td>
+        <td>{ product.promotion ? applyDiscount(product.price, product.promotion.value) : '-' }</td>
+        <td>{ product.brand.name }</td>
+        <td>
+          <Button onClick={this.openImgModal}>
+            <em className="fa fa-image"></em>
+          </Button>
+        </td>
+        <td>
+          <Button onClick={selectProduct && selectProduct(product.id)}>
+            <em className="fa fa-eye"></em>
+          </Button>
+          <Button onClick={selectProduct && selectProduct(product.id)}>
+            <em className="fa fa-pencil"></em>
+          </Button>
+          <Button onClick={deleteProduct && deleteProduct(product.id)}>
+            <em className="fa fa-remove"></em>
+          </Button>
+        </td>
+      </tr>
+    ));
+  }
+
   render() {
     const {
       products,
       isLoadingProducts,
       productsError,
-      selectProduct,
-      deleteProduct
     } = this.props;
 
     if (productsError) {
@@ -57,35 +90,9 @@ class DataTableWithProducts extends PureComponent {
               { key: "img", title: "Imagen" }
             ]}
           >
-            {products.map(element => (
-              <tr key={getNumber()}>
-                <td>{element.name}</td>
-                <td>{transformToMoney(element.price)}</td>
-                <td>{element.promotion.value}</td>
-                <td>
-                  {element.promotion
-                    ? applyDiscount(element.price, element.promotion.value)
-                    : "-"}
-                </td>
-                <td>{element.brand.name}</td>
-                <td>
-                  <Button onClick={this.openImgModal}>
-                    <em className="fa fa-image" />
-                  </Button>
-                </td>
-                <td>
-                  <Button onClick={selectProduct && selectProduct(element.id)}>
-                    <em className="fa fa-eye" />
-                  </Button>
-                  <Button onClick={selectProduct && selectProduct(element.id)}>
-                    <em className="fa fa-pencil" />
-                  </Button>
-                  <Button onClick={deleteProduct && deleteProduct(element.id)}>
-                    <em className="fa fa-remove" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
+            { products.length > 0 ? this.renderElements() : (
+              <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+            ) }
           </DataTables>
         )}
       </div>

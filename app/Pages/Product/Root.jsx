@@ -53,6 +53,7 @@ const Root = ({ match, location }) => (
 
 Root.propTypes = {
   match: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({}).isRequired,
 }
 
 export default Root;
