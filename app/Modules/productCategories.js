@@ -14,7 +14,6 @@ const initialState = {
   productCategories: [],
   selectedCategory: {},
   isLoading: false,
-  hasAlreadyFetchData: false,
   error: '',
   isModalOpen: true,
 };
@@ -35,7 +34,6 @@ export default (state = initialState, action = {}) => {
         ...state,
         productCategories: [...state.productCategories, ...action.productCategories],
         isLoading: false,
-        hasAlreadyFetchData: true,
         error: '',
       };
     case ADD_PRODUCT_CATEGORY:

@@ -12,6 +12,7 @@ import {
 import { getNumber } from 'Utils/randomizer';
 import DataTables from 'Shared/DataTable.jsx';
 import Loader from 'Shared/Loader.jsx';
+import DataTableEmptyMsg from 'Shared/DataTableEmptyMsg.jsx';
 import 'Components/Common/notify';
 import { productCategoryType } from '../types';
 
@@ -19,10 +20,10 @@ class DataTableWithProductCategories extends PureComponent {
   componentDidMount() {
     const {
       getProductCategories,
-      categoriesAlreadyFetch,
+      productCategories,
     } = this.props;
 
-    if (!categoriesAlreadyFetch) {
+    if (productCategories < 1) {
       getProductCategories();
     }
   }
@@ -75,7 +76,9 @@ class DataTableWithProductCategories extends PureComponent {
               { key: 'description', title: 'Descripcion' },
             ]}
           >
-            { this.renderProductCategories() }
+            { productCategories.length > 0 ? this.renderProductCategories() : (
+              <DataTableEmptyMsg colSpan={3}>No hay productos para mostrar</DataTableEmptyMsg>
+            ) }
           </DataTables>
         ) }
       </div>
@@ -86,18 +89,16 @@ class DataTableWithProductCategories extends PureComponent {
 DataTableWithProductCategories.propTypes = {
   productCategories: PropTypes.arrayOf(productCategoryType).isRequired,
   isLoadingCategories: PropTypes.bool.isRequired,
-  categoriesAlreadyFetch: PropTypes.bool.isRequired,
   categoriesError: PropTypes.string.isRequired,
   selectProductCategories: PropTypes.func.isRequired,
   deleteProductCategories: PropTypes.func.isRequired,
   getProductCategories: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = ({ productCategories: { productCategories, isLoading, error, hasAlreadyFetchData } }) => ({
+const mapStateToProps = ({ productCategories: { productCategories, isLoading, error } }) => ({
   productCategories,
   isLoadingCategories: isLoading,
   categoriesError: error,
-  categoriesAlreadyFetch: hasAlreadyFetchData,
 });
 
 const mapDispatchToProps = dispatch => ({

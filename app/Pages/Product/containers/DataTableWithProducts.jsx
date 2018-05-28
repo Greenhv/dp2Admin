@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
@@ -14,13 +13,9 @@ import { getNumber } from 'Utils/randomizer';
 import { transformToMoney, applyDiscount } from 'Utils/money';
 import DataTables from 'Shared/DataTable.jsx';
 import Loader from 'Shared/Loader.jsx';
+import DataTableEmptyMsg from 'Shared/DataTableEmptyMsg.jsx';
 import 'Components/Common/notify';
 import { productType } from '../types';
-
-const EmptyMsg = styled.td`
-  text-align: center;
-  color: #989ca280;
-`;
 
 class DataTableWithProducts extends PureComponent {
   componentDidMount() {
@@ -99,9 +94,7 @@ class DataTableWithProducts extends PureComponent {
             ]}
           >
             { products.length > 0 ? this.renderElements() : (
-              <tr>
-                <EmptyMsg colSpan="7">No hay elementos ha ser mostrados</EmptyMsg>
-              </tr>
+              <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
             ) }
           </DataTables>
         ) }
