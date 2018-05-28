@@ -31,14 +31,14 @@ export default (state = initialState, action = {}) => {
     case ADD:
       return {
         ...state,
-        stores: [...action.stores],
+        stores: [...state.stores, ...action.stores],
         isLoading: false,
         error: '',
       };
     case DELETE:
       return {
         ...state,
-        stores: [...state.stores]
+        stores: [...state.stores, ...state.stores]
           .filter(store => store.id !== action.storeId),
       };
     case SELECT:
@@ -85,8 +85,8 @@ export const setError = (error) => ({
 
 // Side effects
 
-export const getStores = () => dispatch => fetch(`${defaultUrl}/stores`)
+export const getStores = () => dispatch => fetch(`${defaultUrl}stores`)
   .then(fetchStatusHandler)
-  .then(response => response.data)
-  .then(data => dispatch(addStores(data)))
+  .then(response => response.json())
+  .then(data => dispatch(addStores(data.stores)))
   .catch(error => { console.log('Error al cargar las tiendas, recarga la pagina porfavor'); });
