@@ -8,21 +8,6 @@ import Select from 'Shared/Select';
 import CustomInput from 'Shared/Form/CustomInput';
 import { addProduct } from 'Modules/products';
 
-const onProductSubmit = (values, dispatch) => {
-  if (Object.keys(values).length >= 4) {
-    fetch(`${process.env.API_BASE_URL}products`, {
-      method: 'POST',
-      body: JSON.stringify(values),
-      headers: {
-        'content-type': 'application/json',
-      },
-    }).then(response => response.json())
-    .then((data) => {
-      dispatch(addProduct(data.product));
-      window.history.back();
-    });
-  }
-}
 
 class ProductFormPage extends PureComponent {
   componentDidMount() {
@@ -36,8 +21,28 @@ class ProductFormPage extends PureComponent {
       history,
     } = this.props;
 
-    history.push('/productos');
+    history.push('/produtos');
   };
+
+  onProductSubmit = (values, dispatch) => {
+    const {
+      history
+    } = this.props;
+
+    if (Object.keys(values).length >= 4) {
+      fetch(`${process.env.API_BASE_URL}products`, {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: {
+          'content-type': 'application/json',
+        },
+      }).then(response => response.json())
+      .then((data) => {
+        dispatch(addProduct(data.product));
+        history.push('/productos');
+      });
+    }
+  }
 
   render() {
     const {
@@ -50,7 +55,7 @@ class ProductFormPage extends PureComponent {
         <Row>
           <Col lg={12}>
             <Panel>
-              <form onSubmit={handleSubmit} noValidate ref={(node) => { this.form = node; }}>
+              <form onSubmit={handleSubmit(this.onProductSubmit)} noValidate ref={(node) => { this.form = node; }}>
                 <Panel.Body>
                     <FormGroup>
                       <ControlLabel>Nombre del producto</ControlLabel>
@@ -121,5 +126,4 @@ ProductFormPage.propTypes = {
 
 export default reduxForm({
   form: 'productForm',
-  onSubmit: onProductSubmit,
 })(ProductFormPage);
