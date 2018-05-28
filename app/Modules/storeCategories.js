@@ -2,7 +2,8 @@ import fetchStatusHandler from 'Utils/fetchStatusHandler';
 
 // Actions
 const FETCH = 'admin/storeCategories/FETCH';
-const ADD = 'admin/storeCategories/ADD';
+const ADD_STORE_CATEGORIES = 'admin/storeCategories/ADD_STORE_CATEGORIES';
+const ADD_STORE_CATEGORY = 'admin/storeCategories/ADD_STORE_CATEGORY';
 const SELECT = 'admin/storeCategories/SELECT';
 const EDIT = 'admin/storeCategories/EDIT';
 const DELETE = 'admin/storeCategories/DELETE';
@@ -28,24 +29,31 @@ export default (state = initialState, action = {}) => {
         ...state,
         isLoading: true,
       };
-    case ADD:
+    case ADD_STORE_CATEGORIES:
       return {
         ...state,
-        storeCategories: [...action.storeCategories],
+        storeCategories: [...state.storeCategories, ...action.storeCategories],
+        isLoading: false,
+        error: '',
+      };
+    case ADD_STORE_CATEGORY:
+      return {
+        ...state,
+        storeCategories: [...state.storeCategories, action.storeCategory],
         isLoading: false,
         error: '',
       };
     case DELETE:
       return {
         ...state,
-        storeCategories: [...state.storeCategories]
-          .filter(category => category.id !== action.categoryId),
+        storeCategories: [...state.storeCategories, ...state.storeCategories]
+          .filter(storeCatery => storeCatery.id !== action.storeCatery),
       };
     case SELECT:
       return {
         ...state,
-        selectedCategory: state.storeCategories
-          .filter(category => category.id === action.categoryId)[0],
+        selectedStoreCategory: state.storeCategories
+          .filter(storeCategory => storeCategory.id === action.storeCategoryId)[0],
       };
     case ERROR:
       return {
@@ -60,18 +68,23 @@ export default (state = initialState, action = {}) => {
 // Action Creators
 
 export const addStoreCategories = storeCategories => ({
-  type: ADD,
+  type: ADD_STORE_CATEGORIES,
   storeCategories,
 });
 
-export const selectStoreCategories = categoryId => ({
-  type: SELECT,
-  categoryId,
+export const addStoreCategory = storeCategory => ({
+  type: ADD_STORE_CATEGORY,
+  storeCategory,
 });
 
-export const deleteStoreCategories = categoryId => ({
+export const selectStoreCategory = storeCategoryId => ({
+  type: SELECT,
+  storeCategoryId,
+});
+
+export const deleteStoreCategory = storeCategoryId => ({
   type: DELETE,
-  categoryId,
+  storeCategoryId,
 });
 
 export const fetchStoreCategories = () => ({
@@ -84,13 +97,11 @@ export const setError = (error) => ({
 });
 
 // Side effects
-export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}/store_categories`)
+export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}store_categories`)
   .then(fetchStatusHandler)
   .then(response => response.json())
-  .then(data => dispatch(addStoreCategories(data.storeCategories)))
+  .then(data => dispatch(addStoreCategories(data.store_categories)))
   .catch(error => {
     console.log(error);
     dispatch(setError('Error al cargar las categorias, recarga la pagina porfavor'));
   });
-
-  

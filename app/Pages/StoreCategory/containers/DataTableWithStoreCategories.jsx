@@ -4,13 +4,14 @@ import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
 
 import {
-  deleteStoreCategories,
+  deleteStoreCategory,
   fetchStoreCategories,
-  selectStoreCategories,
+  selectStoreCategory,
   getStoreCategories as requestStoreCategories
 } from "Modules/storeCategories";
 import { getNumber } from "Utils/randomizer";
 import DataTables from "Shared/DataTable.jsx";
+import DataTableEmptyMsg from "Shared/DataTableEmptyMsg.jsx";
 import Loader from "Shared/Loader.jsx";
 import "Components/Common/notify";
 import { storeCategoryType } from "../types";
@@ -24,13 +25,56 @@ class DataTableWithStoreCategories extends PureComponent {
     }
   }
 
+  openImgModal = () => {
+    console.log("Modal");
+  };
+
+  renderElements = () => {
+    const {
+      storeCategories,
+      selectStoreCategories,
+      deleteStoreCategory
+    } = this.props;
+
+    return storeCategories.map(storeCategory => (
+      <tr key={getNumber()}>
+        <td>{storeCategory.name}</td>
+        <td>{storeCategory.description}</td>
+        <td>
+          <Button onClick={this.openImgModal}>
+            <em className="fa fa-image" />
+          </Button>
+          <Button
+            onClick={
+              selectStoreCategory && selectStoreCategory(storeCategory.id)
+            }
+          >
+            <em className="fa fa-eye" />
+          </Button>
+          <Button
+            onClick={
+              selectStoreCategory && selectStoreCategory(storeCategory.id)
+            }
+          >
+            <em className="fa fa-pencil" />
+          </Button>
+          <Button
+            onClick={
+              deleteStoreCategory && deleteStoreCategory(storeCategory.id)
+            }
+          >
+            <em className="fa fa-remove" />
+          </Button>
+        </td>
+      </tr>
+    ));
+  };
+
   render() {
     const {
       storeCategories,
       isLoadingStoreCategories,
-      storeCategoriesError,
-      selectStoreCategories,
-      deleteStoreCategories
+      storeCategoriesError
     } = this.props;
 
     if (storeCategoriesError) {
@@ -48,28 +92,13 @@ class DataTableWithStoreCategories extends PureComponent {
               { key: "description", title: "Descripcion" }
             ]}
           >
-            {storeCategories.map(element => (
-              <tr key={getNumber()}>
-                <td> {element.name} </td>
-                <td> {element.description} </td>
-                <td>
-                  <Button onClick={this.openImgModal}>
-                    <em className="fa fa-image" />
-                  </Button>
-                </td>
-                <td>
-                  <Button onClick={selectProduct && selectStoreCategories(element.id)}>
-                    <em className="fa fa-eye" />
-                  </Button>
-                  <Button onClick={selectProduct && selectStoreCategories(element.id)}>
-                    <em className="fa fa-pencil" />
-                  </Button>
-                  <Button onClick={deleteProduct && deleteStoreCategories(element.id)}>
-                    <em className="fa fa-remove" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
+            {storeCategories.length > 0 ? (
+              this.renderElements()
+            ) : (
+              <DataTableEmptyMsg colSpan={6}>
+                No hay categorias para mostrar
+              </DataTableEmptyMsg>
+            )}
           </DataTables>
         )}
       </div>
@@ -80,9 +109,8 @@ class DataTableWithStoreCategories extends PureComponent {
 DataTableWithStoreCategories.propTypes = {
   storeCategories: PropTypes.arrayOf(storeCategoryType).isRequired,
   isLoadingStoreCategories: PropTypes.bool.isRequired,
-  storeCategoriesError: PropTypes.string.isRequired,
-  selectStoreCategories: PropTypes.func.isRequired,
-  deleteStoreCategories: PropTypes.func.isRequired,
+  selectStoreCategory: PropTypes.func.isRequired,
+  deleteStoreCategory: PropTypes.func.isRequired,
   getStoreCategories: PropTypes.func.isRequired
 };
 

@@ -2,6 +2,8 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+import { Button } from "react-bootstrap";
+
 import {
   deleteStores,
   fetchStores,
