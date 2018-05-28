@@ -19,9 +19,38 @@ class DataTableWithProductCategories extends PureComponent {
   componentDidMount() {
     const {
       getProductCategories,
+      categoriesAlreadyFetch,
     } = this.props;
 
-    getProductCategories();
+    if (!categoriesAlreadyFetch) {
+      getProductCategories();
+    }
+  }
+
+  renderProductCategories = () => {
+    const {
+      productCategories,
+      selectProductCategories,
+      deleteProductCategories,
+    } = this.props;
+
+    return productCategories.map(productCategory => (
+      <tr key={getNumber()}>
+        <td>{ productCategory.name }</td>
+        <td>{ productCategory.description }</td>
+        <td>
+          <Button onClick={selectProductCategories && selectProductCategories(productCategory.id)}>
+            <em className="fa fa-eye"></em>
+          </Button>
+          <Button onClick={selectProductCategories && selectProductCategories(productCategory.id)}>
+            <em className="fa fa-pencil"></em>
+          </Button>
+          <Button onClick={deleteProductCategories && deleteProductCategories(productCategory.id)}>
+            <em className="fa fa-remove"></em>
+          </Button>
+        </td>
+      </tr>
+    ));
   }
 
   render() {
@@ -29,8 +58,6 @@ class DataTableWithProductCategories extends PureComponent {
       productCategories,
       isLoadingCategories,
       categoriesError,
-      selectProductCategories,
-      deleteProductCategories,
     } = this.props;
 
     if (categoriesError) {
@@ -48,23 +75,7 @@ class DataTableWithProductCategories extends PureComponent {
               { key: 'description', title: 'Descripcion' },
             ]}
           >
-            { productCategories.map(element => (
-              <tr key={getNumber()}>
-                <td>{ element.name }</td>
-                <td>{ element.description }</td>
-                <td>
-                  <Button onClick={selectProductCategories && selectProductCategories(element.id)}>
-                    <em className="fa fa-eye"></em>
-                  </Button>
-                  <Button onClick={selectProductCategories && selectProductCategories(element.id)}>
-                    <em className="fa fa-pencil"></em>
-                  </Button>
-                  <Button onClick={deleteProductCategories && deleteProductCategories(element.id)}>
-                    <em className="fa fa-remove"></em>
-                  </Button>
-                </td>
-              </tr>
-            )) }
+            { this.renderProductCategories() }
           </DataTables>
         ) }
       </div>
@@ -75,16 +86,18 @@ class DataTableWithProductCategories extends PureComponent {
 DataTableWithProductCategories.propTypes = {
   productCategories: PropTypes.arrayOf(productCategoryType).isRequired,
   isLoadingCategories: PropTypes.bool.isRequired,
+  categoriesAlreadyFetch: PropTypes.bool.isRequired,
   categoriesError: PropTypes.string.isRequired,
   selectProductCategories: PropTypes.func.isRequired,
   deleteProductCategories: PropTypes.func.isRequired,
   getProductCategories: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = ({ productCategories: { productCategories, isLoading, error } }) => ({
+const mapStateToProps = ({ productCategories: { productCategories, isLoading, error, hasAlreadyFetchData } }) => ({
   productCategories,
   isLoadingCategories: isLoading,
   categoriesError: error,
+  categoriesAlreadyFetch: hasAlreadyFetchData,
 });
 
 const mapDispatchToProps = dispatch => ({
