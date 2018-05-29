@@ -10,20 +10,11 @@ const ListPage = ({ match }) => (
     <Row>
       <Col lg={12}>
         <Panel>
-          <div>
-            <Link to={`${match.url}/nuevo`}>
-              <Button>Nueva Tienda</Button>
-            </Link>
-          </div>
           <DataTableWithStores />
         </Panel>
       </Col>
     </Row>
   </Grid>
 );
-
-ListPage.propTypes = {
-
-}
 
 export default ListPage;

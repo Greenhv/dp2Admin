@@ -1,53 +1,106 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Button } from "react-bootstrap";
 
 import {
-  deleteStoreCategories,
+  deleteStoreCategory,
   fetchStoreCategories,
-  selectStoreCategories,
-  getStoreCategories as requestStoreCategories,
-} from 'Modules/storeCategories';
-import DataTables from 'Shared/DataTable.jsx';
-import Loader from 'Shared/Loader.jsx';
-import 'Components/Common/notify';
-import { storeCategoryType } from '../types';
+  selectStoreCategory,
+  getStoreCategories as requestStoreCategories
+} from "Modules/storeCategories";
+import { getNumber } from "Utils/randomizer";
+import DataTables from "Shared/DataTable.jsx";
+import DataTableEmptyMsg from "Shared/DataTableEmptyMsg.jsx";
+import Loader from "Shared/Loader.jsx";
+import "Components/Common/notify";
+import { storeCategoryType } from "../types";
 
 class DataTableWithStoreCategories extends PureComponent {
   componentDidMount() {
+    const { getStoreCategories, storeCategories } = this.props;
+
+    if (storeCategories.length < 1) {
+      getStoreCategories();
+    }
+  }
+
+  openImgModal = () => {
+    console.log("Modal");
+  };
+
+  renderElements = () => {
     const {
-      getStoreCategories,
+      storeCategories,
+      selectStoreCategories,
+      deleteStoreCategory
     } = this.props;
 
-    getStoreCategories();
-  }
+    return storeCategories.map(storeCategory => (
+      <tr key={getNumber()}>
+        <td>{storeCategory.name}</td>
+        <td>{storeCategory.description}</td>
+        <td>
+          <Button onClick={this.openImgModal}>
+            <em className="fa fa-image" />
+          </Button>
+          <Button
+            onClick={
+              selectStoreCategory && selectStoreCategory(storeCategory.id)
+            }
+          >
+            <em className="fa fa-eye" />
+          </Button>
+          <Button
+            onClick={
+              selectStoreCategory && selectStoreCategory(storeCategory.id)
+            }
+          >
+            <em className="fa fa-pencil" />
+          </Button>
+          <Button
+            onClick={
+              deleteStoreCategory && deleteStoreCategory(storeCategory.id)
+            }
+          >
+            <em className="fa fa-remove" />
+          </Button>
+        </td>
+      </tr>
+    ));
+  };
 
   render() {
     const {
       storeCategories,
       isLoadingStoreCategories,
-      storeCategoriesError,
-      selectStoreCategories,
-      deleteStoreCategories,
+      storeCategoriesError
     } = this.props;
 
     if (storeCategoriesError) {
-      $.notify(storeCategoriesError, 'danger');
+      $.notify(storeCategoriesError, "danger");
     }
 
     return (
       <div>
-        { isLoadingStoreCategories ? (
+        {isLoadingStoreCategories ? (
           <Loader />
         ) : (
           <DataTables
-            headers={[{ key: 'name', title: 'Nombre' }, { key: 'description', title: 'Descripcion' }]}
-            elements={storeCategories}
-            onView={selectStoreCategories}
-            onEdit={selectStoreCategories}
-            onDelete={deleteStoreCategories}
-          />
-        ) }
+            headers={[
+              { key: "name", title: "Nombre" },
+              { key: "description", title: "Descripcion" }
+            ]}
+          >
+            {storeCategories.length > 0 ? (
+              this.renderElements()
+            ) : (
+              <DataTableEmptyMsg colSpan={6}>
+                No hay categorias para mostrar
+              </DataTableEmptyMsg>
+            )}
+          </DataTables>
+        )}
       </div>
     );
   }
@@ -56,21 +109,22 @@ class DataTableWithStoreCategories extends PureComponent {
 DataTableWithStoreCategories.propTypes = {
   storeCategories: PropTypes.arrayOf(storeCategoryType).isRequired,
   isLoadingStoreCategories: PropTypes.bool.isRequired,
-  storeCategoriesError: PropTypes.string.isRequired,
-  selectStoreCategories: PropTypes.func.isRequired,
-  deleteStoreCategories: PropTypes.func.isRequired,
-  getStoreCategories: PropTypes.func.isRequired,
-}
+  selectStoreCategory: PropTypes.func.isRequired,
+  deleteStoreCategory: PropTypes.func.isRequired,
+  getStoreCategories: PropTypes.func.isRequired
+};
 
-const mapStateToProps = ({ storeCategories: { storeCategories, isLoading, error } }) => ({
+const mapStateToProps = ({
+  storeCategories: { storeCategories, isLoading, error }
+}) => ({
   storeCategories,
   isLoadingStoreCategories: isLoading,
-  storeCategoriesError: error,
+  storeCategoriesError: error
 });
 
 const mapDispatchToProps = dispatch => ({
   getStoreCategories: () => {
-    dispatch(fetchStoreCategories())
+    dispatch(fetchStoreCategories());
     dispatch(requestStoreCategories());
   },
   selectStoreCategories: category => () => {
@@ -81,4 +135,6 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataTableWithStoreCategories);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  DataTableWithStoreCategories
+);

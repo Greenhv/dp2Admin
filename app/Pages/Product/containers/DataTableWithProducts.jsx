@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Button } from "react-bootstrap";
 
 import {
   fetchProducts,
@@ -19,10 +19,7 @@ import { productType } from '../types';
 
 class DataTableWithProducts extends PureComponent {
   componentDidMount() {
-    const {
-      getProducts,
-      products,
-    } = this.props;
+    const { getProducts, products } = this.props;
 
     if (products.length < 1) {
       getProducts();
@@ -30,8 +27,8 @@ class DataTableWithProducts extends PureComponent {
   }
 
   openImgModal = () => {
-    console.log('Modal!');
-  }
+    console.log("Modal!");
+  };
 
   renderElements = () => {
     const {
@@ -75,29 +72,29 @@ class DataTableWithProducts extends PureComponent {
     } = this.props;
 
     if (productsError) {
-      $.notify(productsError, 'danger');
+      $.notify(productsError, "danger");
     }
 
     return (
       <div>
-        { isLoadingProducts ? (
+        {isLoadingProducts ? (
           <Loader />
         ) : (
           <DataTables
             headers={[
-              { key: 'name', title: 'Nombre' },
-              { key: 'price', title: 'Precio de Lista' },
-              { key: 'discount', title: 'Descuento' },
-              { key: 'realPrice', title: 'Precio Neto' },
-              { key: 'brand', title: 'Marca' },
-              { key: 'img', title: 'Imagen' },
+              { key: "name", title: "Nombre" },
+              { key: "price", title: "Precio de Lista" },
+              { key: "discount", title: "Descuento" },
+              { key: "realPrice", title: "Precio Neto" },
+              { key: "brand", title: "Marca" },
+              { key: "img", title: "Imagen" }
             ]}
           >
             { products.length > 0 ? this.renderElements() : (
               <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
             ) }
           </DataTables>
-        ) }
+        )}
       </div>
     );
   }
@@ -108,13 +105,13 @@ DataTableWithProducts.propTypes = {
   isLoadingProducts: PropTypes.bool.isRequired,
   productsError: PropTypes.string.isRequired,
   getProducts: PropTypes.func.isRequired,
-  selectProduct: PropTypes.func.isRequired,
-}
+  selectProduct: PropTypes.func.isRequired
+};
 
 const mapStateToProps = ({ products: { products, isLoading, error } }) => ({
   products,
   isLoadingProducts: isLoading,
-  productsError: error,
+  productsError: error
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -127,7 +124,9 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteProduct: product => () => {
     dispatch(deleteProduct(product));
-  },
+  }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataTableWithProducts);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  DataTableWithProducts
+);
