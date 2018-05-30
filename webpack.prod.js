@@ -4,7 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var commonConfig = require('./webpack.common.js');
-var Dotenv = require('dotenv-webpack');
+// var Dotenv = require('dotenv-webpack');
 var path = require('path');
 
 module.exports = webpackMerge(commonConfig, {
