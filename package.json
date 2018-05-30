@@ -5,7 +5,7 @@
   "author": "@dp2AdminTeam",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --config webpack.dev.js --inline --progress --port 3000 --open",
-    "serve": "yarn build; node prodServer.js",
+    "serve": "yarn --production=false; yarn build; node prodServer.js",
     "testProd": "node staticServer.js",
     "clean": "rimraf dist/",
     "build": "npm run clean && webpack --config webpack.prod.js --progress --profile --bail",

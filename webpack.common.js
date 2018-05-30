@@ -26,7 +26,8 @@ module.exports = {
             Components: path.join(__dirname, 'app/Components/'),
             Modules: path.join(__dirname, 'app/Modules/'),
             Utils: path.join(__dirname, 'app/Utils/'),
-            Shared: path.join(__dirname, 'app/Shared/')
+            Shared: path.join(__dirname, 'app/Shared/'),
+            node_modules: path.join(__dirname, '/node_modules'),
         }
     },
 
