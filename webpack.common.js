@@ -6,14 +6,14 @@ var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var path = require('path');
 var Dotenv = require('dotenv-webpack');
 var pkgBower = require('./package.json');
+require('dotenv').config()
 
-var baseHref = process.env.WP_BASE_HREF ? process.env.WP_BASE_HREF : '/';
-var devMode = process.env.NODE_ENV !== 'production';
+var devMode = process.env.NODE_ENV === 'development';
+var baseHref = devMode ? '/' : process.env.WP_BASE_HREF;
 
 module.exports = {
-
     entry: {
-        'app': './app/App.jsx'
+        app: './app/App.jsx',
     },
 
     resolve: {
@@ -104,11 +104,18 @@ module.exports = {
 
     optimization: {
         splitChunks: {
+            chunks: "async",
             cacheGroups: {
+                commons: {
+                    chunks: "initial",
+                    minChunks: 2,
+                },
                 vendors: {
+                    test: /node_modules/,
+                    name: "vendor",
                     chunks: "initial",
                     minChunks: 3,
-                    name: "vendor",
+                    priority: 10,
                     enforce: true,
                 },
             },
@@ -118,7 +125,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: 'app/index.html',
-            baseUrl: baseHref
+            baseUrl: process.env.WP_BASE_HREF
         }),
         new MiniCssExtractPlugin({
             filename: devMode ? '[name].css' : '[name].[hash].css',

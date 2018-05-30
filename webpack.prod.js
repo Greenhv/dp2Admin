@@ -18,10 +18,6 @@ module.exports = webpackMerge(commonConfig, {
     },
 
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: '[name].[hash].css',
-            chunkFilename: '[id].[hash].css',
-        }),
         new OptimizeCssAssetsPlugin({
             cssProcessor: require('cssnano'),
             cssProcessorOptions: {

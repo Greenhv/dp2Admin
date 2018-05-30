@@ -30,10 +30,10 @@ import '../node_modules/jquery-slimscroll/jquery.slimscroll.min.js';
 // Google Maps
 import '../node_modules/jquery.gmap/jquery.gmap.min.js';
 // Vector Maps
-import '../node_modules/ika.jvectormap/jquery-jvectormap-1.2.2.min.js';
-import '../node_modules/ika.jvectormap/jquery-jvectormap-world-mill-en.js';
-import '../node_modules/ika.jvectormap/jquery-jvectormap-us-mill-en.js';
-import '../node_modules/ika.jvectormap/jquery-jvectormap-1.2.2.css';
+// import '../node_modules/ika.jvectormap/jquery-jvectormap-1.2.2.min.js';
+// import '../node_modules/ika.jvectormap/jquery-jvectormap-world-mill-en.js';
+// import '../node_modules/ika.jvectormap/jquery-jvectormap-us-mill-en.js';
+// import '../node_modules/ika.jvectormap/jquery-jvectormap-1.2.2.css';
 // Datatables
 $.fn.dataTable = require('datatables.net-bs')(window, $);
 require('datatables.net-buttons')(window, $);
