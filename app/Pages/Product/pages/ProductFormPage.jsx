@@ -36,7 +36,7 @@ class ProductFormPage extends PureComponent {
   goToProductsPage = () => {
     const { history } = this.props;
 
-    history.push('/produtos');
+    history.push('/productos');
   };
 
   onProductSubmit = (values, dispatch) => {
