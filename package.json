@@ -1,8 +1,11 @@
 {
   "name": "mrworldwideadmin",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "mrworldwide admin",
   "author": "@dp2AdminTeam",
+  "engines": {
+    "node": "8.9.4"
+  },
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --config webpack.dev.js --inline --progress --port 3000 --open",
     "serve": "node prodServer.js",
