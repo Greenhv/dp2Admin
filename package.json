@@ -12,7 +12,7 @@
     "build": "npm run clean && webpack --config webpack.prod.js --progress --profile --bail",
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "napa",
-    "postinstall-heroku": "npm run build",
+    "postinstall-heroku": "yarn build",
     "postinstall": "npm run build-modernizr",
     "build-modernizr": "modernizr -c modernizr-config.json -d app/modernizr.js"
   },
