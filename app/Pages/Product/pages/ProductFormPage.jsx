@@ -45,7 +45,7 @@ class ProductFormPage extends PureComponent {
     } = this.props;
 
     if (Object.keys(values).length >= 4) {
-      fetch(`${process.env.API_BASE_URL}products`, {
+      fetch(`${process.env.API_BASE_URL}/products`, {
         method: 'POST',
         body: JSON.stringify(values),
         headers: {

@@ -31,7 +31,7 @@ class ProductCategoryFormPage extends PureComponent {
 
     console.log(values);
     if (Object.keys(values).length >= 2) {
-      fetch(`${process.env.API_BASE_URL}product_categories`, {
+      fetch(`${process.env.API_BASE_URL}/product_categories`, {
         method: 'POST',
         body: JSON.stringify(values), 
         headers: {

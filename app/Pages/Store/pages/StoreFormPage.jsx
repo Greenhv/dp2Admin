@@ -37,7 +37,7 @@ phone_number: string,
 
 const onStoreSubmit = (values, dispatch) => {
   if (Object.keys(values).length >= 9) {
-    fetch(`${process.env.API_BASE_URL}stores`, {
+    fetch(`${process.env.API_BASE_URL}/stores`, {
       method: "POST",
       body: JSON.stringify(values),
       headers: {

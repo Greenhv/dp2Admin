@@ -26,7 +26,7 @@ let StoreCategoryForm = props => {
 
 const onStoreCategorySubmit = (values, dispatch) => {
   if (Object.keys(values).length >= 4) {
-    fetch(`${process.env.API_BASE_URL}store-categories`, {
+    fetch(`${process.env.API_BASE_URL}/store-categories`, {
       method: "POST",
       body: JSON.stringify(values),
       headers: {

@@ -97,7 +97,7 @@ export const setError = (error) => ({
 });
 
 // Side effects
-export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}store_categories`)
+export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}/store_categories`)
   .then(fetchStatusHandler)
   .then(response => response.json())
   .then(data => dispatch(addStoreCategories(data.store_categories)))
