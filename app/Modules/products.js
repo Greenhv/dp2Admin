@@ -32,7 +32,7 @@ export default (state = initialState, action = {}) => {
     case ADD_PRODUCTS:
       return {
         ...state,
-        products: [...state.products, ...action.products],
+        products: [...action.products],
         isLoading: false,
         error: '',
       };

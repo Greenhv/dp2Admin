@@ -18,7 +18,7 @@ import 'Components/Common/notify';
 import { productType } from '../types';
 
 class DataTableWithProducts extends PureComponent {
-  componentDidMount() {
+  componentWillMount() {
     const { getProducts, products } = this.props;
 
     if (products.length < 1) {

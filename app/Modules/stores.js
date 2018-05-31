@@ -32,7 +32,7 @@ export default (state = initialState, action = {}) => {
     case ADD_STORES:
       return {
         ...state,
-        stores: [...state.stores, ...action.stores],
+        stores: [...action.stores],
         isLoading: false,
         error: '',
       };
