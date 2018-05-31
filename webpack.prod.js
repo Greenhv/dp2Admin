@@ -4,7 +4,6 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var commonConfig = require('./webpack.common.js');
-// var Dotenv = require('dotenv-webpack');
 var path = require('path');
 
 module.exports = webpackMerge(commonConfig, {
@@ -27,6 +26,11 @@ module.exports = webpackMerge(commonConfig, {
                 zindex: false // no change z-index
             },
             canPrint: true
+        }),
+        new webpack.DefinePlugin({
+            NODE_ENV: process.env.NODE_ENV || JSON.stringify('production'),
+            API_BASE_URL: process.env.API_BASE_URL || JSON.stringify('https://200.16.7.150:8083/api/v1'),
+            WP_BASE_HREF: process.env.WP_BASE_HREF || JSON.stringify('/dist')
         }),
     ],
 });
