@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var path = require('path');
-// var Dotenv = require('dotenv-webpack');
+var Dotenv = require('dotenv-webpack');
 var pkgBower = require('./package.json');
 
 var devMode = process.env.NODE_ENV === 'development';
@@ -155,6 +155,6 @@ module.exports = {
         }),
         // https://github.com/moment/moment/issues/2979#issuecomment-189899510
         new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/),
-        // new Dotenv(), // Disabled because Heroku doesn't let me use it
+        new Dotenv(), // Disabled because Heroku doesn't let me use it
     ]
 };

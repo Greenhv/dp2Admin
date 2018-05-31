@@ -32,7 +32,7 @@ export default (state = initialState, action = {}) => {
     case ADD_PRODUCT_CATEGORIES:
       return {
         ...state,
-        productCategories: [...state.productCategories, ...action.productCategories],
+        productCategories: [...action.productCategories],
         isLoading: false,
         error: '',
       };
