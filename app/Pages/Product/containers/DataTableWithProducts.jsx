@@ -20,16 +20,10 @@ import { productType } from '../types';
 class DataTableWithProducts extends PureComponent {
   constructor(props) {
     super(props);
+    const { getProducts } = props;
 
     console.log('constructor!');
-  }
-
-  componentWillMount() {
-    const { getProducts, products } = this.props;
-
-    if (products.length < 1) {
-      getProducts();
-    }
+    getProducts();
   }
 
   openImgModal = () => {

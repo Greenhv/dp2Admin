@@ -1,5 +1,5 @@
 import React from 'react';
-import { number, element } from 'prop-types';
+import { number, node } from 'prop-types';
 import styled from 'styled-components';
 
 const EmptyMsg = styled.td`
@@ -17,7 +17,7 @@ const DataTableEmptyMsg = ({ colSpan, children }) => (
 
 DataTableEmptyMsg.propTypes = {
   colSpan: number,
-  children: element,
+  children: node,
 }
 
 export default DataTableEmptyMsg;

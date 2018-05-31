@@ -175,15 +175,15 @@ class Sidebar extends React.Component {
                       </div>
                       {/* Name and Job */}
                       <div className="user-block-info">
-                        <span className="user-block-name">Hello, Mike</span>
-                        <span className="user-block-role">Designer</span>
+                        <span className="user-block-name">Hola, Gustavo</span>
+                        <span className="user-block-role">Administrador</span>
                       </div>
                     </div>
                   </div>
                 </Collapse>
               </li>
-              {pages.map(page => (
-                <li className={this.routeActive(page.path)}>
+              {pages.map((page, id) => (
+                <li key={id} className={this.routeActive(page.path) ? 'active' : ''}>
                   <Link to={page.path}>{page.label}</Link>
                 </li>
               ))}

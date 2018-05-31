@@ -72,7 +72,7 @@ DataTable.propTypes = {
     key: PropTypes.string,
     title: PropTypes.string,
   })).isRequired,
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.node,
 }
 
 export default DataTable;
