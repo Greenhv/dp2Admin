@@ -21,6 +21,7 @@ const initialState = {
 // Reducer
 
 const defaultUrl = process.env.API_BASE_URL;
+console.log(process.env);
 
 export default (state = initialState, action = {}) => {
   switch(action.type) {
