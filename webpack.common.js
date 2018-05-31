@@ -7,7 +7,6 @@ var path = require('path');
 var pkgBower = require('./package.json');
 
 var devMode = process.env.NODE_ENV === 'development';
-var baseHref = devMode ? '/' : process.env.WP_BASE_HREF;
 
 console.log(process.env.NODE_ENV);
 module.exports = {
@@ -26,7 +25,7 @@ module.exports = {
             Modules: path.join(__dirname, 'app/Modules/'),
             Utils: path.join(__dirname, 'app/Utils/'),
             Shared: path.join(__dirname, 'app/Shared/'),
-            node_modules: path.join(__dirname, '/node_modules'),
+            // node_modules: path.join(__dirname, '/node_modules'),
         }
     },
 
