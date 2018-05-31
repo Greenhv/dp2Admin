@@ -23,6 +23,7 @@ module.exports = {
             moment$: 'moment/moment.js',
             d3$: 'd3/d3.min.js',
             Components: path.join(__dirname, 'app/Components/'),
+            Pages: path.join(__dirname, 'app/Pages/'),
             Modules: path.join(__dirname, 'app/Modules/'),
             Utils: path.join(__dirname, 'app/Utils/'),
             Shared: path.join(__dirname, 'app/Shared/')
@@ -31,69 +32,68 @@ module.exports = {
 
     module: {
         rules: [{
-                test: /jquery\.flot\.resize\.js$/,
-                use: 'imports-loader?this=>window'
-            }, {
-                test: /\.js/,
-                use: [
-                    // 'source-map-loader',
-                    'imports-loader?define=>false',
-                ],
-                enforce: 'pre',
-            }, {
-                test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                }
-            }, {
-                test: /\.css$/,
-                exclude: path.join(process.cwd(), '/app'),
-                use: [
-                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1,
-                            minimize: {
-                                presets: 'default',
-                            },
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: (loader) => [
-                                require('autoprefixer'),
-                            ],
+            test: /jquery\.flot\.resize\.js$/,
+            use: 'imports-loader?this=>window'
+        }, {
+            test: /\.js/,
+            use: [
+                // 'source-map-loader',
+                'imports-loader?define=>false',
+            ],
+            enforce: 'pre',
+        }, {
+            test: /\.jsx?$/,
+            exclude: /(node_modules|bower_components)/,
+            use: {
+                loader: 'babel-loader',
+            }
+        }, {
+            test: /\.css$/,
+            exclude: path.join(process.cwd(), '/app'),
+            use: [
+                devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+                {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1,
+                        minimize: {
+                            presets: 'default',
                         },
-                    },
-                ]
-            }, {
-                test: /\.css$/,
-                include: path.join(process.cwd(), '/app'),
-                use: 'raw-loader'
-            }, {
-                test: /\.woff|\.woff2|\.svg|.eot|\.ttf/,
-                use: 'url-loader?prefix=font/&limit=10000'
-            }, {
-                test: /\.(png|jpg|gif)$/,
-                use: 'url-loader?limit=10000'
-            }, {
-                test: /\.scss$/,
-                use: [{
-                        loader: 'style-loader'
-                    }, {
-                        loader: 'css-loader'
-                    }, {
-                        loader: 'sass-loader',
-                        options: {
-                            outputStyle: 'expanded'
-                        }
                     }
-                ]
+                },
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        plugins: (loader) => [
+                            require('autoprefixer'),
+                        ],
+                    },
+                },
+            ]
+        }, {
+            test: /\.css$/,
+            include: path.join(process.cwd(), '/app'),
+            use: 'raw-loader'
+        }, {
+            test: /\.woff|\.woff2|\.svg|.eot|\.ttf/,
+            use: 'url-loader?prefix=font/&limit=10000'
+        }, {
+            test: /\.(png|jpg|gif)$/,
+            use: 'url-loader?limit=10000'
+        }, {
+            test: /\.scss$/,
+            use: [{
+                loader: 'style-loader'
+            }, {
+                loader: 'css-loader'
+            }, {
+                loader: 'sass-loader',
+                options: {
+                    outputStyle: 'expanded'
+                }
             }]
-            // , noParse: [/\.min\.js/]
+        }]
+        // , noParse: [/\.min\.js/]
     },
 
     // resolveLoader: {
