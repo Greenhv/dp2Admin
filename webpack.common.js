@@ -9,6 +9,7 @@ var pkgBower = require('./package.json');
 var devMode = process.env.NODE_ENV === 'development';
 var baseHref = devMode ? '/' : process.env.WP_BASE_HREF;
 
+console.log(process.env.NODE_ENV);
 module.exports = {
     entry: {
         app: './app/App.jsx',
