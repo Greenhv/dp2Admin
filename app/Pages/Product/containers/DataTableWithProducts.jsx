@@ -18,6 +18,12 @@ import 'Components/Common/notify';
 import { productType } from '../types';
 
 class DataTableWithProducts extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    console.log('constructor!');
+  }
+
   componentWillMount() {
     const { getProducts, products } = this.props;
 
