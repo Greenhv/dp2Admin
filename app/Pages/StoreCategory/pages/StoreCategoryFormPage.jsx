@@ -16,30 +16,7 @@ import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
-import { addStoreCategories } from "Modules/storeCategories";
-
-let StoreCategoryForm = props => {
-  const { handleSubmit } = props;
-  return;
-  <form onSubmit={handleSubmit} />;
-};
-
-const onStoreCategorySubmit = (values, dispatch) => {
-  if (Object.keys(values).length >= 4) {
-    fetch(`${process.env.API_BASE_URL}/store-categories`, {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: {
-        "content-type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        dispatch(addStoreCategories(data.storeCategory));
-        window.history.back();
-      });
-  }
-};
+import { createStoreCategory } from "Modules/storeCategories";
 
 class StoreCategoryFormPage extends PureComponent {
   componentDidMount() {
@@ -49,7 +26,17 @@ class StoreCategoryFormPage extends PureComponent {
 
   goToStoreCategoriesPage = () => {
     const { history } = this.props;
-    history.push("/categoria-de-tiendas");
+    history.push("/categoria-de-tiendas");;
+  };
+
+  onStoreCategorySubmit = (values, dispatch) => {
+    const {
+      history,
+    } = this.props;
+
+    if (Object.keys(values).length >= 4) {
+      dispatch(createStoreCategory(history, values));
+    }
   };
 
   render() {
@@ -59,7 +46,7 @@ class StoreCategoryFormPage extends PureComponent {
       <Row>
         <Col lg={12}>
         <Panel>
-          <form onSubmit ={handleSubmit} noValidate ref={(node) => {this.form = node}}>
+          <form onSubmit ={handleSubmit(this.onStoreCategorySubmit)} noValidate ref={(node) => {this.form = node}}>
           <Panel.Body>
             <FormGroup>
               <ControlLabel>Nombre de la categoría</ControlLabel>
@@ -104,7 +91,6 @@ StoreCategoryFormPage.propTypes = {
 }
 export default reduxForm({
   form: 'storeCategoryForm',
-  onSubmit: onStoreCategorySubmit,
 })(StoreCategoryFormPage)
 
 

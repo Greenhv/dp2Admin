@@ -16,7 +16,7 @@ import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
-import { addProduct } from "Modules/products";
+import { createProduct } from "Modules/products";
 
 
 let productForm = props => {
@@ -45,17 +45,7 @@ class ProductFormPage extends PureComponent {
     } = this.props;
 
     if (Object.keys(values).length >= 4) {
-      fetch(`${process.env.API_BASE_URL}/products`, {
-        method: 'POST',
-        body: JSON.stringify(values),
-        headers: {
-          'content-type': 'application/json',
-        },
-      }).then(response => response.json())
-      .then((data) => {
-        dispatch(addProduct(data.product));
-        history.push('/productos');
-      });
+      dispatch(createProduct(history, values));
     }
   }
 

@@ -21,6 +21,11 @@ const initialState = {
 // Reducer
 
 const defaultUrl = process.env.API_BASE_URL;
+const auth = process.env.DEFAULT_ACCSS_TOKEN;
+const customHeaders = {
+  'Authorization': auth,
+  'content-type': 'application/json',
+};
 
 export default (state = initialState, action = {}) => {
   switch(action.type) {
@@ -98,8 +103,23 @@ export const setError = (error) => ({
 
 // Side effects
 
-export const getProductCategories = () => dispatch => fetch(`${defaultUrl}/product_categories`)
-  .then(fetchStatusHandler)
+export const createProductCategory = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/product_categories`, {
+  method: 'POST',
+  body: JSON.stringify(values), 
+  headers: {
+    ...customHeaders
+  },
+}).then(response => response.json())
+  .then((data) => {
+    dispatch(addProductCategory(data.product_category));
+    history.push('/categoria-de-productos');
+  });
+
+export const getProductCategories = () => dispatch => fetch(`${defaultUrl}/product_categories`, {
+  headers: {
+    ...customHeaders
+  },
+}).then(fetchStatusHandler)
   .then(response => response.json())
   .then(data => dispatch(addProductCategories(data.product_category)))
   .catch(error => { dispatch(setError('Error al cargar las categorias, recarga la pagina porfavor')); });

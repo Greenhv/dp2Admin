@@ -7,7 +7,7 @@ import { reduxForm, Field } from 'redux-form';
 
 import Select from 'Shared/Select';
 import CustomInput from 'Shared/Form/CustomInput';
-import { addProductCategory } from 'Modules/productCategories';
+import { createProductCategory } from 'Modules/productCategories';
 
 class ProductCategoryFormPage extends PureComponent {
   componentDidMount() {
@@ -31,17 +31,7 @@ class ProductCategoryFormPage extends PureComponent {
 
     console.log(values);
     if (Object.keys(values).length >= 2) {
-      fetch(`${process.env.API_BASE_URL}/product_categories`, {
-        method: 'POST',
-        body: JSON.stringify(values), 
-        headers: {
-          'content-type': 'application/json',
-        },
-      }).then(response => response.json())
-      .then((data) => {
-        dispatch(addProductCategory(data.product_category));
-        history.push('/categoria-de-productos');
-      });
+      dispatch(createProductCategory(history, values));
     }
   }
 

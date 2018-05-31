@@ -16,41 +16,7 @@ import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
-import { addStores } from "Modules/stores";
-
-let StoreForm = props => {
-  const { handleSubmit } = props;
-  return;
-  <form onSubmit={handleSubmit} />;
-};
-/*
-id: number,
-adminId: number,
-name: string,
-logo: string,
-banner: string,
-description: string,
-webpage: string,
-contact_name: string,
-phone_number: string,
-*/
-
-const onStoreSubmit = (values, dispatch) => {
-  if (Object.keys(values).length >= 9) {
-    fetch(`${process.env.API_BASE_URL}/stores`, {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: {
-        "content-type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        dispatch(addStores(data.storeCategory));
-        window.history.back();
-      });
-  }
-};
+import { createStore } from "Modules/stores";
 
 class StoreFormPage extends PureComponent {
   componentDidMount() {
@@ -59,7 +25,17 @@ class StoreFormPage extends PureComponent {
   }
   goToStores = () => {
     const { history } = this.props;
-    history.push("/tiendas");
+    history.push('/tiendas');
+  };
+
+  onStoreSubmit = (values, dispatch) => {
+    const {
+      history
+    } = this.props;
+
+    if (Object.keys(values).length >= 9) {
+      dispatch(createStore(history, values))
+    }
   };
 
   render() {
@@ -70,7 +46,7 @@ class StoreFormPage extends PureComponent {
           <Col lg={12}>
             <Panel>
               <form
-                onSubmit={handleSubmit}
+                onSubmit={handleSubmit(this.onStoreSubmit)}
                 noValidate
                 ref={node => {
                   this.form = node;
@@ -175,5 +151,4 @@ StoreFormPage.propTypes = {
 
 export default reduxForm({
   form: "storeForm",
-  onSubmit: onStoreSubmit
 })(StoreFormPage);

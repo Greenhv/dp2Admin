@@ -21,6 +21,11 @@ const initialState = {
 // Reducer
 
 const defaultUrl = process.env.API_BASE_URL;
+const auth = process.env.DEFAULT_ACCSS_TOKEN;
+const customHeaders = {
+  'Authorization': auth,
+  'content-type': 'application/json',
+};
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
@@ -97,8 +102,24 @@ export const setError = (error) => ({
 });
 
 // Side effects
-export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}/store_categories`)
-  .then(fetchStatusHandler)
+
+export const createStoreCategory = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/store-categories`, {
+  method: "POST",
+  body: JSON.stringify(values),
+  headers: {
+    ...customHeaders
+  }
+}).then(response => response.json())
+  .then(data => {
+    dispatch(addStoreCategory(data.storeCategory));
+    history.push('/categoria-de-tiendas');
+  });
+
+export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}/store_categories`, {
+  headers: {
+    ...customHeaders
+  },
+}).then(fetchStatusHandler)
   .then(response => response.json())
   .then(data => dispatch(addStoreCategories(data.store_categories)))
   .catch(error => {

@@ -21,6 +21,11 @@ const initialState = {
 // Reducer
 
 const defaultUrl = process.env.API_BASE_URL;
+const auth = process.env.DEFAULT_ACCSS_TOKEN;
+const customHeaders = {
+  'Authorization': auth,
+  'content-type': 'application/json',
+};
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
@@ -98,8 +103,23 @@ export const setError = (error) => ({
 
 // Side effects
 
-export const getStores = () => dispatch => fetch(`${defaultUrl}/stores`)
-  .then(fetchStatusHandler)
+export const createStore = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/stores`, {
+  method: "POST",
+  body: JSON.stringify(values),
+  headers: {
+    ...customHeaders
+  },
+}).then(response => response.json())
+  .then(data => {
+    dispatch(addStore(data.store));
+    history.push('/tiendas')
+  });
+
+export const getStores = () => dispatch => fetch(`${defaultUrl}/stores`, {
+  headers: {
+    ...customHeaders
+  },
+}).then(fetchStatusHandler)
   .then(response => response.json())
   .then(data => dispatch(addStores(data.stores)))
   .catch(error => {
