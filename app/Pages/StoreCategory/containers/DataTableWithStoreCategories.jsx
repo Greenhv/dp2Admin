@@ -32,7 +32,7 @@ class DataTableWithStoreCategories extends PureComponent {
   renderElements = () => {
     const {
       storeCategories,
-      selectStoreCategories,
+      selectStoreCategory,
       deleteStoreCategory
     } = this.props;
 
@@ -127,10 +127,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchStoreCategories());
     dispatch(requestStoreCategories());
   },
-  selectStoreCategories: category => () => {
+  selectStoreCategory: category => () => {
     dispatch(selectStoreCategories(category));
   },
-  deleteStoreCategories: category => () => {
+  deleteStoreCategory: category => () => {
     dispatch(deleteStoreCategories(category));
   }
 });

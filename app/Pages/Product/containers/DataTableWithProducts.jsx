@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Table, Button } from 'react-bootstrap';
 
 import {
   fetchProducts,
@@ -75,25 +75,29 @@ class DataTableWithProducts extends PureComponent {
       $.notify(productsError, "danger");
     }
 
+    const headers = ["Nombre", "Precio de Lista", "Descuento", "Precio Neto", "Marca", "Imagen"];
+    const data = this.parseData();
+    const options = {
+      selectableRows: false,
+      onRowsDelete: deleteProduct,
+    };
+
     return (
       <div>
         {isLoadingProducts ? (
           <Loader />
         ) : (
-          <DataTables
-            headers={[
-              { key: "name", title: "Nombre" },
-              { key: "price", title: "Precio de Lista" },
-              { key: "discount", title: "Descuento" },
-              { key: "realPrice", title: "Precio Neto" },
-              { key: "brand", title: "Marca" },
-              { key: "img", title: "Imagen" }
-            ]}
-          >
-            { products.length > 0 ? this.renderElements() : (
-              <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
-            ) }
-          </DataTables>
+          products.length > 0 ? (
+            <DataTables
+              headers={}
+            />
+          ) : (
+            <Table responsive striped hover>
+              <tbody>
+                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+              </tbody>
+            </Table>
+          )
         )}
       </div>
     );

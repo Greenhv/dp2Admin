@@ -30,6 +30,8 @@
     "jqueryui-touch-punch": "furf/jquery-ui-touch-punch"
   },
   "dependencies": {
+    "@material-ui/core": "^1.1.0",
+    "@material-ui/icons": "^1.1.0",
     "animate.css": "3.5.2",
     "animo": "github:thrivingkings/animo.js",
     "babel-core": "^6.26.3",
@@ -110,6 +112,7 @@
     "moment": "2.19.3",
     "moment-timezone": "^0.4.0",
     "morris.js.so": "0.5.1",
+    "mui-datatables": "^2.0.0-beta-7",
     "napa": "3.0.0",
     "node-sass": "4.7.2",
     "optimize-css-assets-webpack-plugin": "4.0.1",
