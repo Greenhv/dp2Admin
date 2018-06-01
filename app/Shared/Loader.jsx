@@ -5,6 +5,7 @@ const StyledLoader = styled.div`
   height: 50px;
   margin: 0 auto;
   width: 50px;
+  transform: translateY(25px);
 `;
 
 const Loader = () => (

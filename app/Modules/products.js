@@ -21,6 +21,11 @@ const initialState = {
 // Reducer
 
 const defaultUrl = process.env.API_BASE_URL;
+const auth = process.env.DEFAULT_ACCSS_TOKEN;
+const customHeaders = {
+  'Authorization': auth,
+  'content-type': 'application/json',
+};
 
 export default (state = initialState, action = {}) => {
   switch(action.type) {
@@ -32,7 +37,7 @@ export default (state = initialState, action = {}) => {
     case ADD_PRODUCTS:
       return {
         ...state,
-        products: [...state.products, ...action.products],
+        products: [...action.products],
         isLoading: false,
         error: '',
       };
@@ -97,7 +102,23 @@ export const setError = (error) => ({
 
 // Side effects
 
-export const getProducts = () => dispatch => fetch(`${defaultUrl}products?store_id=2`)
+export const createProduct = (history, values) => dispatch => fetch(`${defaultUrl}/products`, {
+  method: 'POST',
+  body: JSON.stringify(values),
+  headers: {
+    ...customHeaders
+  },
+}).then(response => response.json())
+.then((data) => {
+  dispatch(addProduct(data.product));
+  history.push('/productos');
+});
+
+export const getProducts = () => dispatch => fetch(`${defaultUrl}/products`, {
+  headers: {
+    ...customHeaders
+  },
+})
   .then(fetchStatusHandler)
   .then(response => response.json())
   .then(data => dispatch(addProducts(data.products)))

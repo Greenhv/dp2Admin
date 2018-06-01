@@ -4,7 +4,6 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var commonConfig = require('./webpack.common.js');
-var Dotenv = require('dotenv-webpack');
 var path = require('path');
 
 module.exports = webpackMerge(commonConfig, {
@@ -18,10 +17,6 @@ module.exports = webpackMerge(commonConfig, {
     },
 
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: '[name].[hash].css',
-            chunkFilename: '[id].[hash].css',
-        }),
         new OptimizeCssAssetsPlugin({
             cssProcessor: require('cssnano'),
             cssProcessorOptions: {
@@ -31,6 +26,14 @@ module.exports = webpackMerge(commonConfig, {
                 zindex: false // no change z-index
             },
             canPrint: true
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production'),
+                API_BASE_URL: JSON.stringify(process.env.API_BASE_URL || 'https://200.16.7.150:8083/api/v1'),
+                WP_BASE_HREF: JSON.stringify(process.env.WP_BASE_HREF || '/dist'),
+                DEFAULT_ACCSS_TOKEN: JSON.stringify(process.env.WP_BASE_HREF || 'uOANAxg2XiQ_yoOQQBxk4kiI58b8BsYu_iFm8mlSp8w')
+            }
         }),
     ],
 });

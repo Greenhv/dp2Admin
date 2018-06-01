@@ -30,10 +30,10 @@ import '../node_modules/jquery-slimscroll/jquery.slimscroll.min.js';
 // Google Maps
 import '../node_modules/jquery.gmap/jquery.gmap.min.js';
 // Vector Maps
-import '../node_modules/ika.jvectormap/jquery-jvectormap-1.2.2.min.js';
-import '../node_modules/ika.jvectormap/jquery-jvectormap-world-mill-en.js';
-import '../node_modules/ika.jvectormap/jquery-jvectormap-us-mill-en.js';
-import '../node_modules/ika.jvectormap/jquery-jvectormap-1.2.2.css';
+// import '../node_modules/ika.jvectormap/jquery-jvectormap-1.2.2.min.js';
+// import '../node_modules/ika.jvectormap/jquery-jvectormap-world-mill-en.js';
+// import '../node_modules/ika.jvectormap/jquery-jvectormap-us-mill-en.js';
+// import '../node_modules/ika.jvectormap/jquery-jvectormap-1.2.2.css';
 // Datatables
 $.fn.dataTable = require('datatables.net-bs')(window, $);
 require('datatables.net-buttons')(window, $);
@@ -44,7 +44,7 @@ require('datatables.net-buttons/js/buttons.colVis.js')(window, $); // Column vis
 require('datatables.net-buttons/js/buttons.html5.js')(window, $); // HTML 5 file export
 require('datatables.net-buttons/js/buttons.flash.js')(window, $); // Flash file export
 require('datatables.net-buttons/js/buttons.print.js')(window, $); // Print view button
-import '../node_modules/dataTables.fontAwesome/dataTables.fontAwesome.css';
+// import '../node_modules/dataTables.fontAwesome/dataTables.fontAwesome.css';
 // JQ Grid
 import '../node_modules/jqGrid/css/ui.jqgrid.css';
 import '../node_modules/jqGrid/js/jquery.jqGrid.js';
@@ -100,8 +100,8 @@ window.swal = require('../node_modules/sweetalert/lib/sweetalert.js');
 import '../node_modules/loaders.css/loaders.css';
 import '../node_modules/spinkit/css/spinkit.css';
 // Bootstrap Tour
-import '../node_modules/bootstrap-tour/build/css/bootstrap-tour-standalone.css';
-import '../node_modules/bootstrap-tour/build/js/bootstrap-tour-standalone.js';
+//import '../node_modules/bootstrap-tour/build/css/bootstrap-tour-standalone.css';
+//import '../node_modules/bootstrap-tour/build/js/bootstrap-tour-standalone.js';
 // Sortable
 window.sortable = require('html5sortable');
 // Nestable

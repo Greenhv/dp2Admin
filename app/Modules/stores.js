@@ -2,7 +2,8 @@ import fetchStatusHandler from 'Utils/fetchStatusHandler';
 
 // Actions
 const FETCH = 'admin/stores/FETCH';
-const ADD = 'admin/stores/ADD';
+const ADD_STORES = 'admin/stores/ADD_STORES';
+const ADD_STORE = 'admin/stores/ADD_STORE';
 const SELECT = 'admin/stores/SELECT';
 const EDIT = 'admin/stores/EDIT';
 const DELETE = 'admin/stores/DELETE';
@@ -20,25 +21,37 @@ const initialState = {
 // Reducer
 
 const defaultUrl = process.env.API_BASE_URL;
+const auth = process.env.DEFAULT_ACCSS_TOKEN;
+const customHeaders = {
+  'Authorization': auth,
+  'content-type': 'application/json',
+};
 
 export default (state = initialState, action = {}) => {
-  switch(action.type) {
+  switch (action.type) {
     case FETCH:
       return {
         ...state,
         isLoading: true,
       };
-    case ADD:
+    case ADD_STORES:
       return {
         ...state,
         stores: [...action.stores],
         isLoading: false,
         error: '',
       };
+    case ADD_STORE:
+      return {
+        ...state,
+        stores: [...state.stores, action.store],
+        isLoading: false,
+        error: '',
+      };
     case DELETE:
       return {
         ...state,
-        stores: [...state.stores]
+        stores: [...state.stores, ...state.stores]
           .filter(store => store.id !== action.storeId),
       };
     case SELECT:
@@ -60,9 +73,14 @@ export default (state = initialState, action = {}) => {
 // Action Creators
 
 export const addStores = stores => ({
-  type: ADD,
+  type: ADD_STORES,
   stores,
 });
+
+export const addStore = store => ({
+  type: ADD_STORE,
+  store,
+})
 
 export const selectStore = storeId => ({
   type: SELECT,
@@ -85,8 +103,26 @@ export const setError = (error) => ({
 
 // Side effects
 
-export const getStores = () => dispatch => fetch(`${defaultUrl}/stores`)
-  .then(fetchStatusHandler)
-  .then(response => response.data)
-  .then(data => dispatch(addStores(data)))
-  .catch(error => { console.log('Error al cargar las tiendas, recarga la pagina porfavor'); });
+export const createStore = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/stores`, {
+  method: "POST",
+  body: JSON.stringify(values),
+  headers: {
+    ...customHeaders
+  },
+}).then(response => response.json())
+  .then(data => {
+    dispatch(addStore(data.store));
+    history.push('/tiendas')
+  });
+
+export const getStores = () => dispatch => fetch(`${defaultUrl}/stores`, {
+  headers: {
+    ...customHeaders
+  },
+}).then(fetchStatusHandler)
+  .then(response => response.json())
+  .then(data => dispatch(addStores(data.stores)))
+  .catch(error => {
+    console.log(error);
+    console.log('Error al cargar las tiendas, recarga la pagina porfavor');
+  });

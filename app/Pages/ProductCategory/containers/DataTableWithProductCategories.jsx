@@ -12,16 +12,46 @@ import {
 import { getNumber } from 'Utils/randomizer';
 import DataTables from 'Shared/DataTable.jsx';
 import Loader from 'Shared/Loader.jsx';
+import DataTableEmptyMsg from 'Shared/DataTableEmptyMsg.jsx';
 import 'Components/Common/notify';
 import { productCategoryType } from '../types';
 
 class DataTableWithProductCategories extends PureComponent {
-  componentDidMount() {
+  componentWillMount() {
     const {
       getProductCategories,
+      productCategories,
     } = this.props;
 
-    getProductCategories();
+    if (productCategories < 1) {
+      getProductCategories();
+    }
+  }
+
+  renderProductCategories = () => {
+    const {
+      productCategories,
+      selectProductCategories,
+      deleteProductCategories,
+    } = this.props;
+
+    return productCategories.map(productCategory => (
+      <tr key={getNumber()}>
+        <td>{ productCategory.name }</td>
+        <td>{ productCategory.description }</td>
+        <td>
+          <Button onClick={selectProductCategories && selectProductCategories(productCategory.id)}>
+            <em className="fa fa-eye"></em>
+          </Button>
+          <Button onClick={selectProductCategories && selectProductCategories(productCategory.id)}>
+            <em className="fa fa-pencil"></em>
+          </Button>
+          <Button onClick={deleteProductCategories && deleteProductCategories(productCategory.id)}>
+            <em className="fa fa-remove"></em>
+          </Button>
+        </td>
+      </tr>
+    ));
   }
 
   render() {
@@ -29,8 +59,6 @@ class DataTableWithProductCategories extends PureComponent {
       productCategories,
       isLoadingCategories,
       categoriesError,
-      selectProductCategories,
-      deleteProductCategories,
     } = this.props;
 
     if (categoriesError) {
@@ -48,23 +76,9 @@ class DataTableWithProductCategories extends PureComponent {
               { key: 'description', title: 'Descripcion' },
             ]}
           >
-            { productCategories.map(element => (
-              <tr key={getNumber()}>
-                <td>{ element.name }</td>
-                <td>{ element.description }</td>
-                <td>
-                  <Button onClick={selectProductCategories && selectProductCategories(element.id)}>
-                    <em className="fa fa-eye"></em>
-                  </Button>
-                  <Button onClick={selectProductCategories && selectProductCategories(element.id)}>
-                    <em className="fa fa-pencil"></em>
-                  </Button>
-                  <Button onClick={deleteProductCategories && deleteProductCategories(element.id)}>
-                    <em className="fa fa-remove"></em>
-                  </Button>
-                </td>
-              </tr>
-            )) }
+            { productCategories.length > 0 ? this.renderProductCategories() : (
+              <DataTableEmptyMsg colSpan={3}>No hay productos para mostrar</DataTableEmptyMsg>
+            ) }
           </DataTables>
         ) }
       </div>

@@ -3,9 +3,9 @@ import { BrowserRouter, withRouter, Switch, Route, Redirect, Miss } from 'react-
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { hot } from 'react-hot-loader';
 
-import Base from './components/Layout/Base';
-import BasePage from './components/Layout/BasePage';
-import BaseHorizontal from './components/Layout/BaseHorizontal';
+import Base from './Components/Layout/Base';
+import BasePage from './Components/Layout/BasePage';
+import BaseHorizontal from './Components/Layout/BaseHorizontal';
 // import DashboardV1 from './components/Dashboard/DashboardV1';
 // import FormStandard from './components/Forms/FormStandard';
 // import FormValidation from './components/Forms/FormValidation';
