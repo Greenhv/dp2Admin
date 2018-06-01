@@ -1,10 +1,53 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
 import { Router, Route, Link, History } from 'react-router-dom';
+import { setCookie } from 'Utils/cookies';
 
 class Login extends React.Component {
+    state = {
+        loading: false,
+    }
+
+    submitLogin = (e) => {
+        e.preventDefault();
+
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+        const values = {
+            email,
+            password,
+        };
+
+        if ($(this.form).parsley().isValid()) {
+            this.setState({
+                loading: true,
+            });
+
+            fetch(`${process.env.API_BASE_URL}/sessions`, {
+                method: 'POST',
+                body: JSON.stringify(values),
+            }).then(response => response.json())
+            .then((data) => {
+                setCookie('authToken', data.session.access_token);
+                this.props.history.push('/');
+            })
+            .catch((error) => {
+                console.log(error);
+                swal({
+                    type: 'error',
+                    title: 'Ocurrio un error en el Login',
+                    text: 'Vuelve a intentarlo en unos segundos',
+                    timer: 2500,
+                });
+            })
+        }
+    }
 
     render() {
+        const {
+            loading,
+        } = this.state;
+
         return (
             <div className="block-center mt-xl wd-xl">
                 { /* START panel */ }
@@ -15,30 +58,31 @@ class Login extends React.Component {
                         </a>
                     </div>
                     <div className="panel-body">
-                        <p className="text-center pv">SIGN IN TO CONTINUE.</p>
-                        <form role="form" data-parsley-validate="" noValidate className="mb-lg">
+                        <p className="text-center pv">Inicie sesion para continuar.</p>
+                        <form
+                          role="form"
+                          data-parsley-validate=""
+                          noValidate className="mb-lg"
+                          ref={node => { this.form = node; }}
+                          onSubmit={this.submitLogin}
+                        >
                             <div className="form-group has-feedback">
-                                <input id="exampleInputEmail1" type="email" placeholder="Enter email" autoComplete="off" required="required" className="form-control" />
+                                <input name="email" type="email" placeholder="Ingrese su cuenta de email" autoComplete="off" required="required" className="form-control" />
                                 <span className="fa fa-envelope form-control-feedback text-muted"></span>
                             </div>
                             <div className="form-group has-feedback">
-                                <input id="exampleInputPassword1" type="password" placeholder="Password" required="required" className="form-control" />
+                                <input name="password" type="password" placeholder="Contraseña" required="required" className="form-control" />
                                 <span className="fa fa-lock form-control-feedback text-muted"></span>
                             </div>
                             <div className="clearfix">
-                                <div className="checkbox c-checkbox pull-left mt0">
-                                    <label>
-                                        <input type="checkbox" value="" name="remember" />
-                                        <em className="fa fa-check"></em>Remember Me</label>
-                                </div>
                                 <div className="pull-right">
-                                    <Link to="recover" className="text-muted">Forgot your password?</Link>
+                                    <Link to="recover" className="text-muted">Olvidaste tu contraseña?</Link>
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-block btn-primary mt-lg">Login</button>
+                            <button type="submit" className="btn btn-block btn-primary mt-lg" disabled={loading}>
+                                { loading ? 'Cargando...' : 'Ingresar' }
+                            </button>
                         </form>
-                        <p className="pt-lg text-center">Need to Signup?</p>
-                        <Link to="register" className="btn btn-block btn-default">Register Now</Link>
                     </div>
                 </div>
                 { /* END panel */ }
