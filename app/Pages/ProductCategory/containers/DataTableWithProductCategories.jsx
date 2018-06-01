@@ -17,7 +17,7 @@ import 'Components/Common/notify';
 import { productCategoryType } from '../types';
 
 class DataTableWithProductCategories extends PureComponent {
-  componentDidMount() {
+  componentWillMount() {
     const {
       getProductCategories,
       productCategories,

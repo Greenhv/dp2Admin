@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import ReactDOM from "react-dom";
-import { shape, func } from "prop-types";
+import { shape, func, arrayOf } from "prop-types";
 import {
   FormGroup,
   ControlLabel,
@@ -12,29 +12,34 @@ import {
   Label,
   Input
 } from "react-bootstrap";
+import { getStoreCategories as requestCategories } from "Modules/storeCategories";
+import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
 import { createStore } from "Modules/stores";
+import { storeCategoryType } from "Pages/StoreCategory/types";
 
 class StoreFormPage extends PureComponent {
-  componentDidMount() {
+  componentWillMount() {
+    const { getStoreCategories } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
+
+    getStoreCategories();
     $(element).parsley();
   }
+
   goToStores = () => {
     const { history } = this.props;
-    history.push('/tiendas');
+    history.push("/tiendas");
   };
 
   onStoreSubmit = (values, dispatch) => {
-    const {
-      history
-    } = this.props;
+    const { history } = this.props;
 
     if (Object.keys(values).length >= 9) {
-      dispatch(createStore(history, values))
+      dispatch(createStore(history, values));
     }
   };
 
@@ -72,10 +77,12 @@ class StoreFormPage extends PureComponent {
                       component={Select}
                       props={{
                         placeholder: "Administrador de la tienda",
-                        options: [
-                          {value: "1", label: "admin 1"},
-                          {value: "2", label: "admin 2"},
-                        ],
+                        options: this.props.storeCategories.map(
+                          storeCategory => ({
+                            value: storeCategory.id,
+                            label: storeCategory.name
+                          })
+                        ),
                         required: "required"
                       }}
                     />
@@ -145,10 +152,31 @@ class StoreFormPage extends PureComponent {
   }
 }
 
-StoreFormPage.propTypes = {
-  history: shape({}).isRequired
+StoreFormPage.defaultProps = {
+  storeCategories: []
 };
 
-export default reduxForm({
-  form: "storeForm",
-})(StoreFormPage);
+StoreFormPage.propTypes = {
+  history: shape({}).isRequired,
+  storeCategories: arrayOf(storeCategoryType),
+  getStoreCategories: func.isRequired
+};
+
+const mapStateToProps = ({ storeCategories: { storeCategories } }) => ({
+  storeCategories
+});
+
+const mapDispatchToProps = dispatch => ({
+  getStoreCategories: () => {
+    dispatch(requestCategories());
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  reduxForm({
+    form: "storeForm"
+  })(StoreFormPage)
+);
