@@ -23,6 +23,14 @@ class Login extends React.Component {
                 loading: true,
             });
 
+            swal({
+                title: 'Ingresando...',
+                text: 'Espere por favor',
+                onOpen: () => {
+                    swal.showLoading()
+                }
+            });
+
             fetch(`${process.env.API_BASE_URL}/sessions`, {
                 method: 'POST',
                 body: JSON.stringify(values),
@@ -30,6 +38,7 @@ class Login extends React.Component {
             .then((data) => {
                 setCookie('authToken', data.session.access_token);
                 this.props.history.push('/');
+                swal.close();
             })
             .catch((error) => {
                 console.log(error);
