@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import ReactDOM from "react-dom";
-import { shape, func } from "prop-types";
+import { shape, func, arrayOf } from "prop-types";
 import {
   FormGroup,
   ControlLabel,
@@ -12,42 +12,38 @@ import {
   Label,
   Input
 } from "react-bootstrap";
+import { getProductCategories as requestCategories } from "Modules/productCategories";
+import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
 import { createProduct } from "Modules/products";
-
-
-let productForm = props => {
-  const { handleSubmit } = props;
-  return;
-  <form onSubmit={handleSubmit} />;
-};
-
+import { productCategoryType } from "Pages/ProductCategory/types";
 
 class ProductFormPage extends PureComponent {
-  componentDidMount() {
+  componentWillMount() {
+    const { getProductCategories } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
 
+    console.log(getProductCategories)
+    getProductCategories();
     $(element).parsley();
   }
 
   goToProductsPage = () => {
     const { history } = this.props;
 
-    history.push('/productos');
+    history.push("/productos");
   };
 
   onProductSubmit = (values, dispatch) => {
-    const {
-      history
-    } = this.props;
+    const { history } = this.props;
 
     if (Object.keys(values).length >= 4) {
       dispatch(createProduct(history, values));
     }
-  }
+  };
 
   render() {
     const { history, handleSubmit } = this.props;
@@ -57,7 +53,13 @@ class ProductFormPage extends PureComponent {
         <Row>
           <Col lg={12}>
             <Panel>
-              <form onSubmit={handleSubmit(this.onProductSubmit)} noValidate ref={(node) => { this.form = node; }}>
+              <form
+                onSubmit={handleSubmit(this.onProductSubmit)}
+                noValidate
+                ref={node => {
+                  this.form = node;
+                }}
+              >
                 <Panel.Body>
                   <FormGroup>
                     <ControlLabel>Nombre del producto</ControlLabel>
@@ -106,10 +108,12 @@ class ProductFormPage extends PureComponent {
                       component={Select}
                       props={{
                         placeholder: "Seleccionar una categoria",
-                        options: [
-                          { value: "ct1", label: "Categoria 1" },
-                          { value: "ct2", label: "Categoria 2" }
-                        ],
+                        options: this.props.productCategories.map(
+                          productCategory => ({
+                            value: productCategory.id,
+                            label: productCategory.name
+                          })
+                        ),
                         required: "required"
                       }}
                     />
@@ -134,10 +138,31 @@ class ProductFormPage extends PureComponent {
   }
 }
 
-ProductFormPage.propTypes = {
-  history: shape({}).isRequired
+ProductFormPage.defaultProps = {
+  productCategories: []
 };
 
-export default reduxForm({
-  form: 'productForm',
-})(ProductFormPage);
+ProductFormPage.propTypes = {
+  history: shape({}).isRequired,
+  productCategories: arrayOf(productCategoryType),
+  getProductCategories: func.isRequired
+};
+
+const mapStateToProps = ({ productCategories: { productCategories }}) => ({
+  productCategories
+})
+
+const mapDispatchToProps = dispatch => ({
+  getProductCategories: () => {
+    dispatch(requestCategories())
+  }
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  reduxForm({
+    form: "productForm"
+  })(ProductFormPage)
+);
