@@ -14,7 +14,7 @@ const Root = ({ match, location }) => (
       <span>Categoria de tiendas</span>
       <div>
         { match.url === location.pathname && (
-          <Link to={`${match.url}/nuevo`}>
+          <Link to="/categoria-de-tiendas/nuevo">
             <Button> Nueva categoría</Button>
           </Link>
         )}
@@ -22,17 +22,17 @@ const Root = ({ match, location }) => (
     </h3>
     <Route
       exact
-      path={match.url}
+      path="/categoria-de-tiendas"
       component={ListPage}
     />
     <Route
       exact
-      path={`${match.url}/nuevo`}
+      path="/categoria-de-tiendas/nuevo"
       component={StoreCategoryFormPage}
     />
     <Route
       exact
-      path={`${match.url}/:id/editar`}
+      path="/categoria-de-tiendas/editar/:id"
       component={StoreCategoryFormPage}
     />
   </ContentWrapper>

@@ -5,7 +5,7 @@ import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
 
 import DataTableWithProducts from '../containers/DataTableWithProducts.jsx';
 
-const ListPage = ({ match }) => (
+const ListPage = () => (
   <Grid fluid>
     <Row>
       <Col lg={12}>

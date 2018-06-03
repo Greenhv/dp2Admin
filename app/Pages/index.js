@@ -14,14 +14,14 @@ const routes = [{
     label: 'Productos',
   },
   {
-    component: Store,
-    path: '/tiendas',
-    label: 'Tiendas',
-  },
-  {
     component: StoreCategory,
     path: '/categoria-de-tiendas',
     label: 'Categoria de Tiendas',
+  },
+  {
+    component: Store,
+    path: '/tiendas',
+    label: 'Tiendas',
   },
 ];
 

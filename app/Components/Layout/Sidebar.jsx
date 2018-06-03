@@ -183,7 +183,7 @@ class Sidebar extends React.Component {
                 </Collapse>
               </li>
               {pages.map((page, id) => (
-                <li key={id} className={this.routeActive(page.path) ? 'active' : ''}>
+                <li key={id} className={this.routeActive(page.path.replace('/', '')) ? 'active' : ''}>
                   <Link to={page.path}>{page.label}</Link>
                 </li>
               ))}

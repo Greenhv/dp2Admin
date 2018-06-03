@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 
 import {
   deleteStoreCategory,
@@ -9,97 +9,83 @@ import {
   selectStoreCategory,
   getStoreCategories as requestStoreCategories
 } from "Modules/storeCategories";
-import { getNumber } from "Utils/randomizer";
-import DataTables from "Shared/DataTable.jsx";
+import DataTables from "Shared/DataTable";
 import DataTableEmptyMsg from "Shared/DataTableEmptyMsg.jsx";
 import Loader from "Shared/Loader.jsx";
 import "Components/Common/notify";
 import { storeCategoryType } from "../types";
 
 class DataTableWithStoreCategories extends PureComponent {
-  componentDidMount() {
-    const { getStoreCategories, storeCategories } = this.props;
+  constructor(props) {
+    super(props);
 
-    if (storeCategories.length < 1) {
-      getStoreCategories();
-    }
+    const {
+      getStoreCategories
+    } = props;
+
+    getStoreCategories();
   }
+
 
   openImgModal = () => {
     console.log("Modal");
   };
 
-  renderElements = () => {
+  parseStoreCategories = () => {
     const {
       storeCategories,
-      selectStoreCategories,
-      deleteStoreCategory
     } = this.props;
 
-    return storeCategories.map(storeCategory => (
-      <tr key={getNumber()}>
-        <td>{storeCategory.name}</td>
-        <td>{storeCategory.description}</td>
-        <td>
-          <Button onClick={this.openImgModal}>
-            <em className="fa fa-image" />
-          </Button>
-          <Button
-            onClick={
-              selectStoreCategory && selectStoreCategory(storeCategory.id)
-            }
-          >
-            <em className="fa fa-eye" />
-          </Button>
-          <Button
-            onClick={
-              selectStoreCategory && selectStoreCategory(storeCategory.id)
-            }
-          >
-            <em className="fa fa-pencil" />
-          </Button>
-          <Button
-            onClick={
-              deleteStoreCategory && deleteStoreCategory(storeCategory.id)
-            }
-          >
-            <em className="fa fa-remove" />
-          </Button>
-        </td>
-      </tr>
-    ));
-  };
+    return storeCategories.map(storeCategory => [
+      storeCategory.name,
+      storeCategory.description,
+      '',
+    ]);
+  }
 
   render() {
     const {
       storeCategories,
       isLoadingStoreCategories,
-      storeCategoriesError
+      storeCategoriesError,
+      selectStoreCategory,
+      deleteStoreCategory,
     } = this.props;
 
     if (storeCategoriesError) {
       $.notify(storeCategoriesError, "danger");
     }
 
+    const headers = [
+      { name: 'Nombre' },
+      { name: 'Descripción' },
+    ];
+    const data = this.parseStoreCategories();
+    const options = {
+      selectableRows: false,
+    };
+
+    console.log(data);
     return (
       <div>
         {isLoadingStoreCategories ? (
           <Loader />
         ) : (
-          <DataTables
-            headers={[
-              { key: "name", title: "Nombre" },
-              { key: "description", title: "Descripcion" }
-            ]}
-          >
-            {storeCategories.length > 0 ? (
-              this.renderElements()
-            ) : (
-              <DataTableEmptyMsg colSpan={6}>
-                No hay categorias para mostrar
-              </DataTableEmptyMsg>
-            )}
-          </DataTables>
+          storeCategories.length > 0 ? (
+            <DataTables
+              headers={headers}
+              data={data}
+              options={options}
+              editAction={selectStoreCategory}
+              deleteAction={deleteStoreCategory}
+            />
+          ) : (
+            <Table responsive striped hover>
+              <tbody>
+                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+              </tbody>
+            </Table>
+          )
         )}
       </div>
     );
@@ -127,10 +113,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchStoreCategories());
     dispatch(requestStoreCategories());
   },
-  selectStoreCategories: category => () => {
+  selectStoreCategory: category => () => {
     dispatch(selectStoreCategories(category));
   },
-  deleteStoreCategories: category => () => {
+  deleteStoreCategory: category => () => {
     dispatch(deleteStoreCategories(category));
   }
 });
