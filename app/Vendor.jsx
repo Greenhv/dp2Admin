@@ -94,8 +94,8 @@ import '../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js';
 import '../node_modules/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js';
 import '../node_modules/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css';
 // Sweet Alert (global access for other scripts)
-import '../node_modules/sweetalert/dist/sweetalert.css';
-window.swal = require('../node_modules/sweetalert/lib/sweetalert.js');
+import '../node_modules/sweetalert2/dist/sweetalert2.css';
+window.swal = require('../node_modules/sweetalert2/dist/sweetalert2.js');
 // CSS Loaders
 import '../node_modules/loaders.css/loaders.css';
 import '../node_modules/spinkit/css/spinkit.css';

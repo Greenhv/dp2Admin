@@ -1,4 +1,5 @@
 import fetchStatusHandler from 'Utils/fetchStatusHandler';
+import { getCookie } from 'Utils/cookies';
 
 // Actions
 const FETCH = 'admin/products/FETCH';
@@ -21,7 +22,7 @@ const initialState = {
 // Reducer
 
 const defaultUrl = process.env.API_BASE_URL;
-const auth = process.env.DEFAULT_ACCSS_TOKEN;
+const auth = getCookie('authToken');
 const customHeaders = {
   'Authorization': auth,
   'content-type': 'application/json',
@@ -118,8 +119,7 @@ export const getProducts = () => dispatch => fetch(`${defaultUrl}/products`, {
   headers: {
     ...customHeaders
   },
-})
-  .then(fetchStatusHandler)
+}).then(fetchStatusHandler)
   .then(response => response.json())
   .then(data => dispatch(addProducts(data.products)))
   .catch(error => { dispatch(setError('Error al cargar los productos, recarga la pagina porfavor')); });
