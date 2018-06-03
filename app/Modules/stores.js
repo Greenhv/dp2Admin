@@ -114,6 +114,14 @@ export const setError = (error) => ({
 
 // Side effects
 
+export const deleteStoreAction = id => dispatch => fetch(`${defaultUrl}/stores/${id}`, {
+  method: 'DELETE',
+  headers: {
+    ...customHeaders,
+  },
+}).then(() => { dispatch(deleteStore(id)); })
+  .catch((error) => { console.log(error); });
+
 export const createStore = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/stores`, {
   method: "POST",
   body: JSON.stringify(values),

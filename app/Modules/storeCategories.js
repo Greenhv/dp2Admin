@@ -114,12 +114,20 @@ export const setError = (error) => ({
 
 // Side effects
 
-export const createStoreCategory = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/store-categories`, {
+export const deleteStoreCategoryAction = id => dispatch => fetch(`${defaultUrl}/store_categories/${id}`, {
+  method: 'DELETE',
+  headers: {
+    ...customHeaders,
+  },
+}).then(() => { dispatch(deleteStoreCategory(id)); })
+  .catch((error) => { console.log(error); });
+
+export const createStoreCategory = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/store_categories`, {
   method: "POST",
   body: JSON.stringify(values),
   headers: {
     ...customHeaders
-  }
+  },
 }).then(response => response.json())
   .then(data => {
     dispatch(addStoreCategory(data.storeCategory));

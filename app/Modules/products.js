@@ -113,6 +113,14 @@ export const setError = (error) => ({
 
 // Side effects
 
+export const deleteProductAction = id => dispatch => fetch(`${defaultUrl}/produts/${id}`, {
+  method: 'DELETE',
+  headers: {
+    ...customHeaders,
+  },
+}).then(() => { dispatch(deleteProduct(id)); })
+  .catch((error) => { console.log(error); });
+
 export const createProduct = (history, values) => dispatch => fetch(`${defaultUrl}/products`, {
   method: 'POST',
   body: JSON.stringify(values),

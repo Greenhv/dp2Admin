@@ -114,7 +114,15 @@ export const setError = (error) => ({
 
 // Side effects
 
-export const createProductCategory = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/product_categories`, {
+export const deleteProductCategoryAction = id => dispatch => fetch(`${defaultUrl}/product_categories/${id}`, {
+  method: 'DELETE',
+  headers: {
+    ...customHeaders,
+  },
+}).then(() => { dispatch(deleteProductCategories(id)); })
+  .catch((error) => { console.log(error); });
+
+export const createProductCategory = (history, values) => dispatch => fetch(`${defaultUrl}/product_categories`, {
   method: 'POST',
   body: JSON.stringify(values), 
   headers: {
