@@ -13,6 +13,7 @@ class Login extends React.Component {
 
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const domain = e.target.domain.value;
         const values = {
             email,
             password,
@@ -37,7 +38,7 @@ class Login extends React.Component {
             }).then(response => response.json())
             .then((data) => {
                 setCookie('authToken', data.session.access_token);
-                this.props.history.push('/');
+                window.location.href = `${domain}?authToken=${data.session.access_token}`;
                 swal.close();
             })
             .catch((error) => {
@@ -82,6 +83,13 @@ class Login extends React.Component {
                             <div className="form-group has-feedback">
                                 <input name="password" type="password" placeholder="Contraseña" required="required" className="form-control" />
                                 <span className="fa fa-lock form-control-feedback text-muted"></span>
+                            </div>
+                            <div className="form-group has-feedback">
+                                <select name="domain" className="form-control" placeholder="Dominio" required="required">
+                                    <option value="http://administracion.com">Administración</option>
+                                    <option value="http://waze.com">Waze</option>
+                                    <option value="http://smartTV.com">SmartTV</option>
+                                </select>
                             </div>
                             <div className="clearfix">
                                 <div className="pull-right">
