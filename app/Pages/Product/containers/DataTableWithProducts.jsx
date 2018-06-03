@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Table, Button } from 'react-bootstrap';
+import { Button, Table } from "react-bootstrap";
 
 import {
   fetchProducts,
@@ -9,18 +9,20 @@ import {
   deleteProduct,
   getProducts as requestProducst,
 } from 'Modules/products';
-import { getNumber } from 'Utils/randomizer';
 import { transformToMoney, applyDiscount } from 'Utils/money';
-import DataTables from 'Shared/DataTable.jsx';
-import Loader from 'Shared/Loader.jsx';
+import DataTables from 'Shared/DataTable';
 import DataTableEmptyMsg from 'Shared/DataTableEmptyMsg.jsx';
+import Loader from 'Shared/Loader.jsx';
 import 'Components/Common/notify';
 import { productType } from '../types';
 
 class DataTableWithProducts extends PureComponent {
   constructor(props) {
     super(props);
-    const { getProducts } = props;
+
+    const {
+      getProducts
+    } = props;
 
     console.log('constructor!');
     getProducts();
@@ -30,38 +32,20 @@ class DataTableWithProducts extends PureComponent {
     console.log("Modal!");
   };
 
-  renderElements = () => {
+  parseProducts = () => {
     const {
       products,
-      selectProduct,
-      deleteProduct,
     } = this.props;
 
-    return products.map(product => (
-      <tr key={getNumber()}>
-        <td>{ product.name }</td>
-        <td>{ transformToMoney(product.price) }</td>
-        <td>{ product.promotion.value }</td>
-        <td>{ product.promotion ? applyDiscount(product.price, product.promotion.value) : '-' }</td>
-        <td>{ product.brand.name }</td>
-        <td>
-          <Button onClick={this.openImgModal}>
-            <em className="fa fa-image"></em>
-          </Button>
-        </td>
-        <td>
-          <Button onClick={selectProduct && selectProduct(product.id)}>
-            <em className="fa fa-eye"></em>
-          </Button>
-          <Button onClick={selectProduct && selectProduct(product.id)}>
-            <em className="fa fa-pencil"></em>
-          </Button>
-          <Button onClick={deleteProduct && deleteProduct(product.id)}>
-            <em className="fa fa-remove"></em>
-          </Button>
-        </td>
-      </tr>
-    ));
+    return products.map(product => [
+      product.name,
+      transformToMoney(product.price),
+      product.promotion ? product.promotion.value : '-',
+      product.promotion ? applyDiscount(product.price, product.promotion.value) : '-',
+      product.brand.name,
+      product.image,
+      '',
+    ]);
   }
 
   render() {
@@ -75,11 +59,17 @@ class DataTableWithProducts extends PureComponent {
       $.notify(productsError, "danger");
     }
 
-    const headers = ["Nombre", "Precio de Lista", "Descuento", "Precio Neto", "Marca", "Imagen"];
-    const data = this.parseData();
+    const headers = [
+      { name: 'Nombre' },
+      { name: 'Precio de Lista' },
+      { name: 'Descuento' },
+      { name: 'Precio Neto' },
+      { name: 'Marca' },
+      { name: 'Imagen' },
+    ];
+    const data = this.parseProducts();
     const options = {
       selectableRows: false,
-      onRowsDelete: deleteProduct,
     };
 
     return (
@@ -89,7 +79,12 @@ class DataTableWithProducts extends PureComponent {
         ) : (
           products.length > 0 ? (
             <DataTables
-              headers={}
+              headers={headers}
+              data={data}
+              options={options}
+              // viewAction={selectProduct}
+              deleteAction={deleteProduct}
+              editAction={selectProduct}
             />
           ) : (
             <Table responsive striped hover>

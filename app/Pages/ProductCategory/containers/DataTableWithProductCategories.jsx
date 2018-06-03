@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import { Button, Table } from "react-bootstrap";
 
 import {
   deleteProductCategories,
@@ -9,49 +9,33 @@ import {
   selectProductCategories,
   getProductCategories as requestCategories,
 } from 'Modules/productCategories';
-import { getNumber } from 'Utils/randomizer';
-import DataTables from 'Shared/DataTable.jsx';
-import Loader from 'Shared/Loader.jsx';
+import DataTables from 'Shared/DataTable';
 import DataTableEmptyMsg from 'Shared/DataTableEmptyMsg.jsx';
+import Loader from 'Shared/Loader.jsx';
 import 'Components/Common/notify';
 import { productCategoryType } from '../types';
 
 class DataTableWithProductCategories extends PureComponent {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
     const {
       getProductCategories,
-      productCategories,
-    } = this.props;
+    } = props;
 
-    if (productCategories < 1) {
-      getProductCategories();
-    }
+    getProductCategories();
   }
 
-  renderProductCategories = () => {
+  parseProductCategories = () => {
     const {
       productCategories,
-      selectProductCategories,
-      deleteProductCategories,
     } = this.props;
 
-    return productCategories.map(productCategory => (
-      <tr key={getNumber()}>
-        <td>{ productCategory.name }</td>
-        <td>{ productCategory.description }</td>
-        <td>
-          <Button onClick={selectProductCategories && selectProductCategories(productCategory.id)}>
-            <em className="fa fa-eye"></em>
-          </Button>
-          <Button onClick={selectProductCategories && selectProductCategories(productCategory.id)}>
-            <em className="fa fa-pencil"></em>
-          </Button>
-          <Button onClick={deleteProductCategories && deleteProductCategories(productCategory.id)}>
-            <em className="fa fa-remove"></em>
-          </Button>
-        </td>
-      </tr>
-    ));
+    return productCategories.map(productCategory => [
+      productCategory.name,
+      productCategory.description,
+      '',
+    ]);
   }
 
   render() {
@@ -59,27 +43,44 @@ class DataTableWithProductCategories extends PureComponent {
       productCategories,
       isLoadingCategories,
       categoriesError,
+      selectProductCategories,
+      deleteProductCategories,
     } = this.props;
 
     if (categoriesError) {
       $.notify(categoriesError, 'danger');
     }
 
+    const headers = [
+      { name: 'Nombre' },
+      { name: 'Descripción' },
+    ];
+    const data = this.parseProductCategories();
+    const options = {
+      selectableRows: false,
+    };
+
     return (
       <div>
         { isLoadingCategories ? (
           <Loader />
         ) : (
-          <DataTables
-            headers={[
-              { key: 'name', title: 'Nombre' },
-              { key: 'description', title: 'Descripcion' },
-            ]}
-          >
-            { productCategories.length > 0 ? this.renderProductCategories() : (
-              <DataTableEmptyMsg colSpan={3}>No hay productos para mostrar</DataTableEmptyMsg>
-            ) }
-          </DataTables>
+          productCategories.length > 0 ? (
+            <DataTables
+              headers={headers}
+              data={data}
+              options={options}
+              // viewAction={selectProduct}
+              deleteAction={deleteProductCategories}
+              editAction={selectProductCategories}
+            />
+          ) : (
+            <Table responsive striped hover>
+              <tbody>
+                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+              </tbody>
+            </Table>
+          )
         ) }
       </div>
     );

@@ -1,8 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 
 import {
   deleteStores,
@@ -10,21 +9,41 @@ import {
   selectStore,
   getStores as requestStores
 } from "Modules/stores";
-import { getNumber } from "Utils/randomizer";
-import DataTables from "Shared/DataTable.jsx";
+import DataTables from "Shared/DataTable";
+import DataTableEmptyMsg from "Shared/DataTableEmptyMsg.jsx";
 import Loader from "Shared/Loader.jsx";
 import "Components/Common/notify";
 import { storeType } from "../types";
 
 class DataTableWithStores extends PureComponent {
-  componentDidMount() {
-    const { getStores, stores } = this.props;
+  constructor(props) {
+    super(props);
+
+    const {
+      getStores
+    } = props;
 
     getStores();
   }
+
   openImgModal = () => {
     console.log("Modal!");
   };
+
+  parseStores = () => {
+    const {
+      stores,
+    } = this.props;
+
+    return stores.map(store => [
+      store.name,
+      store.description,
+      store.webpage,
+      store.contact_name ? store.contact_name : '',
+      store.phone_number ? store.contact_name : '',
+      '',
+    ]);
+  }
 
   render() {
     const {
@@ -32,53 +51,46 @@ class DataTableWithStores extends PureComponent {
       isLoadingStores,
       storesError,
       selectStore,
-      deleteStore
+      deleteStore,
     } = this.props;
 
     if (storesError) {
       $.notify(storesError, "danger");
     }
 
+    const headers = [
+      { name: 'Nombre' },
+      { name: 'Descripcioón' },
+      { name: 'Pagina web' },
+      { name: 'Nombre del contacto' },
+      { name: 'Telefono' },
+    ];
+    const data = this.parseStores();
+    const options = {
+      selectableRows: false,
+    };
+
+    console.log(data);
     return (
       <div>
         {isLoadingStores ? (
           <Loader />
         ) : (
-          <DataTables
-            headers={[
-              { key: "name", title: "Nombre" },
-              { key: "description", title: "Descripcion" },
-              { key: "webpage", title: " Pagina web" },
-              { key: "contact_name", title: "Nombre del contacto" },
-              { key: "phone_number", title: "Telefono" }
-            ]}
-          >
-            {stores.map(element => (
-              <tr key={getNumber()}>
-                <td>{element.name}</td>
-                <td>{element.description}</td>
-                <td>{element.webpage}</td>
-                <td>{element.contact_name}</td>
-                <td>{element.phone_number}</td>
-                <td>
-                  <Button onClick={this.openImgModal}>
-                    <em className="fa fa-image" />
-                  </Button>
-                </td>
-                <td>
-                  <Button onClick={selectStore && selectStore(element.id)}>
-                    <em className="fa fa-eye" />
-                  </Button>
-                  <Button onClick={selectStore && selectStore(element.id)}>
-                    <em className="fa fa-pencil" />
-                  </Button>
-                  <Button onClick={deleteStore && deleteStore(element.id)}>
-                    <em className="fa fa-remove" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </DataTables>
+          stores.length > 0 ? (
+            <DataTables
+              headers={headers}
+              data={data}
+              options={options}
+              editAction={selectStore}
+              deleteAction={deleteStore}
+            />
+          ) : (
+            <Table responsive striped hover>
+              <tbody>
+                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+              </tbody>
+            </Table>
+          )
         )}
       </div>
     );
