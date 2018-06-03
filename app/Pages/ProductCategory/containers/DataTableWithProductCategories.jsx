@@ -34,7 +34,7 @@ class DataTableWithProductCategories extends PureComponent {
     return productCategories.map(productCategory => [
       productCategory.name,
       productCategory.description,
-      '',
+      `${productCategory.id}`,
     ]);
   }
 
@@ -43,8 +43,8 @@ class DataTableWithProductCategories extends PureComponent {
       productCategories,
       isLoadingCategories,
       categoriesError,
-      selectProductCategories,
-      deleteProductCategories,
+      selectProductCategory,
+      deleteProductCategory,
     } = this.props;
 
     if (categoriesError) {
@@ -71,13 +71,13 @@ class DataTableWithProductCategories extends PureComponent {
               data={data}
               options={options}
               // viewAction={selectProduct}
-              deleteAction={deleteProductCategories}
-              editAction={selectProductCategories}
+              deleteAction={deleteProductCategory}
+              editAction={selectProductCategory}
             />
           ) : (
             <Table responsive striped hover>
               <tbody>
-                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+                <DataTableEmptyMsg colSpan={6}>No hay categoria de productos para mostrar</DataTableEmptyMsg>
               </tbody>
             </Table>
           )
@@ -91,8 +91,8 @@ DataTableWithProductCategories.propTypes = {
   productCategories: PropTypes.arrayOf(productCategoryType).isRequired,
   isLoadingCategories: PropTypes.bool.isRequired,
   categoriesError: PropTypes.string.isRequired,
-  selectProductCategories: PropTypes.func.isRequired,
-  deleteProductCategories: PropTypes.func.isRequired,
+  selectProductCategory: PropTypes.func.isRequired,
+  deleteProductCategory: PropTypes.func.isRequired,
   getProductCategories: PropTypes.func.isRequired,
 }
 
@@ -107,10 +107,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchProductCategories())
     dispatch(requestCategories());
   },
-  selectProductCategories: category => () => {
+  selectProductCategory: category => () => {
     dispatch(selectProductCategories(category));
   },
-  deleteProductCategories: category => () => {
+  deleteProductCategory: category => () => {
     dispatch(deleteProductCategories(category));
   }
 });

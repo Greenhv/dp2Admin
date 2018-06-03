@@ -6,6 +6,7 @@ const FETCH = 'admin/stores/FETCH';
 const ADD_STORES = 'admin/stores/ADD_STORES';
 const ADD_STORE = 'admin/stores/ADD_STORE';
 const SELECT = 'admin/stores/SELECT';
+const CLEAR_SELECT = 'admin/stores/CLEAR_SELECT';
 const EDIT = 'admin/stores/EDIT';
 const DELETE = 'admin/stores/DELETE';
 const ERROR = 'admin/stores/ERROR';
@@ -52,7 +53,7 @@ export default (state = initialState, action = {}) => {
     case DELETE:
       return {
         ...state,
-        stores: [...state.stores, ...state.stores]
+        stores: [...state.stores]
           .filter(store => store.id !== action.storeId),
       };
     case SELECT:
@@ -60,6 +61,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         selectedStore: state.stores
           .filter(store => store.id === action.storeId)[0],
+      };
+    case CLEAR_SELECT:
+      return {
+        ...state,
+        selectedStore: {},
       };
     case ERROR:
       return {
@@ -86,6 +92,10 @@ export const addStore = store => ({
 export const selectStore = storeId => ({
   type: SELECT,
   storeId,
+});
+
+export const clearSelected = () => ({
+  type: CLEAR_SELECT,
 });
 
 export const deleteStore = storeId => ({

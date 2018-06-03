@@ -6,6 +6,7 @@ const FETCH = 'admin/storeCategories/FETCH';
 const ADD_STORE_CATEGORIES = 'admin/storeCategories/ADD_STORE_CATEGORIES';
 const ADD_STORE_CATEGORY = 'admin/storeCategories/ADD_STORE_CATEGORY';
 const SELECT = 'admin/storeCategories/SELECT';
+const CLEAR_SELECT = 'admin/storeCategories/CLEAR_SELECT';
 const EDIT = 'admin/storeCategories/EDIT';
 const DELETE = 'admin/storeCategories/DELETE';
 const ERROR = 'admin/storeCategories/ERROR';
@@ -52,14 +53,19 @@ export default (state = initialState, action = {}) => {
     case DELETE:
       return {
         ...state,
-        storeCategories: [...state.storeCategories, ...state.storeCategories]
-          .filter(storeCatery => storeCatery.id !== action.storeCatery),
+        storeCategories: [...state.storeCategories]
+          .filter(storeCatery => storeCatery.id !== action.storeCategoryId),
       };
     case SELECT:
       return {
         ...state,
-        selectedStoreCategory: state.storeCategories
+        selectedCategory: [...state.storeCategories]
           .filter(storeCategory => storeCategory.id === action.storeCategoryId)[0],
+      };
+    case CLEAR_SELECT:
+      return {
+        ...state,
+        selectedCategory: {},
       };
     case ERROR:
       return {
@@ -86,6 +92,10 @@ export const addStoreCategory = storeCategory => ({
 export const selectStoreCategory = storeCategoryId => ({
   type: SELECT,
   storeCategoryId,
+});
+
+export const clearSelected = () => ({
+  type: CLEAR_SELECT,
 });
 
 export const deleteStoreCategory = storeCategoryId => ({

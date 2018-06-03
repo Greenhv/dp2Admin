@@ -12,16 +12,26 @@ import {
   Label,
   Input
 } from "react-bootstrap";
-import { getStoreCategories as requestCategories } from "Modules/storeCategories";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
-import { createStore } from "Modules/stores";
+import { getStoreCategories as requestCategories } from "Modules/storeCategories";
+import { createStore, clearSelected } from "Modules/stores";
 import { storeCategoryType } from "Pages/StoreCategory/types";
 
 class StoreFormPage extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    const params = props.match.params;
+
+    if (Object.keys(params).length < 1) {
+      props.removeSelected();
+    }
+  }
+
   componentWillMount() {
     const { getStoreCategories } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
@@ -159,17 +169,22 @@ StoreFormPage.defaultProps = {
 StoreFormPage.propTypes = {
   history: shape({}).isRequired,
   storeCategories: arrayOf(storeCategoryType),
-  getStoreCategories: func.isRequired
+  getStoreCategories: func.isRequired,
+  removeSelected: func.isRequired,
 };
 
-const mapStateToProps = ({ storeCategories: { storeCategories } }) => ({
-  storeCategories
+const mapStateToProps = ({ stores: { selectedStore }, storeCategories: { storeCategories } }) => ({
+  storeCategories,
+  initialValues: selectedStore.id ? selectedStore : {},
 });
 
 const mapDispatchToProps = dispatch => ({
   getStoreCategories: () => {
     dispatch(requestCategories());
-  }
+  },
+  removeSelected: () => {
+    dispatch(clearSelected());
+  },
 });
 
 export default connect(

@@ -3,13 +3,24 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { shape, func } from 'prop-types';
 import { FormGroup, ControlLabel, Grid, Row, Col, Panel, Button, Label, Input } from 'react-bootstrap';
+import { connect } from "react-redux";
 import { reduxForm, Field } from 'redux-form';
 
 import Select from 'Shared/Select';
 import CustomInput from 'Shared/Form/CustomInput';
-import { createProductCategory } from 'Modules/productCategories';
+import { createProductCategory, clearSelected } from 'Modules/productCategories';
 
 class ProductCategoryFormPage extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    const params = props.match.params;
+
+    if (Object.keys(params).length < 1) {
+      props.removeSelected();
+    }
+  }
+
   componentDidMount() {
     const element = ReactDOM.findDOMNode(this.form);
 
@@ -60,7 +71,7 @@ class ProductCategoryFormPage extends PureComponent {
                     <FormGroup>
                       <ControlLabel>Descripción de la Categoría</ControlLabel>
                       <Field
-                        name="price"
+                        name="description"
                         component={CustomInput}
                         componentClass="textarea"
                         type="text"
@@ -89,8 +100,21 @@ class ProductCategoryFormPage extends PureComponent {
 
 ProductCategoryFormPage.propTypes = {
   history: shape({}).isRequired,
+  removeSelected: func.isRequired,
 }
 
-export default reduxForm({
-  form: 'productCategoryForm',
-})(ProductCategoryFormPage);
+const mapStateToProps = ({ productCategories: { selectedCategory } }) => ({
+  initialValues: selectedCategory.id ? selectedCategory : {},
+});
+
+const mapDispatchToProps = dispatch => ({
+  removeSelected: () => {
+    dispatch(clearSelected());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: 'productCategoryForm',
+  })(ProductCategoryFormPage)
+);

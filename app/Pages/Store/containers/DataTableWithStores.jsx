@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import { Button, Table } from "react-bootstrap";
 
 import {
-  deleteStores,
-  fetchStores,
+  deleteStore,
   selectStore,
+  fetchStores,
   getStores as requestStores
 } from "Modules/stores";
 import DataTables from "Shared/DataTable";
@@ -41,7 +41,7 @@ class DataTableWithStores extends PureComponent {
       store.webpage,
       store.contact_name ? store.contact_name : '',
       store.phone_number ? store.contact_name : '',
-      '',
+      `${store.id}`,
     ]);
   }
 
@@ -50,8 +50,8 @@ class DataTableWithStores extends PureComponent {
       stores,
       isLoadingStores,
       storesError,
-      selectStore,
-      deleteStore,
+      chooseStore,
+      removeStore,
     } = this.props;
 
     if (storesError) {
@@ -70,7 +70,6 @@ class DataTableWithStores extends PureComponent {
       selectableRows: false,
     };
 
-    console.log(data);
     return (
       <div>
         {isLoadingStores ? (
@@ -81,13 +80,13 @@ class DataTableWithStores extends PureComponent {
               headers={headers}
               data={data}
               options={options}
-              editAction={selectStore}
-              deleteAction={deleteStore}
+              editAction={chooseStore}
+              deleteAction={removeStore}
             />
           ) : (
             <Table responsive striped hover>
               <tbody>
-                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+                <DataTableEmptyMsg colSpan={6}>No hay tiendas para mostrar</DataTableEmptyMsg>
               </tbody>
             </Table>
           )
@@ -101,8 +100,8 @@ DataTableWithStores.propTypes = {
   stores: PropTypes.arrayOf(storeType).isRequired,
   isLoadingStores: PropTypes.bool.isRequired,
   storesError: PropTypes.string.isRequired,
-  selectStore: PropTypes.func.isRequired,
-  deleteStore: PropTypes.func.isRequired,
+  chooseStore: PropTypes.func.isRequired,
+  removeStore: PropTypes.func.isRequired,
   getStores: PropTypes.func.isRequired
 };
 
@@ -117,10 +116,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchStores());
     dispatch(requestStores());
   },
-  selectStore: store => () => {
+  chooseStore: store => () => {
     dispatch(selectStore(store));
   },
-  deleteStore: store => () => {
+  removeStore: store => () => {
     dispatch(deleteStore(store));
   }
 });

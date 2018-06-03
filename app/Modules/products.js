@@ -9,6 +9,7 @@ const SELECT = 'admin/products/SELECT';
 const EDIT = 'admin/products/EDIT';
 const DELETE = 'admin/products/DELETE';
 const ERROR = 'admin/products/ERROR';
+const CLEAR_SELECTED = 'admin/products/CLEAR_SELECTED';
 
 // Initial State
 const initialState = {
@@ -60,6 +61,11 @@ export default (state = initialState, action = {}) => {
         selectedProduct: state.products
           .filter(product => product.id === action.productId)[0],
       };
+    case CLEAR_SELECTED:
+      return {
+        ...state,
+        selectedProduct: {},
+      };
     case ERROR:
       return {
         ...state,
@@ -80,7 +86,11 @@ export const addProducts = products => ({
 export const addProduct = product => ({
   type: ADD_PRODUCT,
   product,
-})
+});
+
+export const clearSelected = () => ({
+  type: CLEAR_SELECTED,
+});
 
 export const selectProduct = productId => ({
   type: SELECT,

@@ -5,8 +5,8 @@ import { Button, Table } from "react-bootstrap";
 
 import {
   deleteStoreCategory,
-  fetchStoreCategories,
   selectStoreCategory,
+  fetchStoreCategories,
   getStoreCategories as requestStoreCategories
 } from "Modules/storeCategories";
 import DataTables from "Shared/DataTable";
@@ -39,7 +39,7 @@ class DataTableWithStoreCategories extends PureComponent {
     return storeCategories.map(storeCategory => [
       storeCategory.name,
       storeCategory.description,
-      '',
+      `${storeCategory.id}`,
     ]);
   }
 
@@ -82,7 +82,7 @@ class DataTableWithStoreCategories extends PureComponent {
           ) : (
             <Table responsive striped hover>
               <tbody>
-                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+                <DataTableEmptyMsg colSpan={6}>No hay categorias de tiendas para mostrar</DataTableEmptyMsg>
               </tbody>
             </Table>
           )
@@ -114,10 +114,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(requestStoreCategories());
   },
   selectStoreCategory: category => () => {
-    dispatch(selectStoreCategories(category));
+    dispatch(selectStoreCategory(category));
   },
   deleteStoreCategory: category => () => {
-    dispatch(deleteStoreCategories(category));
+    dispatch(deleteStoreCategory(category));
   }
 });
 

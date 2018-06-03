@@ -12,21 +12,31 @@ import {
   Label,
   Input
 } from "react-bootstrap";
-import { getProductCategories as requestCategories } from "Modules/productCategories";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
-import { createProduct } from "Modules/products";
+import { getProductCategories as requestCategories } from "Modules/productCategories";
+import { createProduct, clearSelected } from "Modules/products";
 import { productCategoryType } from "Pages/ProductCategory/types";
+import { productType } from "Pages/Product/types";
 
 class ProductFormPage extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    const params = props.match.params;
+
+    if (Object.keys(params).length < 1) {
+      props.removeSelected();
+    }
+  }
+
   componentWillMount() {
     const { getProductCategories } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
 
-    console.log(getProductCategories)
     getProductCategories();
     $(element).parsley();
   }
@@ -145,16 +155,25 @@ ProductFormPage.defaultProps = {
 ProductFormPage.propTypes = {
   history: shape({}).isRequired,
   productCategories: arrayOf(productCategoryType),
-  getProductCategories: func.isRequired
+  getProductCategories: func.isRequired,
+  removeSelected: func.isRequired,
 };
 
-const mapStateToProps = ({ productCategories: { productCategories }}) => ({
-  productCategories
+const mapStateToProps = ({ products: { selectedProduct }, productCategories: { productCategories }}) => ({
+  productCategories,
+  initialValues: selectedProduct.id ? {
+    ...selectedProduct,
+    category: selectedProduct.product_category.id,
+    brand: selectedProduct.brand.id,
+  } : {},
 })
 
 const mapDispatchToProps = dispatch => ({
   getProductCategories: () => {
     dispatch(requestCategories())
+  },
+  removeSelected: () => {
+    dispatch(clearSelected());
   }
 })
 
@@ -163,6 +182,7 @@ export default connect(
   mapDispatchToProps
 )(
   reduxForm({
-    form: "productForm"
+    form: "productForm",
+    enableReinitialize: true
   })(ProductFormPage)
 );

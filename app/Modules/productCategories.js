@@ -9,6 +9,7 @@ const SELECT = 'admin/productCategories/SELECT';
 const EDIT = 'admin/productCategories/EDIT';
 const DELETE = 'admin/productCategories/DELETE';
 const ERROR = 'admin/productCategories/ERROR';
+const CLEAR_SELECTED = 'admin/productCategories/CLEAR_SELECTED';
 
 // Initial State
 const initialState = {
@@ -61,6 +62,11 @@ export default (state = initialState, action = {}) => {
         selectedCategory: state.productCategories
           .filter(category => category.id === action.categoryId)[0],
       };
+    case CLEAR_SELECTED:
+      return {
+        ...state,
+        selectedCategory: {},
+      };
     case ERROR:
       return {
         ...state,
@@ -86,6 +92,10 @@ export const addProductCategory = productCategory => ({
 export const selectProductCategories = categoryId => ({
   type: SELECT,
   categoryId,
+});
+
+export const clearSelected = () => ({
+  type: CLEAR_SELECTED,
 });
 
 export const deleteProductCategories = categoryId => ({
