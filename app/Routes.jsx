@@ -95,4 +95,4 @@ const Routes = ({ location }) => {
     }
 }
 
-export default hot(module)(withRouter(Routes));
+export default withRouter(Routes);
