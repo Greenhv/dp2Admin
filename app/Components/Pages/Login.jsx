@@ -55,9 +55,8 @@ class Login extends React.Component {
                 console.log(error);
                 swal({
                     type: 'error',
-                    title: 'Ocurrio un error en el Login',
+                    title: 'Ocurrio un error en la identificación',
                     text: 'Vuelve a intentarlo en unos segundos',
-                    timer: 2500,
                 });
                 this.setState({
                     loading: false,
