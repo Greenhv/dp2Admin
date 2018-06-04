@@ -13,6 +13,7 @@ class Login extends React.Component {
 
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const domain = e.target.domain.value;
         const values = {
             email,
             password,
@@ -24,7 +25,7 @@ class Login extends React.Component {
             });
 
             swal({
-                title: 'Ingresando...',
+                title: 'Identificando.',
                 text: 'Espere por favor',
                 onOpen: () => {
                     swal.showLoading()
@@ -36,9 +37,19 @@ class Login extends React.Component {
                 body: JSON.stringify(values),
             }).then(response => response.json())
             .then((data) => {
-                setCookie('authToken', data.session.access_token);
-                this.props.history.push('/');
-                swal.close();
+                if (domain.indexOf('8086') >= 0) {
+                    setCookie('authToken', data.session.access_token);
+                }
+                swal({
+                    title: 'Identificado',
+                    text: 'Te redireccionaremos al dominio escogido',
+                    type: 'success',
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+                setTimeout(() => {
+                    window.location.replace(`${domain}?authToken=${data.session.access_token}`);
+                }, 1000);
             })
             .catch((error) => {
                 console.log(error);
@@ -85,6 +96,13 @@ class Login extends React.Component {
                             <div className="form-group has-feedback">
                                 <input name="password" type="password" placeholder="Contraseña" required="required" className="form-control" />
                                 <span className="fa fa-lock form-control-feedback text-muted"></span>
+                            </div>
+                            <div className="form-group has-feedback">
+                                <select name="domain" className="form-control" placeholder="Dominio" required="required">
+                                    <option value="http://200.16.7.150:8086">Administración</option>
+                                    <option value="http://200.16.7.150:8085">Waze</option>
+                                    <option value="http://smartTV.com">SmartTV</option>
+                                </select>
                             </div>
                             <div className="clearfix">
                                 <div className="pull-right">
