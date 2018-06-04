@@ -17,7 +17,11 @@ import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
-import { createStoreCategory, clearSelected } from "Modules/storeCategories";
+import {
+  createStoreCategory as createStoreCategoryAction,
+  clearSelected,
+  updateStoreCategory as updateStoreCategoryAction,
+} from "Modules/storeCategories";
 
 class StoreCategoryFormPage extends PureComponent {
   constructor(props) {
@@ -40,13 +44,38 @@ class StoreCategoryFormPage extends PureComponent {
     history.push("/categoria-de-tiendas");;
   };
 
+  createStoreCategory = (values, dispatch) => {
+    const { history } = this.props;
+
+    swal({
+      title: 'Se esta creando su categoria de tienda',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(createStoreCategoryAction(history, values));
+  }
+
+  updateStoreCategory = (values, dispatch, id) => {
+    const { history } = this.props;
+
+    swal({
+      title: 'Se esta actualiazando su categoria de tienda',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(updateStoreCategoryAction(history, values, id));
+  }
+
   onStoreCategorySubmit = (values, dispatch) => {
     const {
       history,
     } = this.props;
 
-    if (Object.keys(values).length >= 4) {
-      dispatch(createStoreCategory(history, values));
+    if ($(this.form).parsley().isValid()) {
     }
   };
 

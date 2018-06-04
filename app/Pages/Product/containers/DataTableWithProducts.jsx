@@ -6,7 +6,7 @@ import { Button, Table } from "react-bootstrap";
 import {
   fetchProducts,
   selectProduct,
-  deleteProduct,
+  deleteProductAction,
   getProducts as requestProducst,
 } from 'Modules/products';
 import { transformToMoney, applyDiscount } from 'Utils/money';
@@ -124,7 +124,21 @@ const mapDispatchToProps = dispatch => ({
     dispatch(selectProduct(product));
   },
   removeProduct: product => () => {
-    dispatch(deleteProduct(product));
+    swal({
+      title: 'Estas seguro?',
+      text: "No se podrá revertir este cambio",
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, deseo borrarlo',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteProductAction(product));
+      }
+    })
   }
 });
 

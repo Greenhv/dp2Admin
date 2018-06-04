@@ -18,7 +18,11 @@ import { reduxForm, Field } from "redux-form";
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
 import { getProductCategories as requestCategories } from "Modules/productCategories";
-import { createProduct, clearSelected } from "Modules/products";
+import {
+  createProduct as createProductAction,
+  updateProduct as updateProductAction,
+  clearSelected,
+} from "Modules/products";
 import { productCategoryType } from "Pages/ProductCategory/types";
 import { productType } from "Pages/Product/types";
 
@@ -28,7 +32,7 @@ class ProductFormPage extends PureComponent {
 
     const params = props.match.params;
 
-    if (Object.keys(params).length < 1) {
+    if (!params.id) {
       props.removeSelected();
     }
   }
@@ -47,11 +51,40 @@ class ProductFormPage extends PureComponent {
     history.push("/productos");
   };
 
-  onProductSubmit = (values, dispatch) => {
+  createProduct = (values, dispatch) => {
     const { history } = this.props;
 
-    if (Object.keys(values).length >= 4) {
-      dispatch(createProduct(history, values));
+    swal({
+      title: 'Se esta creando su producto',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(createProductAction(history, values));
+  }
+
+  updateProduct = (values, dispatch, id) => {
+    const { history } = this.props;
+
+    swal({
+      title: 'Se esta actualiazando su producto',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(updateProductAction(history, values, id));
+  }
+
+  onProductSubmit = (values, dispatch) => {
+    const isFormValid = $(this.form).parsley().isValid();
+    const params = this.props.match.params;
+
+    if (isFormValid && !params.id) {
+      this.createProduct(values, dispatch);
+    } else if (isFormValid && params.id) {
+      this.updateProduct(values, dispatch, params.id);
     }
   };
 

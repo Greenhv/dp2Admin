@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Button, Table } from "react-bootstrap";
 
 import {
-  deleteStore,
+  deleteStoreAction,
   selectStore,
   fetchStores,
   getStores as requestStores
@@ -120,7 +120,21 @@ const mapDispatchToProps = dispatch => ({
     dispatch(selectStore(store));
   },
   removeStore: store => () => {
-    dispatch(deleteStore(store));
+    swal({
+      title: 'Estas seguro?',
+      text: "No se podrá revertir este cambio",
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, deseo borrarlo',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteStoreAction(store));
+      }
+    })
   }
 });
 

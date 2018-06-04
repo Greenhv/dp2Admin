@@ -114,13 +114,51 @@ export const setError = (error) => ({
 
 // Side effects
 
+const showErrorMsg = (error) => {
+  console.log(error);
+  swal({
+    type: 'error',
+    title: 'Ocurrio un error',
+    text: 'Por favor vuelve a intentarlo en unos segundos',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+};
+
 export const deleteProductCategoryAction = id => dispatch => fetch(`${defaultUrl}/product_categories/${id}`, {
   method: 'DELETE',
   headers: {
     ...customHeaders,
   },
-}).then(() => { dispatch(deleteProductCategories(id)); })
-  .catch((error) => { console.log(error); });
+}).then(() => {
+  dispatch(deleteProductCategories(id));
+  swal(
+    'Borrada!',
+    'La categoria de producto ha sido borrada.',
+    'success'
+  );
+})
+.catch((error) => { showErrorMsg(error) });
+
+export const updateProductCategory = (history, values, id) => dispatch => fetch(`${defaultUrl}/product_categories/${id}`, {
+  method: 'PUT',
+  body: JSON.stringify(values), 
+  headers: {
+    ...customHeaders
+  },
+}).then(() => {
+  swal({
+    type: 'success',
+    title: 'Categoria de producto actualizada',
+    text: 'En un momento se te redireccionara al listado de categorias de producto',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+  setTimeout(() => {
+    history.push('/categoria-de-productos');
+  }, 1500);
+})
+.catch((error) => { showErrorMsg(error) });
 
 export const createProductCategory = (history, values) => dispatch => fetch(`${defaultUrl}/product_categories`, {
   method: 'POST',
@@ -129,10 +167,20 @@ export const createProductCategory = (history, values) => dispatch => fetch(`${d
     ...customHeaders
   },
 }).then(response => response.json())
-  .then((data) => {
-    dispatch(addProductCategory(data.product_category));
-    history.push('/categoria-de-productos');
+.then((data) => {
+  dispatch(addProductCategory(data.product_category));
+  swal({
+    type: 'success',
+    title: 'Categoria de producto creada',
+    text: 'En un momento se te redireccionara al listado de categorias de producto',
+    showConfirmButton: false,
+    timer: 1500,
   });
+  setTimeout(() => {
+    history.push('/categoria-de-productos');
+  }, 1500);
+})
+.catch((error) => { showErrorMsg(error) });
 
 export const getProductCategories = () => dispatch => fetch(`${defaultUrl}/product_categories`, {
   headers: {

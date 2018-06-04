@@ -18,7 +18,11 @@ import { reduxForm, Field } from "redux-form";
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
 import { getStoreCategories as requestCategories } from "Modules/storeCategories";
-import { createStore, clearSelected } from "Modules/stores";
+import {
+  createStore as createStoreAction,
+  clearSelected,
+  updateStore as updateStoreAction,
+} from "Modules/stores";
 import { storeCategoryType } from "Pages/StoreCategory/types";
 
 class StoreFormPage extends PureComponent {
@@ -45,11 +49,40 @@ class StoreFormPage extends PureComponent {
     history.push("/tiendas");
   };
 
-  onStoreSubmit = (values, dispatch) => {
+  createStore = (values, dispatch) => {
     const { history } = this.props;
 
-    if (Object.keys(values).length >= 9) {
-      dispatch(createStore(history, values));
+    swal({
+      title: 'Se esta creando su tienda',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(createStoreAction(history, values));
+  }
+
+  updateStore = (values, dispatch, id) => {
+    const { history } = this.props;
+
+    swal({
+      title: 'Se esta actualiazando su tienda',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(updateStoreAction(history, values, id));
+  }
+
+  onStoreSubmit = (values, dispatch) => {
+    const isFormValid = $(this.form).parsley().isValid();
+    const params = this.props.match.params;
+
+    if (isFormValid && !params.id) {
+      this.createStore(values, dispatch);
+    } else if (isFormValid && params.id) {
+      this.updateStore(values, dispatch, params.id);
     }
   };
 

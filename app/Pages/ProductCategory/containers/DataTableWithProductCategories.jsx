@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Button, Table } from "react-bootstrap";
 
 import {
-  deleteProductCategories,
+  deleteProductCategoryAction,
   fetchProductCategories,
   selectProductCategories,
   getProductCategories as requestCategories,
@@ -111,7 +111,21 @@ const mapDispatchToProps = dispatch => ({
     dispatch(selectProductCategories(category));
   },
   deleteProductCategory: category => () => {
-    dispatch(deleteProductCategories(category));
+    swal({
+      title: 'Estas seguro?',
+      text: "No se podrá revertir este cambio",
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, deseo borrarlo',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteProductCategoryAction(category));
+      }
+    })
   }
 });
 

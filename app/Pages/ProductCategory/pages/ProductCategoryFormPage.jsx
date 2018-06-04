@@ -8,7 +8,11 @@ import { reduxForm, Field } from 'redux-form';
 
 import Select from 'Shared/Select';
 import CustomInput from 'Shared/Form/CustomInput';
-import { createProductCategory, clearSelected } from 'Modules/productCategories';
+import {
+  createProductCategory as createProductCategoryAction,
+  clearSelected,
+  updateProductCategory as updateProductCategoryAction,
+} from 'Modules/productCategories';
 
 class ProductCategoryFormPage extends PureComponent {
   constructor(props) {
@@ -35,14 +39,40 @@ class ProductCategoryFormPage extends PureComponent {
     history.push('/categoria-de-productos');
   };
 
-  onProductCategorySubmit = (values, dispatch) => {
-    const {
-      history,
-    } = this.props;
+  createProductCategory = (values, dispatch) => {
+    const { history } = this.props;
 
-    console.log(values);
-    if (Object.keys(values).length >= 2) {
-      dispatch(createProductCategory(history, values));
+    swal({
+      title: 'Se esta creando su categoria de producto',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(createProductCategoryAction(history, values));
+  }
+
+  updateProductCategory = (values, dispatch, id) => {
+    const { history } = this.props;
+
+    swal({
+      title: 'Se esta actualiazando su categoria de producto',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(updateProductCategoryAction(history, values, id));
+  }
+
+  onProductCategorySubmit = (values, dispatch) => {
+    const isFormValid = $(this.form).parsley().isValid();
+    const params = this.props.match.params;
+
+    if (isFormValid && !params.id) {
+      this.createProductCategory(values, dispatch);
+    } else if (isFormValid && params.id) {
+      this.updateProductCategory(values, dispatch, params.id);
     }
   }
 
