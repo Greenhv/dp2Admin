@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import { Button, Table } from "react-bootstrap";
 
 import {
-  deleteStoreCategory,
-  fetchStoreCategories,
+  deleteStoreCategoryAction,
   selectStoreCategory,
+  fetchStoreCategories,
   getStoreCategories as requestStoreCategories
 } from "Modules/storeCategories";
 import DataTables from "Shared/DataTable";
@@ -39,7 +39,7 @@ class DataTableWithStoreCategories extends PureComponent {
     return storeCategories.map(storeCategory => [
       storeCategory.name,
       storeCategory.description,
-      '',
+      `${storeCategory.id}`,
     ]);
   }
 
@@ -49,7 +49,7 @@ class DataTableWithStoreCategories extends PureComponent {
       isLoadingStoreCategories,
       storeCategoriesError,
       selectStoreCategory,
-      deleteStoreCategory,
+      deleteStoreCategoryAction,
     } = this.props;
 
     if (storeCategoriesError) {
@@ -77,12 +77,12 @@ class DataTableWithStoreCategories extends PureComponent {
               data={data}
               options={options}
               editAction={selectStoreCategory}
-              deleteAction={deleteStoreCategory}
+              deleteAction={deleteStoreCategoryAction}
             />
           ) : (
             <Table responsive striped hover>
               <tbody>
-                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+                <DataTableEmptyMsg colSpan={6}>No hay categorias de tiendas para mostrar</DataTableEmptyMsg>
               </tbody>
             </Table>
           )
@@ -96,7 +96,7 @@ DataTableWithStoreCategories.propTypes = {
   storeCategories: PropTypes.arrayOf(storeCategoryType).isRequired,
   isLoadingStoreCategories: PropTypes.bool.isRequired,
   selectStoreCategory: PropTypes.func.isRequired,
-  deleteStoreCategory: PropTypes.func.isRequired,
+  deleteStoreCategoryAction: PropTypes.func.isRequired,
   getStoreCategories: PropTypes.func.isRequired
 };
 
@@ -114,10 +114,24 @@ const mapDispatchToProps = dispatch => ({
     dispatch(requestStoreCategories());
   },
   selectStoreCategory: category => () => {
-    dispatch(selectStoreCategories(category));
+    dispatch(selectStoreCategory(category));
   },
-  deleteStoreCategory: category => () => {
-    dispatch(deleteStoreCategories(category));
+  deleteStoreCategoryAction: category => () => {
+    swal({
+      title: 'Estas seguro?',
+      text: "No se podrá revertir este cambio",
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, deseo borrarlo',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteStoreCategoryAction(category));
+      }
+    })
   }
 });
 

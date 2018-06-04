@@ -3,13 +3,28 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { shape, func } from 'prop-types';
 import { FormGroup, ControlLabel, Grid, Row, Col, Panel, Button, Label, Input } from 'react-bootstrap';
+import { connect } from "react-redux";
 import { reduxForm, Field } from 'redux-form';
 
 import Select from 'Shared/Select';
 import CustomInput from 'Shared/Form/CustomInput';
-import { createProductCategory } from 'Modules/productCategories';
+import {
+  createProductCategory as createProductCategoryAction,
+  clearSelected,
+  updateProductCategory as updateProductCategoryAction,
+} from 'Modules/productCategories';
 
 class ProductCategoryFormPage extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    const params = props.match.params;
+
+    if (Object.keys(params).length < 1) {
+      props.removeSelected();
+    }
+  }
+
   componentDidMount() {
     const element = ReactDOM.findDOMNode(this.form);
 
@@ -24,14 +39,40 @@ class ProductCategoryFormPage extends PureComponent {
     history.push('/categoria-de-productos');
   };
 
-  onProductCategorySubmit = (values, dispatch) => {
-    const {
-      history,
-    } = this.props;
+  createProductCategory = (values, dispatch) => {
+    const { history } = this.props;
 
-    console.log(values);
-    if (Object.keys(values).length >= 2) {
-      dispatch(createProductCategory(history, values));
+    swal({
+      title: 'Se esta creando su categoria de producto',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(createProductCategoryAction(history, values));
+  }
+
+  updateProductCategory = (values, dispatch, id) => {
+    const { history } = this.props;
+
+    swal({
+      title: 'Se esta actualiazando su categoria de producto',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(updateProductCategoryAction(history, values, id));
+  }
+
+  onProductCategorySubmit = (values, dispatch) => {
+    const isFormValid = $(this.form).parsley().isValid();
+    const params = this.props.match.params;
+
+    if (isFormValid && !params.id) {
+      this.createProductCategory(values, dispatch);
+    } else if (isFormValid && params.id) {
+      this.updateProductCategory(values, dispatch, params.id);
     }
   }
 
@@ -60,7 +101,7 @@ class ProductCategoryFormPage extends PureComponent {
                     <FormGroup>
                       <ControlLabel>Descripción de la Categoría</ControlLabel>
                       <Field
-                        name="price"
+                        name="description"
                         component={CustomInput}
                         componentClass="textarea"
                         type="text"
@@ -89,8 +130,21 @@ class ProductCategoryFormPage extends PureComponent {
 
 ProductCategoryFormPage.propTypes = {
   history: shape({}).isRequired,
+  removeSelected: func.isRequired,
 }
 
-export default reduxForm({
-  form: 'productCategoryForm',
-})(ProductCategoryFormPage);
+const mapStateToProps = ({ productCategories: { selectedCategory } }) => ({
+  initialValues: selectedCategory.id ? selectedCategory : {},
+});
+
+const mapDispatchToProps = dispatch => ({
+  removeSelected: () => {
+    dispatch(clearSelected());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: 'productCategoryForm',
+  })(ProductCategoryFormPage)
+);
