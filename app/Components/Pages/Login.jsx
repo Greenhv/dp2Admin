@@ -90,7 +90,7 @@ class Login extends React.Component {
                             <div className="form-group has-feedback">
                                 <select name="domain" className="form-control" placeholder="Dominio" required="required">
                                     <option value="http://administracion.com">Administración</option>
-                                    <option value="http://waze.com">Waze</option>
+                                    <option value="http://200.16.7.150:8085">Waze</option>
                                     <option value="http://smartTV.com">SmartTV</option>
                                 </select>
                             </div>
