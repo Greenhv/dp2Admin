@@ -129,7 +129,9 @@ class Sidebar extends React.Component {
 
   routeActive(paths) {
     paths = Array.isArray(paths) ? paths : [paths];
-    if (paths.indexOf(this.props.location.pathname.replace("/", "")) > -1)
+    const pathname = this.props.location.pathname;
+
+    if (paths.indexOf(pathname.replace("/", "")) > -1)
       return true;
     return false;
   }
