@@ -25,7 +25,7 @@ class Login extends React.Component {
             });
 
             swal({
-                title: 'Ingresando...',
+                title: 'Identificando.',
                 text: 'Espere por favor',
                 onOpen: () => {
                     swal.showLoading()
@@ -37,9 +37,19 @@ class Login extends React.Component {
                 body: JSON.stringify(values),
             }).then(response => response.json())
             .then((data) => {
-                setCookie('authToken', data.session.access_token);
-                window.location.href = `${domain}?authToken=${data.session.access_token}`;
-                swal.close();
+                if (domain.indexOf('8086') >= 0) {
+                    setCookie('authToken', data.session.access_token);
+                }
+                swal({
+                    title: 'Identificado',
+                    text: 'Te redireccionaremos al dominio escogido',
+                    type: 'success',
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+                setTimeout(() => {
+                    window.location.replace(`${domain}?authToken=${data.session.access_token}`);
+                }, 1000);
             })
             .catch((error) => {
                 console.log(error);
@@ -89,7 +99,7 @@ class Login extends React.Component {
                             </div>
                             <div className="form-group has-feedback">
                                 <select name="domain" className="form-control" placeholder="Dominio" required="required">
-                                    <option value="http://administracion.com">Administración</option>
+                                    <option value="http://200.16.7.150:8086">Administración</option>
                                     <option value="http://200.16.7.150:8085">Waze</option>
                                     <option value="http://smartTV.com">SmartTV</option>
                                 </select>
