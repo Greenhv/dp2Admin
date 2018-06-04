@@ -56,3 +56,12 @@ export const setCookie = (name, value, expDays = 1, expDate = '') => {
 
   document.cookie = `${name}=${value};expires=${expDate || expDateWithDays.toUTCString()};path=/`;
 };
+
+export const eraseCookie = (name) => {
+  if (!name) {
+    console.warn('You must pass the first two parameters (name and value) of the cookie');
+    return;
+  }
+
+  document.cookie = `${name}=; Max-Age=-99999999;`;
+}
