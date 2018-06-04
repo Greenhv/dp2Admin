@@ -9,6 +9,7 @@ const SELECT = 'admin/products/SELECT';
 const EDIT = 'admin/products/EDIT';
 const DELETE = 'admin/products/DELETE';
 const ERROR = 'admin/products/ERROR';
+const CLEAR_SELECTED = 'admin/products/CLEAR_SELECTED';
 
 // Initial State
 const initialState = {
@@ -60,6 +61,11 @@ export default (state = initialState, action = {}) => {
         selectedProduct: state.products
           .filter(product => product.id === action.productId)[0],
       };
+    case CLEAR_SELECTED:
+      return {
+        ...state,
+        selectedProduct: {},
+      };
     case ERROR:
       return {
         ...state,
@@ -80,7 +86,11 @@ export const addProducts = products => ({
 export const addProduct = product => ({
   type: ADD_PRODUCT,
   product,
-})
+});
+
+export const clearSelected = () => ({
+  type: CLEAR_SELECTED,
+});
 
 export const selectProduct = productId => ({
   type: SELECT,
@@ -103,6 +113,52 @@ export const setError = (error) => ({
 
 // Side effects
 
+const showErrorMsg = (error) => {
+  console.log(error);
+  swal({
+    type: 'error',
+    title: 'Ocurrio un error',
+    text: 'Por favor vuelve a intentarlo en unos segundos',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+}
+
+export const deleteProductAction = id => dispatch => fetch(`${defaultUrl}/products/${id}`, {
+  method: 'DELETE',
+  headers: {
+    ...customHeaders,
+  },
+}).then(() => {
+  swal(
+    'Borrado!',
+    'El producto ha sido borrado.',
+    'success'
+  )
+  dispatch(deleteProduct(id));
+})
+.catch((error) => { showErrorMsg(error) });
+
+export const updateProduct = (history, values, id) => dispatch => fetch(`${defaultUrl}/products/${id}`, {
+  method: 'PUT',
+  body: JSON.stringify(values),
+  headers: {
+    ...customHeaders,
+  },
+}).then(() => {
+  swal({
+    type: 'success',
+    title: 'Producto actualizado',
+    text: 'En un momento se te redireccionara al listado de productos',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+  setTimeout(() => {
+    history.push('/productos');
+  }, 1500);
+})
+.catch((error) => { showErrorMsg(error) });
+
 export const createProduct = (history, values) => dispatch => fetch(`${defaultUrl}/products`, {
   method: 'POST',
   body: JSON.stringify(values),
@@ -112,14 +168,24 @@ export const createProduct = (history, values) => dispatch => fetch(`${defaultUr
 }).then(response => response.json())
 .then((data) => {
   dispatch(addProduct(data.product));
-  history.push('/productos');
-});
+  swal({
+    type: 'success',
+    title: 'Producto creado',
+    text: 'En un momento se te redireccionara al listado de productos',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+  setTimeout(() => {
+    history.push('/productos');
+  }, 1500);
+})
+.catch((error) => { showErrorMsg(error) });
 
 export const getProducts = () => dispatch => fetch(`${defaultUrl}/products`, {
   headers: {
     ...customHeaders
   },
 }).then(fetchStatusHandler)
-  .then(response => response.json())
-  .then(data => dispatch(addProducts(data.products)))
-  .catch(error => { dispatch(setError('Error al cargar los productos, recarga la pagina porfavor')); });
+.then(response => response.json())
+.then(data => dispatch(addProducts(data.products)))
+.catch(error => { dispatch(setError('Error al cargar los productos, recarga la pagina porfavor')); });

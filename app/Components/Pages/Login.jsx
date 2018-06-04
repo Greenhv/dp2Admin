@@ -49,6 +49,9 @@ class Login extends React.Component {
                     text: 'Vuelve a intentarlo en unos segundos',
                     timer: 2500,
                 });
+                this.setState({
+                    loading: false,
+                });
             })
         }
     }

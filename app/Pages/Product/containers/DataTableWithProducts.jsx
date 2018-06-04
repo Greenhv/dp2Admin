@@ -6,7 +6,7 @@ import { Button, Table } from "react-bootstrap";
 import {
   fetchProducts,
   selectProduct,
-  deleteProduct,
+  deleteProductAction,
   getProducts as requestProducst,
 } from 'Modules/products';
 import { transformToMoney, applyDiscount } from 'Utils/money';
@@ -24,7 +24,6 @@ class DataTableWithProducts extends PureComponent {
       getProducts
     } = props;
 
-    console.log('constructor!');
     getProducts();
   }
 
@@ -44,7 +43,7 @@ class DataTableWithProducts extends PureComponent {
       product.promotion ? applyDiscount(product.price, product.promotion.value) : '-',
       product.brand.name,
       product.image,
-      '',
+      `${product.id}`,
     ]);
   }
 
@@ -53,6 +52,8 @@ class DataTableWithProducts extends PureComponent {
       products,
       isLoadingProducts,
       productsError,
+      removeProduct,
+      editProduct,
     } = this.props;
 
     if (productsError) {
@@ -83,8 +84,8 @@ class DataTableWithProducts extends PureComponent {
               data={data}
               options={options}
               // viewAction={selectProduct}
-              deleteAction={deleteProduct}
-              editAction={selectProduct}
+              deleteAction={removeProduct}
+              editAction={editProduct}
             />
           ) : (
             <Table responsive striped hover>
@@ -104,7 +105,8 @@ DataTableWithProducts.propTypes = {
   isLoadingProducts: PropTypes.bool.isRequired,
   productsError: PropTypes.string.isRequired,
   getProducts: PropTypes.func.isRequired,
-  selectProduct: PropTypes.func.isRequired
+  editProduct: PropTypes.func.isRequired,
+  removeProduct: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ products: { products, isLoading, error } }) => ({
@@ -118,11 +120,25 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchProducts());
     dispatch(requestProducst());
   },
-  selectProduct: product => () => {
+  editProduct: product => () => {
     dispatch(selectProduct(product));
   },
-  deleteProduct: product => () => {
-    dispatch(deleteProduct(product));
+  removeProduct: product => () => {
+    swal({
+      title: 'Estas seguro?',
+      text: "No se podrá revertir este cambio",
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, deseo borrarlo',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteProductAction(product));
+      }
+    })
   }
 });
 

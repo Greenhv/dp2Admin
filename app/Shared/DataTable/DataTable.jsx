@@ -19,8 +19,9 @@ class DataTable extends PureComponent {
     const staticHeader = {
       name: 'Acciones',
       options: {
-        customRender: () => (
+        customRender: (index, value) => (
           <ActionsCell
+            id={value}
             viewAction={viewAction}
             deleteAction={deleteAction}
             editAction={editAction}
