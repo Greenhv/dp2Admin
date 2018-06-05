@@ -39,32 +39,32 @@ export default (state = initialState, action = {}) => {
     case ADD_ROLES:
       return {
         ...state,
-        products: [...action.roles],
+        roles: [...action.roles],
         isLoading: false,
         error: '',
       };
     case ADD_ROLE:
       return {
         ...state,
-        products: [...state.roles, action.role],
+        roles: [...state.roles, action.role],
         error: '',
       };
     case DELETE:
       return {
         ...state,
-        products: [...state.roles]
+        roles: [...state.roles]
           .filter(role => role.id !== action.roleId),
       };
     case SELECT:
       return {
         ...state,
-        selectedProduct: state.roles
+        selectedRole: state.roles
           .filter(role => role.id === action.roleId)[0],
       };
     case CLEAR_SELECTED:
       return {
         ...state,
-        selectedProduct: {},
+        selectedRole: {},
       };
     case ERROR:
       return {
