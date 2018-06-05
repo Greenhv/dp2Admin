@@ -22,7 +22,7 @@ const Root = ({ match, location }) => (
       </div>
     </h3>
     <Route exact path="/marcas" component={ListPage} />
-    <Route exact path="/nuevo" component={BrandFormPage} />
+    <Route exact path="/marcas/nuevo" component={BrandFormPage} />
   </ContentWrapper>
 );
 
