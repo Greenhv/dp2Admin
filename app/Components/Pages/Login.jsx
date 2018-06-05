@@ -48,7 +48,11 @@ class Login extends React.Component {
                     timer: 1000,
                 });
                 setTimeout(() => {
-                    window.location.replace(`${domain}?authToken=${data.session.access_token}`);
+                    if (domain.indexOf('8086') >= 0) {
+                        window.location.replace(`${domain}/`);
+                    } else {
+                        window.location.replace(`${domain}/login?authToken=${data.session.access_token}`);
+                    }
                 }, 1000);
             })
             .catch((error) => {

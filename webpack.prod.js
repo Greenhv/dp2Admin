@@ -30,7 +30,7 @@ module.exports = webpackMerge(commonConfig, {
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production'),
-                API_BASE_URL: JSON.stringify(process.env.API_BASE_URL || 'https://200.16.7.150:8083/api/v1'),
+                API_BASE_URL: JSON.stringify(process.env.API_BASE_URL || 'http://200.16.7.150:8083/api/v1'),
                 WP_BASE_HREF: JSON.stringify(process.env.WP_BASE_HREF || '/dist'),
                 DEFAULT_ACCSS_TOKEN: JSON.stringify(process.env.WP_BASE_HREF || 'uOANAxg2XiQ_yoOQQBxk4kiI58b8BsYu_iFm8mlSp8w')
             }
