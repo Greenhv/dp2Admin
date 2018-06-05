@@ -3,7 +3,7 @@ import {
   string,
 } from 'prop-types';
 
-// Product Type
+// Role Type
 
 export const roleType = shape({
   name: string,

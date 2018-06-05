@@ -167,7 +167,7 @@ export const createRole = (history, values) => dispatch => fetch(`${defaultUrl}/
   },
 }).then(response => response.json())
 .then((data) => {
-  dispatch(addProduct(data.rol));
+  dispatch(addRole(data.rol));
   swal({
     type: 'success',
     title: 'Rol creado',

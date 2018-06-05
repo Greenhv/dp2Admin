@@ -14,7 +14,7 @@ import Loader from 'Shared/Loader.jsx';
 import 'Components/Common/notify';
 import { roleType } from '../types';
 
-class DataTableWithProducts extends PureComponent {
+class DataTableWithRoles extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -75,7 +75,7 @@ class DataTableWithProducts extends PureComponent {
           ) : (
             <Table responsive striped hover>
               <tbody>
-                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+                <DataTableEmptyMsg colSpan={6}>No hay roles para mostrar</DataTableEmptyMsg>
               </tbody>
             </Table>
           )
@@ -85,7 +85,7 @@ class DataTableWithProducts extends PureComponent {
   }
 }
 
-DataTableWithProducts.propTypes = {
+DataTableWithRoles.propTypes = {
   roles: PropTypes.arrayOf(roleType).isRequired,
   isLoadingRoles: PropTypes.bool.isRequired,
   rolesError: PropTypes.string.isRequired,
@@ -106,6 +106,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  DataTableWithProducts
+  DataTableWithRoles
 );
 
