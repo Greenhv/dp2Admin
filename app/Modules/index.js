@@ -4,11 +4,13 @@ import products from './products';
 import productCategories from './productCategories';
 import stores from './stores';
 import storeCategories from './storeCategories';
+import brands from './brands';
 
 export default combineReducers({
   products,
   productCategories,
   stores,
   storeCategories,
+  brands,
   form,
 });
