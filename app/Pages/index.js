@@ -2,6 +2,7 @@ import ProductCategory from './ProductCategory/Root';
 import Product from './Product/Root';
 import Store from './Store/Root';
 import StoreCategory from './StoreCategory/Root';
+import Role from './Role/Root';
 
 const routes = [{
     component: ProductCategory,
@@ -22,6 +23,11 @@ const routes = [{
     component: Store,
     path: '/tiendas',
     label: 'Tiendas',
+  },
+  {
+    component: Role,
+    path: '/roles',
+    label: 'Roles',
   },
 ];
 
