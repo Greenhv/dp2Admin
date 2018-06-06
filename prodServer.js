@@ -3,7 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var cors = require('cors');
 var app = express();
-var port = process.env.PORT || 8086;
+var port = process.env.PORT || 3300;
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'dist')));

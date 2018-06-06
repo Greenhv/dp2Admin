@@ -40,28 +40,36 @@ class Login extends React.Component {
                 body: JSON.stringify(values),
             }).then(response => response.json())
             .then((data) => {
-                if (domain.indexOf('8086') >= 0) {
-                    setCookie('authToken', data.session.access_token);
-                }
-                swal({
-                    title: 'Identificado',
-                    text: 'Te redireccionaremos al dominio escogido',
-                    type: 'success',
-                    showConfirmButton: false,
-                    timer: 1000,
-                });
-                setTimeout(() => {
+                if (data.error) {
+                    swal({
+                        title: 'Error',
+                        text: 'El usuario o contraseña es invalido',
+                        type: 'error',
+                    });
+                } else {
                     if (domain.indexOf('8086') >= 0) {
-                        window.location.replace(`${domain}/`);
-                    } else {
-                        window.location.replace(`${domain}/login?authToken=${data.session.access_token}`);
+                        setCookie('authToken', data.session.access_token);
                     }
-                }, 1000);
+                    swal({
+                        title: 'Identificado',
+                        text: 'Te redireccionaremos al dominio escogido',
+                        type: 'success',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                    setTimeout(() => {
+                        if (domain.indexOf('8085') >= 0) {
+                            window.location.replace(`${domain}/login?authToken=${data.session.access_token}`);
+                        } else {
+                            window.location.replace(`${domain}/`);
+                        }
+                    }, 1000);
+                }
             })
             .catch((error) => {
                 console.log(error);
                 swal({
-                    type: 'error',
+                    type: 'Error',
                     title: 'Ocurrio un error en la identificación',
                     text: 'Vuelve a intentarlo en unos segundos',
                 });
@@ -107,7 +115,7 @@ class Login extends React.Component {
                                 <select name="domain" className="form-control" placeholder="Dominio" required="required">
                                     <option value="http://200.16.7.150:8086">Administración</option>
                                     <option value="http://200.16.7.150:8085">Waze</option>
-                                    <option value="http://smartTV.com">SmartTV</option>
+                                    <option value="https://web-dp2.herokuapp.com/app/dp2_lista_smarttv.php#/">SmartTV</option>
                                 </select>
                             </div>
                             <div className="clearfix">
