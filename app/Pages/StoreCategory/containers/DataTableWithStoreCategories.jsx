@@ -1,105 +1,91 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 
 import {
-  deleteStoreCategory,
-  fetchStoreCategories,
+  deleteStoreCategoryAction,
   selectStoreCategory,
+  fetchStoreCategories,
   getStoreCategories as requestStoreCategories
 } from "Modules/storeCategories";
-import { getNumber } from "Utils/randomizer";
-import DataTables from "Shared/DataTable.jsx";
+import DataTables from "Shared/DataTable";
 import DataTableEmptyMsg from "Shared/DataTableEmptyMsg.jsx";
 import Loader from "Shared/Loader.jsx";
 import "Components/Common/notify";
 import { storeCategoryType } from "../types";
 
 class DataTableWithStoreCategories extends PureComponent {
-  componentDidMount() {
-    const { getStoreCategories, storeCategories } = this.props;
+  constructor(props) {
+    super(props);
 
-    if (storeCategories.length < 1) {
-      getStoreCategories();
-    }
+    const {
+      getStoreCategories
+    } = props;
+
+    getStoreCategories();
   }
+
 
   openImgModal = () => {
     console.log("Modal");
   };
 
-  renderElements = () => {
+  parseStoreCategories = () => {
     const {
       storeCategories,
-      selectStoreCategories,
-      deleteStoreCategory
     } = this.props;
 
-    return storeCategories.map(storeCategory => (
-      <tr key={getNumber()}>
-        <td>{storeCategory.name}</td>
-        <td>{storeCategory.description}</td>
-        <td>
-          <Button onClick={this.openImgModal}>
-            <em className="fa fa-image" />
-          </Button>
-          <Button
-            onClick={
-              selectStoreCategory && selectStoreCategory(storeCategory.id)
-            }
-          >
-            <em className="fa fa-eye" />
-          </Button>
-          <Button
-            onClick={
-              selectStoreCategory && selectStoreCategory(storeCategory.id)
-            }
-          >
-            <em className="fa fa-pencil" />
-          </Button>
-          <Button
-            onClick={
-              deleteStoreCategory && deleteStoreCategory(storeCategory.id)
-            }
-          >
-            <em className="fa fa-remove" />
-          </Button>
-        </td>
-      </tr>
-    ));
-  };
+    return storeCategories.map(storeCategory => [
+      storeCategory.name,
+      storeCategory.description,
+      `${storeCategory.id}`,
+    ]);
+  }
 
   render() {
     const {
       storeCategories,
       isLoadingStoreCategories,
-      storeCategoriesError
+      storeCategoriesError,
+      selectStoreCategory,
+      deleteStoreCategoryAction,
     } = this.props;
 
     if (storeCategoriesError) {
       $.notify(storeCategoriesError, "danger");
     }
 
+    const headers = [
+      { name: 'Nombre' },
+      { name: 'Descripción' },
+    ];
+    const data = this.parseStoreCategories();
+    const options = {
+      selectableRows: false,
+    };
+
+    console.log(data);
     return (
       <div>
         {isLoadingStoreCategories ? (
           <Loader />
         ) : (
-          <DataTables
-            headers={[
-              { key: "name", title: "Nombre" },
-              { key: "description", title: "Descripcion" }
-            ]}
-          >
-            {storeCategories.length > 0 ? (
-              this.renderElements()
-            ) : (
-              <DataTableEmptyMsg colSpan={6}>
-                No hay categorias para mostrar
-              </DataTableEmptyMsg>
-            )}
-          </DataTables>
+          storeCategories.length > 0 ? (
+            <DataTables
+              headers={headers}
+              data={data}
+              options={options}
+              editAction={selectStoreCategory}
+              deleteAction={deleteStoreCategoryAction}
+            />
+          ) : (
+            <Table responsive striped hover>
+              <tbody>
+                <DataTableEmptyMsg colSpan={6}>No hay categorias de tiendas para mostrar</DataTableEmptyMsg>
+              </tbody>
+            </Table>
+          )
         )}
       </div>
     );
@@ -110,7 +96,7 @@ DataTableWithStoreCategories.propTypes = {
   storeCategories: PropTypes.arrayOf(storeCategoryType).isRequired,
   isLoadingStoreCategories: PropTypes.bool.isRequired,
   selectStoreCategory: PropTypes.func.isRequired,
-  deleteStoreCategory: PropTypes.func.isRequired,
+  deleteStoreCategoryAction: PropTypes.func.isRequired,
   getStoreCategories: PropTypes.func.isRequired
 };
 
@@ -127,11 +113,25 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchStoreCategories());
     dispatch(requestStoreCategories());
   },
-  selectStoreCategories: category => () => {
-    dispatch(selectStoreCategories(category));
+  selectStoreCategory: category => () => {
+    dispatch(selectStoreCategory(category));
   },
-  deleteStoreCategories: category => () => {
-    dispatch(deleteStoreCategories(category));
+  deleteStoreCategoryAction: category => () => {
+    swal({
+      title: 'Estas seguro?',
+      text: "No se podrá revertir este cambio",
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, deseo borrarlo',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteStoreCategoryAction(category));
+      }
+    })
   }
 });
 

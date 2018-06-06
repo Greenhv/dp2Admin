@@ -5,12 +5,14 @@ import productCategories from './productCategories';
 import stores from './stores';
 import storeCategories from './storeCategories';
 import promotions from './promotions';
+import roles from './roles';
 
 export default combineReducers({
   products,
   productCategories,
   stores,
   storeCategories,
-  promotions
-  form,
+  promotions,
+  roles,
+  form, // This should be always the last item
 });

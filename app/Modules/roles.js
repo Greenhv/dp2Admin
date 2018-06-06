@@ -2,19 +2,19 @@ import fetchStatusHandler from 'Utils/fetchStatusHandler';
 import { getCookie } from 'Utils/cookies';
 
 // Actions
-const FETCH = 'admin/products/FETCH';
-const ADD_PRODUCTS = 'admin/products/ADD_PRODUCTS';
-const ADD_PRODUCT = 'admin/products/ADD_PRODUCT';
-const SELECT = 'admin/products/SELECT';
-const EDIT = 'admin/products/EDIT';
-const DELETE = 'admin/products/DELETE';
-const ERROR = 'admin/products/ERROR';
-const CLEAR_SELECTED = 'admin/products/CLEAR_SELECTED';
+const FETCH = 'admin/roles/FETCH';
+const ADD_ROLES = 'admin/roles/ADD_ROLES';
+const ADD_ROLE = 'admin/roles/ADD_ROLE';
+const SELECT = 'admin/roles/SELECT';
+const EDIT = 'admin/roles/EDIT';
+const DELETE = 'admin/roles/DELETE';
+const ERROR = 'admin/roles/ERROR';
+const CLEAR_SELECTED = 'admin/roles/CLEAR_SELECTED';
 
 // Initial State
 const initialState = {
-  products: [],
-  selectedProduct: {},
+  roles: [],
+  selectedRole: {},
   isLoading: false,
   error: '',
   isModalOpen: true,
@@ -36,35 +36,35 @@ export default (state = initialState, action = {}) => {
         ...state,
         isLoading: true,
       };
-    case ADD_PRODUCTS:
+    case ADD_ROLES:
       return {
         ...state,
-        products: [...action.products],
+        roles: [...action.roles],
         isLoading: false,
         error: '',
       };
-    case ADD_PRODUCT:
+    case ADD_ROLE:
       return {
         ...state,
-        products: [...state.products, action.product],
+        roles: [...state.roles, action.role],
         error: '',
       };
     case DELETE:
       return {
         ...state,
-        products: [...state.products]
-          .filter(product => product.id !== action.productId),
+        roles: [...state.roles]
+          .filter(role => role.id !== action.roleId),
       };
     case SELECT:
       return {
         ...state,
-        selectedProduct: state.products
-          .filter(product => product.id === action.productId)[0],
+        selectedRole: state.roles
+          .filter(role => role.id === action.roleId)[0],
       };
     case CLEAR_SELECTED:
       return {
         ...state,
-        selectedProduct: {},
+        selectedRole: {},
       };
     case ERROR:
       return {
@@ -78,31 +78,31 @@ export default (state = initialState, action = {}) => {
 
 // Action Creators
 
-export const addProducts = products => ({
-  type: ADD_PRODUCTS,
-  products,
+export const addRoles = roles => ({
+  type: ADD_ROLES,
+  roles,
 });
 
-export const addProduct = product => ({
-  type: ADD_PRODUCT,
-  product,
+export const addRole = role => ({
+  type: ADD_ROLE,
+  role,
 });
 
 export const clearSelected = () => ({
   type: CLEAR_SELECTED,
 });
 
-export const selectProduct = productId => ({
+export const selectRole = roleId => ({
   type: SELECT,
-  productId,
+  roleId,
 });
 
-export const deleteProduct = productId => ({
+export const deleteRole = roleId => ({
   type: DELETE,
-  productId,
+  roleId,
 });
 
-export const fetchProducts = () => ({
+export const fetchRoles = () => ({
   type: FETCH,
 });
 
@@ -124,7 +124,7 @@ const showErrorMsg = (error) => {
   });
 }
 
-export const deleteProductAction = id => dispatch => fetch(`${defaultUrl}/products/${id}`, {
+export const deleteRoleAction = id => dispatch => fetch(`${defaultUrl}/roles/${id}`, {
   method: 'DELETE',
   headers: {
     ...customHeaders,
@@ -132,14 +132,14 @@ export const deleteProductAction = id => dispatch => fetch(`${defaultUrl}/produc
 }).then(() => {
   swal(
     'Borrado!',
-    'El producto ha sido borrado.',
+    'El rol ha sido borrado.',
     'success'
   )
-  dispatch(deleteProduct(id));
+  dispatch(deleteRol(id));
 })
 .catch((error) => { showErrorMsg(error) });
 
-export const updateProduct = (history, values, id) => dispatch => fetch(`${defaultUrl}/products/${id}`, {
+export const updateRol = (history, values, id) => dispatch => fetch(`${defaultUrl}/roles/${id}`, {
   method: 'PUT',
   body: JSON.stringify(values),
   headers: {
@@ -148,18 +148,18 @@ export const updateProduct = (history, values, id) => dispatch => fetch(`${defau
 }).then(() => {
   swal({
     type: 'success',
-    title: 'Producto actualizado',
-    text: 'En un momento se te redireccionara al listado de productos',
+    title: 'Rol actualizado',
+    text: 'En un momento se te redireccionara al listado de roles',
     showConfirmButton: false,
     timer: 1500,
   });
   setTimeout(() => {
-    history.push('/productos');
+    history.push('/roles');
   }, 1500);
 })
 .catch((error) => { showErrorMsg(error) });
 
-export const createProduct = (history, values) => dispatch => fetch(`${defaultUrl}/products`, {
+export const createRole = (history, values) => dispatch => fetch(`${defaultUrl}/roles`, {
   method: 'POST',
   body: JSON.stringify(values),
   headers: {
@@ -167,25 +167,25 @@ export const createProduct = (history, values) => dispatch => fetch(`${defaultUr
   },
 }).then(response => response.json())
 .then((data) => {
-  dispatch(addProduct(data.product));
+  dispatch(addRole(data.rol));
   swal({
     type: 'success',
-    title: 'Producto creado',
-    text: 'En un momento se te redireccionara al listado de productos',
+    title: 'Rol creado',
+    text: 'En un momento se te redireccionara al listado de roles',
     showConfirmButton: false,
     timer: 1500,
   });
   setTimeout(() => {
-    history.push('/productos');
+    history.push('/roles');
   }, 1500);
 })
 .catch((error) => { showErrorMsg(error) });
 
-export const getProducts = () => dispatch => fetch(`${defaultUrl}/products`, {
+export const getRoles = () => dispatch => fetch(`${defaultUrl}/roles`, {
   headers: {
     ...customHeaders
   },
 }).then(fetchStatusHandler)
 .then(response => response.json())
-.then(data => dispatch(addProducts(data.products)))
-.catch(error => { dispatch(setError('Error al cargar los productos, recarga la pagina porfavor')); });
+.then(data => dispatch(addRoles(data.roles)))
+.catch(error => { dispatch(setError('Error al cargar los roles, recarga la pagina porfavor')); });

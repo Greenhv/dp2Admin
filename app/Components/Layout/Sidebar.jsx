@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import pubsub from "pubsub-js";
-import { Collapse } from "react-bootstrap";
+import { Collapse, Button } from "react-bootstrap";
+import { eraseCookie } from 'Utils/cookies';
 import SidebarRun from "./Sidebar.run";
 import pages from "Pages";
 
@@ -129,7 +130,9 @@ class Sidebar extends React.Component {
 
   routeActive(paths) {
     paths = Array.isArray(paths) ? paths : [paths];
-    if (paths.indexOf(this.props.location.pathname.replace("/", "")) > -1)
+    const pathname = this.props.location.pathname;
+
+    if (paths.indexOf(pathname.replace("/", "")) > -1)
       return true;
     return false;
   }
@@ -145,6 +148,11 @@ class Sidebar extends React.Component {
         [stateName]: !this.state.collapse[stateName]
       }
     });
+  }
+
+  closeSession = () => {
+    eraseCookie('authToken');
+    window.location.reload();
   }
 
   render() {
@@ -164,7 +172,7 @@ class Sidebar extends React.Component {
                       <div className="user-block-picture">
                         <div className="user-block-status">
                           <img
-                            src="img/user/02.jpg"
+                            src="https://designdroide.com/images/abstract-user-icon-4.svg"
                             alt="Avatar"
                             width="60"
                             height="60"
@@ -178,12 +186,15 @@ class Sidebar extends React.Component {
                         <span className="user-block-name">Hola, Gustavo</span>
                         <span className="user-block-role">Administrador</span>
                       </div>
+                      <div style={{ textAlign: 'center', marginTop: 10 }}>
+                        <Button onClick={this.closeSession} bsStyle="danger">Cerrar Sesión</Button>
+                      </div>
                     </div>
                   </div>
                 </Collapse>
               </li>
               {pages.map((page, id) => (
-                <li key={id} className={this.routeActive(page.path) ? 'active' : ''}>
+                <li key={id} className={this.routeActive(page.path.replace('/', '')) ? 'active' : ''}>
                   <Link to={page.path}>{page.label}</Link>
                 </li>
               ))}

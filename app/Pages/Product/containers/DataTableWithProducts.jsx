@@ -1,28 +1,29 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 
 import {
   fetchProducts,
   selectProduct,
-  deleteProduct,
+  deleteProductAction,
   getProducts as requestProducst,
 } from 'Modules/products';
-import { getNumber } from 'Utils/randomizer';
 import { transformToMoney, applyDiscount } from 'Utils/money';
-import DataTables from 'Shared/DataTable.jsx';
-import Loader from 'Shared/Loader.jsx';
+import DataTables from 'Shared/DataTable';
 import DataTableEmptyMsg from 'Shared/DataTableEmptyMsg.jsx';
+import Loader from 'Shared/Loader.jsx';
 import 'Components/Common/notify';
 import { productType } from '../types';
 
 class DataTableWithProducts extends PureComponent {
   constructor(props) {
     super(props);
-    const { getProducts } = props;
 
-    console.log('constructor!');
+    const {
+      getProducts
+    } = props;
+
     getProducts();
   }
 
@@ -30,38 +31,20 @@ class DataTableWithProducts extends PureComponent {
     console.log("Modal!");
   };
 
-  renderElements = () => {
+  parseProducts = () => {
     const {
       products,
-      selectProduct,
-      deleteProduct,
     } = this.props;
 
-    return products.map(product => (
-      <tr key={getNumber()}>
-        <td>{ product.name }</td>
-        <td>{ transformToMoney(product.price) }</td>
-        <td>{ product.promotion.value }</td>
-        <td>{ product.promotion ? applyDiscount(product.price, product.promotion.value) : '-' }</td>
-        <td>{ product.brand.name }</td>
-        <td>
-          <Button onClick={this.openImgModal}>
-            <em className="fa fa-image"></em>
-          </Button>
-        </td>
-        <td>
-          <Button onClick={selectProduct && selectProduct(product.id)}>
-            <em className="fa fa-eye"></em>
-          </Button>
-          <Button onClick={selectProduct && selectProduct(product.id)}>
-            <em className="fa fa-pencil"></em>
-          </Button>
-          <Button onClick={deleteProduct && deleteProduct(product.id)}>
-            <em className="fa fa-remove"></em>
-          </Button>
-        </td>
-      </tr>
-    ));
+    return products.map(product => [
+      product.name,
+      transformToMoney(product.price),
+      product.promotion ? product.promotion.value : '-',
+      product.promotion ? applyDiscount(product.price, product.promotion.value) : '-',
+      product.brand.name,
+      product.image,
+      `${product.id}`,
+    ]);
   }
 
   render() {
@@ -69,31 +52,48 @@ class DataTableWithProducts extends PureComponent {
       products,
       isLoadingProducts,
       productsError,
+      removeProduct,
+      editProduct,
     } = this.props;
 
     if (productsError) {
       $.notify(productsError, "danger");
     }
 
+    const headers = [
+      { name: 'Nombre' },
+      { name: 'Precio de Lista' },
+      { name: 'Descuento' },
+      { name: 'Precio Neto' },
+      { name: 'Marca' },
+      { name: 'Imagen' },
+    ];
+    const data = this.parseProducts();
+    const options = {
+      selectableRows: false,
+    };
+
     return (
       <div>
         {isLoadingProducts ? (
           <Loader />
         ) : (
-          <DataTables
-            headers={[
-              { key: "name", title: "Nombre" },
-              { key: "price", title: "Precio de Lista" },
-              { key: "discount", title: "Descuento" },
-              { key: "realPrice", title: "Precio Neto" },
-              { key: "brand", title: "Marca" },
-              { key: "img", title: "Imagen" }
-            ]}
-          >
-            { products.length > 0 ? this.renderElements() : (
-              <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
-            ) }
-          </DataTables>
+          products.length > 0 ? (
+            <DataTables
+              headers={headers}
+              data={data}
+              options={options}
+              // viewAction={selectProduct}
+              deleteAction={removeProduct}
+              editAction={editProduct}
+            />
+          ) : (
+            <Table responsive striped hover>
+              <tbody>
+                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+              </tbody>
+            </Table>
+          )
         )}
       </div>
     );
@@ -105,7 +105,8 @@ DataTableWithProducts.propTypes = {
   isLoadingProducts: PropTypes.bool.isRequired,
   productsError: PropTypes.string.isRequired,
   getProducts: PropTypes.func.isRequired,
-  selectProduct: PropTypes.func.isRequired
+  editProduct: PropTypes.func.isRequired,
+  removeProduct: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ products: { products, isLoading, error } }) => ({
@@ -119,11 +120,25 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchProducts());
     dispatch(requestProducst());
   },
-  selectProduct: product => () => {
+  editProduct: product => () => {
     dispatch(selectProduct(product));
   },
-  deleteProduct: product => () => {
-    dispatch(deleteProduct(product));
+  removeProduct: product => () => {
+    swal({
+      title: 'Estas seguro?',
+      text: "No se podrá revertir este cambio",
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, deseo borrarlo',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteProductAction(product));
+      }
+    })
   }
 });
 

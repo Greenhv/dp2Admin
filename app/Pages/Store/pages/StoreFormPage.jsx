@@ -12,16 +12,30 @@ import {
   Label,
   Input
 } from "react-bootstrap";
-import { getStoreCategories as requestCategories } from "Modules/storeCategories";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
-import { createStore } from "Modules/stores";
+import { getStoreCategories as requestCategories } from "Modules/storeCategories";
+import {
+  createStore as createStoreAction,
+  clearSelected,
+  updateStore as updateStoreAction,
+} from "Modules/stores";
 import { storeCategoryType } from "Pages/StoreCategory/types";
 
 class StoreFormPage extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    const params = props.match.params;
+
+    if (Object.keys(params).length < 1) {
+      props.removeSelected();
+    }
+  }
+
   componentWillMount() {
     const { getStoreCategories } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
@@ -35,11 +49,40 @@ class StoreFormPage extends PureComponent {
     history.push("/tiendas");
   };
 
-  onStoreSubmit = (values, dispatch) => {
+  createStore = (values, dispatch) => {
     const { history } = this.props;
 
-    if (Object.keys(values).length >= 9) {
-      dispatch(createStore(history, values));
+    swal({
+      title: 'Se esta creando su tienda',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(createStoreAction(history, values));
+  }
+
+  updateStore = (values, dispatch, id) => {
+    const { history } = this.props;
+
+    swal({
+      title: 'Se esta actualiazando su tienda',
+      text: 'Espere por favor',
+      onOpen: () => {
+          swal.showLoading()
+      }
+    });
+    dispatch(updateStoreAction(history, values, id));
+  }
+
+  onStoreSubmit = (values, dispatch) => {
+    const isFormValid = $(this.form).parsley().isValid();
+    const params = this.props.match.params;
+
+    if (isFormValid && !params.id) {
+      this.createStore(values, dispatch);
+    } else if (isFormValid && params.id) {
+      this.updateStore(values, dispatch, params.id);
     }
   };
 
@@ -159,17 +202,22 @@ StoreFormPage.defaultProps = {
 StoreFormPage.propTypes = {
   history: shape({}).isRequired,
   storeCategories: arrayOf(storeCategoryType),
-  getStoreCategories: func.isRequired
+  getStoreCategories: func.isRequired,
+  removeSelected: func.isRequired,
 };
 
-const mapStateToProps = ({ storeCategories: { storeCategories } }) => ({
-  storeCategories
+const mapStateToProps = ({ stores: { selectedStore }, storeCategories: { storeCategories } }) => ({
+  storeCategories,
+  initialValues: selectedStore.id ? selectedStore : {},
 });
 
 const mapDispatchToProps = dispatch => ({
   getStoreCategories: () => {
     dispatch(requestCategories());
-  }
+  },
+  removeSelected: () => {
+    dispatch(clearSelected());
+  },
 });
 
 export default connect(

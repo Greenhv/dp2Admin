@@ -1,4 +1,5 @@
 import fetchStatusHandler from 'Utils/fetchStatusHandler';
+import { getCookie } from 'Utils/cookies';
 
 // Actions
 const FETCH = 'admin/productCategories/FETCH';
@@ -8,6 +9,7 @@ const SELECT = 'admin/productCategories/SELECT';
 const EDIT = 'admin/productCategories/EDIT';
 const DELETE = 'admin/productCategories/DELETE';
 const ERROR = 'admin/productCategories/ERROR';
+const CLEAR_SELECTED = 'admin/productCategories/CLEAR_SELECTED';
 
 // Initial State
 const initialState = {
@@ -21,7 +23,7 @@ const initialState = {
 // Reducer
 
 const defaultUrl = process.env.API_BASE_URL;
-const auth = process.env.DEFAULT_ACCSS_TOKEN;
+const auth = getCookie('authToken');
 const customHeaders = {
   'Authorization': auth,
   'content-type': 'application/json',
@@ -60,6 +62,11 @@ export default (state = initialState, action = {}) => {
         selectedCategory: state.productCategories
           .filter(category => category.id === action.categoryId)[0],
       };
+    case CLEAR_SELECTED:
+      return {
+        ...state,
+        selectedCategory: {},
+      };
     case ERROR:
       return {
         ...state,
@@ -87,6 +94,10 @@ export const selectProductCategories = categoryId => ({
   categoryId,
 });
 
+export const clearSelected = () => ({
+  type: CLEAR_SELECTED,
+});
+
 export const deleteProductCategories = categoryId => ({
   type: DELETE,
   categoryId,
@@ -103,17 +114,73 @@ export const setError = (error) => ({
 
 // Side effects
 
-export const createProductCategory = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/product_categories`, {
+const showErrorMsg = (error) => {
+  console.log(error);
+  swal({
+    type: 'error',
+    title: 'Ocurrio un error',
+    text: 'Por favor vuelve a intentarlo en unos segundos',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+};
+
+export const deleteProductCategoryAction = id => dispatch => fetch(`${defaultUrl}/product_categories/${id}`, {
+  method: 'DELETE',
+  headers: {
+    ...customHeaders,
+  },
+}).then(() => {
+  dispatch(deleteProductCategories(id));
+  swal(
+    'Borrada!',
+    'La categoria de producto ha sido borrada.',
+    'success'
+  );
+})
+.catch((error) => { showErrorMsg(error) });
+
+export const updateProductCategory = (history, values, id) => dispatch => fetch(`${defaultUrl}/product_categories/${id}`, {
+  method: 'PUT',
+  body: JSON.stringify(values), 
+  headers: {
+    ...customHeaders
+  },
+}).then(() => {
+  swal({
+    type: 'success',
+    title: 'Categoria de producto actualizada',
+    text: 'En un momento se te redireccionara al listado de categorias de producto',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+  setTimeout(() => {
+    history.push('/categoria-de-productos');
+  }, 1500);
+})
+.catch((error) => { showErrorMsg(error) });
+
+export const createProductCategory = (history, values) => dispatch => fetch(`${defaultUrl}/product_categories`, {
   method: 'POST',
   body: JSON.stringify(values), 
   headers: {
     ...customHeaders
   },
 }).then(response => response.json())
-  .then((data) => {
-    dispatch(addProductCategory(data.product_category));
-    history.push('/categoria-de-productos');
+.then((data) => {
+  dispatch(addProductCategory(data.product_category));
+  swal({
+    type: 'success',
+    title: 'Categoria de producto creada',
+    text: 'En un momento se te redireccionara al listado de categorias de producto',
+    showConfirmButton: false,
+    timer: 1500,
   });
+  setTimeout(() => {
+    history.push('/categoria-de-productos');
+  }, 1500);
+})
+.catch((error) => { showErrorMsg(error) });
 
 export const getProductCategories = () => dispatch => fetch(`${defaultUrl}/product_categories`, {
   headers: {
