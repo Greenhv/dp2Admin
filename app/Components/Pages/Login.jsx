@@ -34,6 +34,9 @@ class Login extends React.Component {
 
             fetch(`${process.env.API_BASE_URL}/sessions`, {
                 method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                },
                 body: JSON.stringify(values),
             }).then(response => response.json())
             .then((data) => {
