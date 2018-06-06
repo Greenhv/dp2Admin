@@ -59,7 +59,7 @@ class Login extends React.Component {
                     });
                     setTimeout(() => {
                         if (domain.indexOf('8085') >= 0) {
-                            window.location.replace(`${domain}/login?authToken=${data.session.access_token}`);
+                            window.location.replace(`${domain}/login?token=${data.session.access_token}`);
                         } else {
                             window.location.replace(`${domain}/`);
                         }
