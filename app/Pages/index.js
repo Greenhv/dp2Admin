@@ -3,6 +3,7 @@ import Product from './Product/Root';
 import Store from './Store/Root';
 import StoreCategory from './StoreCategory/Root';
 import Role from './Role/Root';
+import Promotion from './Promotion/Root'
 
 const routes = [{
     component: ProductCategory,
@@ -29,6 +30,11 @@ const routes = [{
     path: '/roles',
     label: 'Roles',
   },
+  {
+    component: Promotion,
+    path: '/promotions',
+    label: 'Promociones'
+  }
 ];
 
 export default routes;
