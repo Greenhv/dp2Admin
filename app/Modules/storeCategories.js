@@ -190,6 +190,5 @@ export const getStoreCategories = () => dispatch => fetch(`${defaultUrl}/store_c
 .then(response => response.json())
 .then(data => dispatch(addStoreCategories(data.store_categories)))
 .catch(error => {
-  console.log(error);
   dispatch(setError('Error al cargar las categorias, recarga la pagina porfavor'));
 });

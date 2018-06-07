@@ -51,6 +51,7 @@ class DataTableWithPromotions extends PureComponent {
       isLoadingPromotions,
       promotionsError,
       removePromotion,
+      selectPromotion,
       editPromotion,
     } = this.props;
 
@@ -101,6 +102,7 @@ DataTableWithPromotions.propTypes = {
   promotions: PropTypes.arrayOf(promotionType).isRequired,
   isLoadingPromotions: PropTypes.bool.isRequired,
   promotionsError: PropTypes.string.isRequired,
+  selectPromotion: PropTypes.func.isRequired,
   getPromotions: PropTypes.func.isRequired,
   editPromotion: PropTypes.func.isRequired,
   removePromotion: PropTypes.func.isRequired,

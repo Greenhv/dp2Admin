@@ -26,7 +26,6 @@ import {
 } from "Modules/promotions";
 import { storeType } from "Pages/Store/types";
 import { promotionType } from "Pages/Promotion/types";
-import { renderDateTimePicker } from "../../../Shared/DateTimePicker";
 
 class PromotionFormPage extends PureComponent {
   constructor(props) {
@@ -114,6 +113,7 @@ class PromotionFormPage extends PureComponent {
                       component={renderDateTimePicker}
                     />
                   </FormGroup>
+                  <FormGroup>
                   <ControlLabel>Fecha de fin</ControlLabel>
                     <Field
                       name="final_date"
@@ -121,6 +121,7 @@ class PromotionFormPage extends PureComponent {
                       component={renderDateTimePicker}
                     />
                   </FormGroup>
+                  <FormGroup>
                   <ControlLabel>Descuento</ControlLabel>
                     <Field
                       name="value"

@@ -10,6 +10,7 @@ const SELECT = 'admin/promotions/SELECT';
 const EDIT = 'admin/promotions/EDIT';
 const DELETE = 'admin/promotions/DELETE';
 const ERROR = 'admin/promotions/ERROR';
+const CLEAR_SELECTED = 'admin/promotions/CLEAR_SELECTED'
 
 const initialState = {
   promotions: [],
@@ -26,10 +27,7 @@ const auth = getCookie('authToken');
 const customHeaders = {
   'Authorization': auth,
   'content-type': 'application/json',
-}
-
-
-
+};
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
@@ -49,6 +47,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         promotions: [...state.promotions, action.promotion],
+        isLoading: false,
         error: '',
       };
     case DELETE:
@@ -67,7 +66,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         selectedPromotion: {},
-      }
+      };
     case ERROR:
       return {
         ...state,
@@ -94,7 +93,7 @@ export const clearSelected = () => ({
   type: CLEAR_SELECTED,
 });
 
-export const selectedPromotion = promotionId => ({
+export const selectPromotion = promotionId => ({
   type: SELECT,
   promotionId,
 });

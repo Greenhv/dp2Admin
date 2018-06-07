@@ -8,6 +8,7 @@ import ContentWrapper from "Components/Layout/ContentWrapper";
 import ErrorHandler from "Shared/ErrorHandler";
 import ListPage from "./pages/ListPage";
 import PromotionFormPage from "./pages/PromotionFormPage";
+import promotions from "../../Modules/promotions";
 
 const Root = ({ match, location }) => (
   <ContentWrapper>
@@ -25,6 +26,16 @@ const Root = ({ match, location }) => (
       exact
       path="/promociones"
       component={ListPage}
+    />
+    <Route
+      exact
+      path="/promociones/nuevo"
+      component={PromotionFormPage}
+    />
+    <Route
+      exact
+      path="/promociones/editar/:id"
+      component={PromotionFormPage}
     />
   </ContentWrapper>
 );
