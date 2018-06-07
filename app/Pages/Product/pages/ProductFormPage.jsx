@@ -17,6 +17,7 @@ import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
+import { getBrands as requestBrands } from "Modules/brands";
 import { getProductCategories as requestCategories } from "Modules/productCategories";
 import {
   createProduct as createProductAction,
@@ -25,6 +26,7 @@ import {
 } from "Modules/products";
 import { productCategoryType } from "Pages/ProductCategory/types";
 import { productType } from "Pages/Product/types";
+import { brandType } from "Pages/Brand/types";
 
 class ProductFormPage extends PureComponent {
   constructor(props) {
@@ -38,9 +40,10 @@ class ProductFormPage extends PureComponent {
   }
 
   componentWillMount() {
-    const { getProductCategories } = this.props;
+    const { getProductCategories, getBrands } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
 
+    getBrands();
     getProductCategories();
     $(element).parsley();
   }
@@ -136,10 +139,12 @@ class ProductFormPage extends PureComponent {
                       component={Select}
                       props={{
                         placeholder: "Seleccione una marca",
-                        options: [
-                          { value: "1", label: "Marca 1" },
-                          { value: "2", label: "Marca 2" }
-                        ],
+                        options: this.props.brands.map(
+                          brand => ({
+                            value: brand.id,
+                            label: brand.name,
+                          })
+                        ),
                         required: "required"
                       }}
                     />
@@ -154,7 +159,7 @@ class ProductFormPage extends PureComponent {
                         options: this.props.productCategories.map(
                           productCategory => ({
                             value: productCategory.id,
-                            label: productCategory.name
+                            label: productCategory.name,
                           })
                         ),
                         required: "required"
@@ -182,17 +187,21 @@ class ProductFormPage extends PureComponent {
 }
 
 ProductFormPage.defaultProps = {
-  productCategories: []
+  productCategories: [],
+  brands: [],
 };
 
 ProductFormPage.propTypes = {
   history: shape({}).isRequired,
   productCategories: arrayOf(productCategoryType),
+  brands: arrayOf(brandType),
+  getBrands: func.isRequired,
   getProductCategories: func.isRequired,
   removeSelected: func.isRequired,
 };
 
-const mapStateToProps = ({ products: { selectedProduct }, productCategories: { productCategories }}) => ({
+const mapStateToProps = ({ products: { selectedProduct }, productCategories: { productCategories }, brands: { brands }}) => ({
+  brands,
   productCategories,
   initialValues: selectedProduct.id ? {
     ...selectedProduct,
@@ -204,6 +213,9 @@ const mapStateToProps = ({ products: { selectedProduct }, productCategories: { p
 const mapDispatchToProps = dispatch => ({
   getProductCategories: () => {
     dispatch(requestCategories())
+  },
+  getBrands: () => {
+    dispatch(requestBrands())
   },
   removeSelected: () => {
     dispatch(clearSelected());
