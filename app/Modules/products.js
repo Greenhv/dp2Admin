@@ -10,6 +10,7 @@ const EDIT = 'admin/products/EDIT';
 const DELETE = 'admin/products/DELETE';
 const ERROR = 'admin/products/ERROR';
 const CLEAR_SELECTED = 'admin/products/CLEAR_SELECTED';
+const DISPLAY_IMAGE = 'admin/products/DISPLAY_IMAGE';
 
 // Initial State
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   isLoading: false,
   error: '',
   isModalOpen: true,
+  productImage: '',
 };
 
 // Reducer
@@ -71,6 +73,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         error: action.error,
       };
+    case DISPLAY_IMAGE:
+      return {
+        ...state,
+        productImage: action.img,
+      };
     default:
       return state;
   }
@@ -109,6 +116,11 @@ export const fetchProducts = () => ({
 export const setError = (error) => ({
   type: ERROR,
   error,
+});
+
+export const displayImage = (img) => ({
+  type: DISPLAY_IMAGE,
+  img,
 });
 
 // Side effects
