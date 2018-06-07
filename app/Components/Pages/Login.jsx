@@ -47,7 +47,7 @@ class Login extends React.Component {
                         type: 'error',
                     });
                 } else {
-                    if (domain.indexOf('8086') >= 0) {
+                    if (domain.indexOf('8087') >= 0) {
                         setCookie('authToken', data.session.access_token);
                     }
                     swal({
@@ -113,7 +113,7 @@ class Login extends React.Component {
                             </div>
                             <div className="form-group has-feedback">
                                 <select name="domain" className="form-control" placeholder="Dominio" required="required">
-                                    <option value="http://200.16.7.150:8086">Administración</option>
+                                    <option value="http://200.16.7.150:8087">Administración</option>
                                     <option value="http://200.16.7.150:8085">Waze</option>
                                     <option value="http://web-dp2.herokuapp.com/app/dp2_lista_smarttv.php#/">SmartTV</option>
                                 </select>
