@@ -26,17 +26,15 @@ const routes = [{
     label: 'Tiendas',
   },
   {
-<<<<<<< HEAD
     component: Brand,
     path: '/marcas',
     label: 'Marcas',
-  }
-=======
+  },
+  {
     component: Role,
     path: '/roles',
     label: 'Roles',
   },
->>>>>>> d8c08db91c3bdb5acec5ed54347fa219e14038be
 ];
 
 export default routes;
