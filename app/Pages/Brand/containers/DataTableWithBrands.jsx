@@ -24,6 +24,10 @@ class DataTableWithBrands extends PureComponent {
     getBrands();
   }
 
+  state = {
+    modalOpen: false,
+  };
+
   openImgModal = () => {
     console.log("Modal!");
   };
@@ -32,8 +36,8 @@ class DataTableWithBrands extends PureComponent {
     const { brands } = this.props;
     return brands.map(brand => [
       brand.name,
-      brand.description ? brand.description.value: '-',
-      brand.corporation_name,
+      brand.description ? brand.description: '-',
+      brand.corporation_name ? brand.corporation_name: '-',
       `${brand.id}`,
     ]);
   };
@@ -54,7 +58,7 @@ class DataTableWithBrands extends PureComponent {
     const headers = [
       { name: "Nombre" },
       { name: "Descripcion" },
-      { name: "Corporacion " },
+      { name: "Corporacion" },
     ];
 
     const data = this.parseBrands();
