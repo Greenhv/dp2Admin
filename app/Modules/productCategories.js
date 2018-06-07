@@ -188,5 +188,5 @@ export const getProductCategories = () => dispatch => fetch(`${defaultUrl}/produ
   },
 }).then(fetchStatusHandler)
   .then(response => response.json())
-  .then(data => dispatch(addProductCategories(data.product_category)))
+  .then(data => dispatch(addProductCategories(data.product_categories)))
   .catch(error => { dispatch(setError('Error al cargar las categorias, recarga la pagina porfavor')); });
