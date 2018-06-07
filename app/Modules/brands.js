@@ -23,7 +23,7 @@ const initialState = {
 const defaultUrl = process.env.API_BASE_URL;
 const auth = getCookie('authToken');
 const customHeaders = {
-    'Authorization': auth.authToken,
+    'Authorization': auth ? auth.authToken : '',
     'content-type': 'application/json'
 };
 
