@@ -2,7 +2,8 @@ import ProductCategory from './ProductCategory/Root';
 import Product from './Product/Root';
 import Store from './Store/Root';
 import StoreCategory from './StoreCategory/Root';
-import Event from './Event/Root';
+import EventPage from './Event/Root';
+import Brand from './Brand/Root';
 import Role from './Role/Root';
 
 const routes = [{
@@ -26,12 +27,17 @@ const routes = [{
     label: 'Tiendas',
   },
   {
+    component: Brand,
+    path: '/marcas',
+    label: 'Marcas',
+  },
+  {
     component: Role,
     path: '/roles',
     label: 'Roles',
   },
   {
-    component: Event,
+    component: EventPage,
     path: '/eventos',
     label: 'Eventos',
   },
