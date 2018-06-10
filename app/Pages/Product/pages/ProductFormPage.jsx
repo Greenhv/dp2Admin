@@ -83,12 +83,21 @@ class ProductFormPage extends PureComponent {
   updateProduct = (values, dispatch, id) => {
     const { history } = this.props;
     const data = new FormData();
+    let newValues = {
+      ...values,
+      technical_specification_attributes: {
+        description: values.description,
+        weight: values.weight,
+        height: values.height,
+        length: values.length,
+      }
+    }
 
-    Object.keys(values).map(key => {
+    Object.keys(newValues).map(key => {
       if (key !== 'image') {
-        data.append(key, values[key]);
+        data.append(key, newValues[key]);
       } else {
-        data.append(key, values[key][0]);
+        data.append(key, newValues[key][0]);
       }
     });
 
@@ -201,6 +210,45 @@ class ProductFormPage extends PureComponent {
                             label: store.name,
                           })
                         ),
+                        required: "required"
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Información Técnica</ControlLabel>
+                    <Field
+                      name="description"
+                      component={CustomInput}
+                      type="text"
+                      props={{
+                        placeholder: "Descripción del producto",
+                        required: "required"
+                      }}
+                    />
+                    <Field
+                      name="weight"
+                      component={CustomInput}
+                      type="text"
+                      props={{
+                        placeholder: "Peso del producto",
+                        required: "required"
+                      }}
+                    />
+                    <Field
+                      name="length"
+                      component={CustomInput}
+                      type="text"
+                      props={{
+                        placeholder: "Largo del producto",
+                        required: "required"
+                      }}
+                    />
+                    <Field
+                      name="height"
+                      component={CustomInput}
+                      type="text"
+                      props={{
+                        placeholder: "Alto del producto",
                         required: "required"
                       }}
                     />
