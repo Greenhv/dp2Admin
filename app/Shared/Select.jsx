@@ -1,5 +1,5 @@
 import React from 'react';
-import { arrayOf, string, shape } from 'prop-types';
+import { arrayOf, string, number, shape, oneOfType } from 'prop-types';
 import { FormControl } from 'react-bootstrap';
 
 const Select = ({ options, placeholder, input, ...props }) => (
@@ -17,7 +17,10 @@ Select.defaultProps = {
 
 Select.propTypes = {
   options: arrayOf(shape({
-    value: string,
+    value: oneOfType([
+      string,
+      number
+    ]),
     label: string,
   })),
 };

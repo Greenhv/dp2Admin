@@ -17,6 +17,7 @@ import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
+import DropZone from 'Shared/Form/DropZone';
 import { getBrands as requestBrands } from "Modules/brands";
 import { getProductCategories as requestCategories } from "Modules/productCategories";
 import {
@@ -56,7 +57,17 @@ class ProductFormPage extends PureComponent {
 
   createProduct = (values, dispatch) => {
     const { history } = this.props;
+    const data = new FormData();
 
+    Object.keys(values).map(key => {
+      if (key !== 'image') {
+        data.append(key, values[key]);
+      } else {
+        data.append(key, values[key][0]);
+      }
+    });
+
+    // console.log(values);
     swal({
       title: 'Se esta creando su producto',
       text: 'Espere por favor',
@@ -64,11 +75,20 @@ class ProductFormPage extends PureComponent {
           swal.showLoading()
       }
     });
-    dispatch(createProductAction(history, values));
+    dispatch(createProductAction(history, data));
   }
 
   updateProduct = (values, dispatch, id) => {
     const { history } = this.props;
+    const data = new FormData();
+
+    Object.keys(values).map(key => {
+      if (key !== 'image') {
+        data.append(key, values[key]);
+      } else {
+        data.append(key, values[key][0]);
+      }
+    });
 
     swal({
       title: 'Se esta actualiazando su producto',
@@ -77,7 +97,7 @@ class ProductFormPage extends PureComponent {
           swal.showLoading()
       }
     });
-    dispatch(updateProductAction(history, values, id));
+    dispatch(updateProductAction(history, data, id));
   }
 
   onProductSubmit = (values, dispatch) => {
@@ -162,6 +182,16 @@ class ProductFormPage extends PureComponent {
                             label: productCategory.name,
                           })
                         ),
+                        required: "required"
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Imagen</ControlLabel>
+                    <Field
+                      name="image"
+                      component={DropZone}
+                      props={{
                         required: "required"
                       }}
                     />
