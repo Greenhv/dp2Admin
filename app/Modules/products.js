@@ -153,9 +153,11 @@ export const deleteProductAction = id => dispatch => fetch(`${defaultUrl}/produc
 
 export const updateProduct = (history, values, id) => dispatch => fetch(`${defaultUrl}/products/${id}`, {
   method: 'PUT',
-  body: JSON.stringify(values),
+  // body: JSON.stringify(values),
+  body: values,
   headers: {
-    ...customHeaders,
+    // ...customHeaders,
+    'Authorization': auth ? auth.authToken : '',
   },
 }).then(() => {
   swal({
@@ -173,9 +175,11 @@ export const updateProduct = (history, values, id) => dispatch => fetch(`${defau
 
 export const createProduct = (history, values) => dispatch => fetch(`${defaultUrl}/products`, {
   method: 'POST',
-  body: JSON.stringify(values),
+  // body: JSON.stringify(values),
+  body: values,
   headers: {
-    ...customHeaders
+    // ...customHeaders
+    'Authorization': auth ? auth.authToken : '',
   },
 }).then(response => response.json())
 .then((data) => {
