@@ -18,6 +18,7 @@ import { reduxForm, Field } from "redux-form";
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
 import DropZone from 'Shared/Form/DropZone';
+import { getStores as requestStores } from "Modules/stores";
 import { getBrands as requestBrands } from "Modules/brands";
 import { getProductCategories as requestCategories } from "Modules/productCategories";
 import {
@@ -26,8 +27,8 @@ import {
   clearSelected,
 } from "Modules/products";
 import { productCategoryType } from "Pages/ProductCategory/types";
-import { productType } from "Pages/Product/types";
 import { brandType } from "Pages/Brand/types";
+import { storeType } from "Pages/Store/types";
 
 class ProductFormPage extends PureComponent {
   constructor(props) {
@@ -41,11 +42,12 @@ class ProductFormPage extends PureComponent {
   }
 
   componentWillMount() {
-    const { getProductCategories, getBrands } = this.props;
+    const { getProductCategories, getBrands, getStores } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
 
     getBrands();
     getProductCategories();
+    getStores();
     $(element).parsley();
   }
 
@@ -154,7 +156,7 @@ class ProductFormPage extends PureComponent {
                   <FormGroup>
                     <ControlLabel>Marca</ControlLabel>
                     <Field
-                      name="brand"
+                      name="brand_id"
                       type="select"
                       component={Select}
                       props={{
@@ -172,7 +174,7 @@ class ProductFormPage extends PureComponent {
                   <FormGroup>
                     <ControlLabel>Categoria</ControlLabel>
                     <Field
-                      name="category"
+                      name="product_category_id"
                       component={Select}
                       props={{
                         placeholder: "Seleccionar una categoria",
@@ -180,6 +182,23 @@ class ProductFormPage extends PureComponent {
                           productCategory => ({
                             value: productCategory.id,
                             label: productCategory.name,
+                          })
+                        ),
+                        required: "required"
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Tienda</ControlLabel>
+                    <Field
+                      name="store_id"
+                      component={Select}
+                      props={{
+                        placeholder: "Seleccionar una categoria",
+                        options: this.props.stores.map(
+                          store => ({
+                            value: store.id,
+                            label: store.name,
                           })
                         ),
                         required: "required"
@@ -225,27 +244,38 @@ ProductFormPage.propTypes = {
   history: shape({}).isRequired,
   productCategories: arrayOf(productCategoryType),
   brands: arrayOf(brandType),
+  stores: arrayOf(storeType),
   getBrands: func.isRequired,
   getProductCategories: func.isRequired,
   removeSelected: func.isRequired,
 };
 
-const mapStateToProps = ({ products: { selectedProduct }, productCategories: { productCategories }, brands: { brands }}) => ({
+const mapStateToProps = ({
+  products: { selectedProduct },
+  productCategories: { productCategories },
+  brands: { brands },
+  stores: { stores },
+}) => ({
   brands,
   productCategories,
+  stores,
   initialValues: selectedProduct.id ? {
     ...selectedProduct,
-    category: selectedProduct.product_category.id,
-    brand: selectedProduct.brand.id,
+    product_category_id: selectedProduct.product_category.id,
+    brand_id: selectedProduct.brand.id,
+    store_id: selectedProduct.store.id,
   } : {},
 })
 
 const mapDispatchToProps = dispatch => ({
   getProductCategories: () => {
-    dispatch(requestCategories())
+    dispatch(requestCategories());
   },
   getBrands: () => {
-    dispatch(requestBrands())
+    dispatch(requestBrands());
+  },
+  getStores: () => {
+    dispatch(requestStores());
   },
   removeSelected: () => {
     dispatch(clearSelected());
