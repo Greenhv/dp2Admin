@@ -13,96 +13,18 @@ class Sidebar extends React.Component {
     this.state = {
       userBlockCollapse: false,
       collapse: {
-        dashboard: this.routeActive([
-          "dashboard",
-          "dashboardv2",
-          "dashboardv3"
+        products: this.routeActive([
+          'productos',
+          'marcas',
+          'categoria-de-productos',
         ]),
-        widget: this.routeActive("widgets"),
-        elements: this.routeActive([
-          "buttons",
-          "notifications",
-          "sweetalert",
-          "tour",
-          "carousel",
-          "spinners",
-          "animations",
-          "dropdown",
-          "nestable",
-          "sortable",
-          "panels",
-          "portlet",
-          "grid",
-          "grid-masonry",
-          "typography",
-          "icons-font",
-          "icons-weather",
-          "colors"
+        stores: this.routeActive([
+          'tiendas',
+          'categoria-de-tiendas',
         ]),
-        forms: this.routeActive([
-          "form-standard",
-          "form-extended",
-          "form-validation",
-          "form-wizard",
-          "form-upload",
-          "form-xeditable",
-          "form-cropper"
-        ]),
-        charts: this.routeActive([
-          "chart-flot",
-          "chart-radial",
-          "chart-chartjs",
-          "chart-rickshaw",
-          "chart-morris",
-          "chart-chartist"
-        ]),
-        tables: this.routeActive([
-          "table-standard",
-          "table-extended",
-          "table-datatable",
-          "table-jqgrid"
-        ]),
-        maps: this.routeActive(["map-google", "map-vector"]),
-        extras: this.routeActive([
-          "mailbox",
-          "timeline",
-          "calendar",
-          "invoice",
-          "search",
-          "todo",
-          "profile",
-          "bug-tracker",
-          "contact-details",
-          "contacts",
-          "faq",
-          "file-manager",
-          "followers",
-          "help-center",
-          "plans",
-          "project-details",
-          "projects",
-          "settings",
-          "social-board",
-          "team-viewer",
-          "vote-links"
-        ]),
-        blog: this.routeActive([
-          "blog-list",
-          "blog-post",
-          "blog-articles",
-          "blog-article-view"
-        ]),
-        ecommerce: this.routeActive([
-          "ecommerce-orders",
-          "ecommerce-order-view",
-          "ecommerce-products",
-          "ecommerce-product-view",
-          "ecommerce-checkout"
-        ]),
-        forum: this.routeActive([
-          "forum-categories",
-          "forum-topics",
-          "forum-discussion"
+        users: this.routeActive([
+          'roles',
+          'usuarios',
         ]),
         pages: false
       }
@@ -143,8 +65,10 @@ class Sidebar extends React.Component {
       if (this.state.collapse[c] === true && c !== stateName)
         this.state.collapse[c] = false;
     }
+    console.log(stateName, this.state.collapse);
     this.setState({
       collapse: {
+        ...this.state.collapse,
         [stateName]: !this.state.collapse[stateName]
       }
     });
@@ -166,7 +90,7 @@ class Sidebar extends React.Component {
               {/* START user info */}
               <li className="has-user-block">
                 <Collapse id="user-block" in={this.state.userBlockCollapse}>
-                  <div>
+                  <div className="user-information-wrapper">
                     <div className="item user-block">
                       {/* User picture */}
                       <div className="user-block-picture">
@@ -186,18 +110,95 @@ class Sidebar extends React.Component {
                         <span className="user-block-name">Hola, Gustavo</span>
                         <span className="user-block-role">Administrador</span>
                       </div>
-                      <div style={{ textAlign: 'center', marginTop: 10 }}>
+                      <div className="logout-container">
                         <Button onClick={this.closeSession} bsStyle="danger">Cerrar Sesión</Button>
+                      </div>
+                      <div className="logout-container-mobile">
+                        <em className="icon-logout"></em>
                       </div>
                     </div>
                   </div>
                 </Collapse>
               </li>
-              {pages.map((page, id) => (
+              <li className={ this.routeActive(['productos', 'marcas', 'categoria-de-productos']) ? 'active' : '' }>
+                <div className="nav-item" item="Products" onClick={() => { this.toggleItemCollapse('products'); }}>
+                  <em className="icon-grid"></em>
+                  <span>Productos</span>
+                </div>
+                <Collapse in={this.state.collapse.products}>
+                  <ul className="nav sidebar-subnav">
+                    <li className="sidebar-subnav-header">Productos</li>
+                    <li className={ this.routeActive('productos') ? 'active' : '' }>
+                      <Link to="/productos">
+                        <span>Productos</span>
+                      </Link>
+                    </li>
+                    <li className={ this.routeActive('marcas') ? 'active' : '' }>
+                      <Link to="/marcas">
+                        <span>Marcas</span>
+                      </Link>
+                    </li>
+                    <li className={ this.routeActive('categoria-de-productos') ? 'active' : '' }>
+                      <Link to="/categoria-de-productos">
+                        <span>Categoria de Productos</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </Collapse>
+              </li>
+              <li className={ this.routeActive(['tiendas', 'categoria-de-tiendas']) ? 'active' : '' }>
+                <div className="nav-item" item="Stores" onClick={() => { this.toggleItemCollapse('stores'); }}>
+                  <em className="icon-basket-loaded"></em>
+                  <span>Tiendas</span>
+                </div>
+                <Collapse in={this.state.collapse.stores}>
+                  <ul className="nav sidebar-subnav">
+                    <li className="sidebar-subnav-header">Tiendas</li>
+                    <li className={ this.routeActive('tiendas') ? 'active' : '' }>
+                      <Link to="/tiendas">
+                        <span>Tiendas</span>
+                      </Link>
+                    </li>
+                    <li className={ this.routeActive('categoria-de-tiendas') ? 'active' : '' }>
+                      <Link to="/categoria-de-tiendas">
+                        <span>Categoria de Tiendas</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </Collapse>
+              </li>
+              <li className={ this.routeActive(['usuarios', 'roles']) ? 'active' : '' }>
+                <div className="nav-item" item="Users" onClick={() => { this.toggleItemCollapse('users'); }}>
+                  <em className="icon-people"></em>
+                  <span>Usuarios</span>
+                </div>
+                <Collapse in={this.state.collapse.users}>
+                  <ul className="nav sidebar-subnav">
+                    <li className="sidebar-subnav-header">Usuarios</li>
+                    <li className={ this.routeActive('users') ? 'active' : '' }>
+                      <Link to="/tiendas">
+                        <span>Usuarios</span>
+                      </Link>
+                    </li>
+                    <li className={ this.routeActive('roles') ? 'active' : '' }>
+                      <Link to="/roles">
+                        <span>Roles</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </Collapse>
+              </li>
+              <li className={this.routeActive(['eventos']) ? 'active' : ''}>
+                <Link to="/eventos">
+                  <em className="icon-star"></em>
+                  <span>Eventos</span>
+                </Link>
+              </li>
+              {/* {pages.map((page, id) => (
                 <li key={id} className={this.routeActive(page.path.replace('/', '')) ? 'active' : ''}>
                   <Link to={page.path}>{page.label}</Link>
                 </li>
-              ))}
+              ))} */}
               {/* END user info */}
               {/* Iterates over all sidebar items */}
               {/* <li className={ this.routeActive(['forum-categories', 'forum-topics', 'forum-discussion']) ? 'active' : '' }>
