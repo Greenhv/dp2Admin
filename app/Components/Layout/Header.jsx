@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import pubsub from 'pubsub-js';
-import HeaderRun from './Header.run'
-import { NavDropdown, MenuItem, ListGroup, ListGroupItem } from 'react-bootstrap';
+import HeaderRun from './Header.run';
+import { getCookie } from 'Utils/cookies';
+import { NavDropdown, MenuItem, ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import { Router, Route, Link, History } from 'react-router-dom';
 
 // Necessary to create listGroup inside navigation items
@@ -28,6 +29,18 @@ class Header extends PureComponent {
     toggleUserblock(e) {
         e.preventDefault();
         pubsub.publish('toggleUserblock');
+    }
+
+    changeDomain = (domain, needAccessToken = false) => () => {
+
+        if (needAccessToken) {
+            const auth = getCookie('authToken');
+            // window.location.href = domain;
+            window.open(`${domain}?token=${auth ? auth.authToken : ''}`);
+        } else {
+            // window.location.href = domain;
+            window.open(domain);
+        }
     }
 
     render() {
@@ -80,6 +93,18 @@ class Header extends PureComponent {
                         { /* END Left navbar */ }
                         { /* START Right Navbar */ }
                         <ul className="nav navbar-nav navbar-right">
+                            <li className="domain-select-wrapper">
+                                <Button onClick={this.changeDomain('http://200.16.7.150:8085/login', true)}>
+                                    <span>Ir a Waze</span>
+                                    <em className="icon-arrow-right" style={{ fontSize: 10, marginLeft: 5 }}></em>
+                                </Button>
+                            </li>
+                            <li className="domain-select-wrapper">
+                                <Button onClick={this.changeDomain('http://web-dp2.herokuapp.com/app/dp2_lista_smarttv.php#/')}>
+                                    <span>Ir a Smart TV</span>
+                                    <em className="icon-arrow-right" style={{ fontSize: 10, marginLeft: 5 }}></em>
+                                </Button>
+                            </li>
                             { /* Search icon */ }
                             { /*<li>
                                 <a href="#" data-search-open="">
