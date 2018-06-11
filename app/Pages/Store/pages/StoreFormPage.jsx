@@ -114,9 +114,39 @@ class StoreFormPage extends PureComponent {
                     />
                   </FormGroup>
                   <FormGroup>
+                    <ControlLabel>Descripción</ControlLabel>
+                    <Field
+                      name="description"
+                      component={CustomInput}
+                      type="textarea"
+                      props={{
+                        placeholder: "Descripcion de la tienda",
+                        required: "required"
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Categorias de la tienda</ControlLabel>
+                    <Field
+                      name="categories_id"
+                      component={Select}
+                      props={{
+                        placeholder: "Categorias de la tienda",
+                        options: this.props.storeCategories.map(
+                          storeCategory => ({
+                            value: storeCategory.id,
+                            label: storeCategory.name
+                          })
+                        ),
+                        required: "required",
+                        multiple: true,
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
                     <ControlLabel>Administrador de la tienda</ControlLabel>
                     <Field
-                      name="adminId"
+                      name="admin_id"
                       component={Select}
                       props={{
                         placeholder: "Administrador de la tienda",
@@ -126,18 +156,6 @@ class StoreFormPage extends PureComponent {
                             label: storeCategory.name
                           })
                         ),
-                        required: "required"
-                      }}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <ControlLabel>Descripción</ControlLabel>
-                    <Field
-                      name="description"
-                      component={CustomInput}
-                      type="textarea"
-                      props={{
-                        placeholder: "Descripcion de la tienda",
                         required: "required"
                       }}
                     />

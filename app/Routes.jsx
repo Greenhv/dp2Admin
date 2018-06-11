@@ -21,6 +21,7 @@ import Maintenance from './Components/Pages/Maintenance';
 import pages from './Pages';
 import { getNumber } from './Utils/randomizer';
 import { getCookie } from './Utils/cookies';
+// import FormExtended from './Components/Forms/FormExtended';
 
 // List of routes that uses the page layout
 // listed here to Switch between layouts
@@ -71,8 +72,8 @@ const Routes = ({ location }) => {
                             <Switch location={location}>
                                 {/*Dashboard*/}
                                 {/* <Route path="/dashboard" component={DashboardV1}/> */}
-                                {/* <Route path="/form-standard" component={FormStandard}/>
-                                <Route path="/form-validation" component={FormValidation}/> */}
+                                {/* <Route path="/form-standard" component={FormStandard}/> */}
+                                {/* <Route path="/form-extended" component={FormExtended}/> */}
                                 { pages.map(page => (
                                     <Route
                                         key={getNumber()}
