@@ -5,6 +5,7 @@ import StoreCategory from './StoreCategory/Root';
 import EventPage from './Event/Root';
 import Brand from './Brand/Root';
 import Role from './Role/Root';
+import User from './User/Root';
 
 const routes = [{
     component: ProductCategory,
@@ -40,6 +41,11 @@ const routes = [{
     component: EventPage,
     path: '/eventos',
     label: 'Eventos',
+  },
+  {
+    component: User,
+    path: '/usuarios',
+    label: 'Usuarios',
   },
 ];
 

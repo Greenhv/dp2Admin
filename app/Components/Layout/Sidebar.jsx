@@ -61,11 +61,12 @@ class Sidebar extends React.Component {
 
   toggleItemCollapse(stateName) {
     var newCollapseState = {};
+
     for (let c in this.state.collapse) {
       if (this.state.collapse[c] === true && c !== stateName)
         this.state.collapse[c] = false;
     }
-    console.log(stateName, this.state.collapse);
+
     this.setState({
       collapse: {
         ...this.state.collapse,
@@ -176,7 +177,7 @@ class Sidebar extends React.Component {
                   <ul className="nav sidebar-subnav">
                     <li className="sidebar-subnav-header">Usuarios</li>
                     <li className={ this.routeActive('users') ? 'active' : '' }>
-                      <Link to="/tiendas">
+                      <Link to="/usuarios">
                         <span>Usuarios</span>
                       </Link>
                     </li>

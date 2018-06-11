@@ -71,11 +71,13 @@ class StoreCategoryFormPage extends PureComponent {
   }
 
   onStoreCategorySubmit = (values, dispatch) => {
-    const {
-      history,
-    } = this.props;
+    const isFormValid = $(this.form).parsley().isValid();
+    const params = this.props.match.params;
 
-    if ($(this.form).parsley().isValid()) {
+    if (isFormValid && !params.id) {
+      this.createStoreCategory(values, dispatch);
+    } else if (isFormValid && params.id) {
+      this.updateStoreCategory(values, dispatch, params.id);
     }
   };
 

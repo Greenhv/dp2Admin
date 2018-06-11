@@ -7,6 +7,7 @@ import storeCategories from './storeCategories';
 import brands from './brands';
 import roles from './roles';
 import events from './events';
+import users from './users';
 
 export default combineReducers({
   products,
@@ -16,5 +17,6 @@ export default combineReducers({
   brands,
   roles,
   events,
+  users,
   form, // This should be always the last item
 });

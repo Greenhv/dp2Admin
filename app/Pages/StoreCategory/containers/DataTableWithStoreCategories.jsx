@@ -48,8 +48,8 @@ class DataTableWithStoreCategories extends PureComponent {
       storeCategories,
       isLoadingStoreCategories,
       storeCategoriesError,
-      selectStoreCategory,
-      deleteStoreCategoryAction,
+      editStoreCategory,
+      deleteStoreCategory,
     } = this.props;
 
     if (storeCategoriesError) {
@@ -76,8 +76,8 @@ class DataTableWithStoreCategories extends PureComponent {
               headers={headers}
               data={data}
               options={options}
-              editAction={selectStoreCategory}
-              deleteAction={deleteStoreCategoryAction}
+              editAction={editStoreCategory}
+              deleteAction={deleteStoreCategory}
             />
           ) : (
             <Table responsive striped hover>
@@ -95,8 +95,9 @@ class DataTableWithStoreCategories extends PureComponent {
 DataTableWithStoreCategories.propTypes = {
   storeCategories: PropTypes.arrayOf(storeCategoryType).isRequired,
   isLoadingStoreCategories: PropTypes.bool.isRequired,
-  selectStoreCategory: PropTypes.func.isRequired,
-  deleteStoreCategoryAction: PropTypes.func.isRequired,
+  storeCategoriesError: PropTypes.string.isRequired,
+  editStoreCategory: PropTypes.func.isRequired,
+  deleteStoreCategory: PropTypes.func.isRequired,
   getStoreCategories: PropTypes.func.isRequired
 };
 
@@ -113,10 +114,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchStoreCategories());
     dispatch(requestStoreCategories());
   },
-  selectStoreCategory: category => () => {
+  editStoreCategory: category => () => {
     dispatch(selectStoreCategory(category));
   },
-  deleteStoreCategoryAction: category => () => {
+  deleteStoreCategory: category => () => {
     swal({
       title: 'Estas seguro?',
       text: "No se podrá revertir este cambio",
