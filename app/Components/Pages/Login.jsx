@@ -68,13 +68,13 @@ class Login extends React.Component {
             })
             .catch((error) => {
                 console.log(error);
+                this.setState({
+                    loading: false,
+                });
                 swal({
                     type: 'Error',
                     title: 'Ocurrio un error en la identificación',
                     text: 'Vuelve a intentarlo en unos segundos',
-                });
-                this.setState({
-                    loading: false,
                 });
             })
         }
