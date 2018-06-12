@@ -6,6 +6,7 @@ import EventPage from './Event/Root';
 import Brand from './Brand/Root';
 import Role from './Role/Root';
 import User from './User/Root';
+import Promotion from './Promotion/Root';
 
 const routes = [{
     component: ProductCategory,
@@ -46,6 +47,11 @@ const routes = [{
     component: User,
     path: '/usuarios',
     label: 'Usuarios',
+  },
+  {
+    component: Promotion,
+    path: '/promociones',
+    label: 'Promociones',
   },
 ];
 

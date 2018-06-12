@@ -21,6 +21,7 @@ class Sidebar extends React.Component {
         stores: this.routeActive([
           'tiendas',
           'categoria-de-tiendas',
+          'promociones',
         ]),
         users: this.routeActive([
           'roles',
@@ -163,6 +164,11 @@ class Sidebar extends React.Component {
                     <li className={ this.routeActive('categoria-de-tiendas') ? 'active' : '' }>
                       <Link to="/categoria-de-tiendas">
                         <span>Categoria de Tiendas</span>
+                      </Link>
+                    </li>
+                    <li className={ this.routeActive('promociones') ? 'active' : '' }>
+                      <Link to="/promociones">
+                        <span>Promociones</span>
                       </Link>
                     </li>
                   </ul>
