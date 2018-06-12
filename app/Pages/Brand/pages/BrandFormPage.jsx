@@ -118,7 +118,7 @@ class BrandFormPage extends PureComponent {
                 <FormGroup>
                   <ControlLabel>Corporacion</ControlLabel>
                   <Field
-                    name="name"
+                    name="corporation_name"
                     component={CustomInput}
                     type="text"
                     props={{
