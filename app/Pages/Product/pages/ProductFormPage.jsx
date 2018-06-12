@@ -29,6 +29,7 @@ import {
 import { productCategoryType } from 'Pages/ProductCategory/types';
 import { brandType } from 'Pages/Brand/types';
 import { storeType } from 'Pages/Store/types';
+import objectToFormData from 'Utils/objectToFormData';
 
 class ProductFormPage extends PureComponent {
   constructor(props) {
@@ -75,8 +76,7 @@ class ProductFormPage extends PureComponent {
       }
     });
 
-    const finalData = new FormData();
-    finalData.append('product', JSON.stringify(data));
+    const finalData = objectToFormData(data, null, 'product');
 
     console.log(data);
     swal({
