@@ -53,8 +53,8 @@ class DataTableWithProducts extends PureComponent {
     return products.map(product => [
       product.name,
       transformToMoney(product.price),
-      product.promotion ? product.promotion.value : '-',
-      product.promotion ? applyDiscount(product.price, product.promotion.value) : '-',
+      product.promotion.id ? product.promotion.value : '-',
+      product.promotion.id ? applyDiscount(product.price, product.promotion.value) : '-',
       product.brand.name,
       product.image,
       `${product.id}`,
