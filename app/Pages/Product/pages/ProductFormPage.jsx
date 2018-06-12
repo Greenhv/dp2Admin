@@ -59,20 +59,26 @@ class ProductFormPage extends PureComponent {
 
   createProduct = (values, dispatch) => {
     const { history } = this.props;
-    const data = new FormData();
-    const finalData = new FormData();
+    const data = {};
 
     Object.keys(values).map(key => {
-      if (key !== 'image') {
-        data.append(key, values[key]);
+      if (['weigth', 'height', 'length', 'description'].indexOf(key) >= 0) {
+        const value = values[key];
+        data['technical_specification_attributes'] = {
+          ...data['technical_specification_attributes'],
+          value,
+        };
+      } else if (key !== 'image') {
+        data[key] = values[key];
       } else {
-        data.append(key, values[key][0]);
+        data[key] = values[key][0];
       }
     });
 
-    finalData.append('product', data);
-    console.log(finalData);
-    // console.log(values);
+    const finalData = new FormData();
+    finalData.append('product', JSON.stringify(data));
+
+    console.log(data);
     swal({
       title: 'Se esta creando su producto',
       text: 'Espere por favor',
