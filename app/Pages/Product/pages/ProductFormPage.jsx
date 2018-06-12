@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import ReactDOM from "react-dom";
-import { shape, func, arrayOf } from "prop-types";
+import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
+import { shape, func, arrayOf } from 'prop-types';
 import {
   FormGroup,
   ControlLabel,
@@ -10,25 +10,25 @@ import {
   Panel,
   Button,
   Label,
-  Input
-} from "react-bootstrap";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
+  Input,
+} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
 
-import Select from "Shared/Select";
-import CustomInput from "Shared/Form/CustomInput";
+import Select from 'Shared/Select';
+import CustomInput from 'Shared/Form/CustomInput';
 import DropZone from 'Shared/Form/DropZone';
-import { getStores as requestStores } from "Modules/stores";
-import { getBrands as requestBrands } from "Modules/brands";
-import { getProductCategories as requestCategories } from "Modules/productCategories";
+import { getStores as requestStores } from 'Modules/stores';
+import { getBrands as requestBrands } from 'Modules/brands';
+import { getProductCategories as requestCategories } from 'Modules/productCategories';
 import {
   createProduct as createProductAction,
   updateProduct as updateProductAction,
   clearSelected,
-} from "Modules/products";
-import { productCategoryType } from "Pages/ProductCategory/types";
-import { brandType } from "Pages/Brand/types";
-import { storeType } from "Pages/Store/types";
+} from 'Modules/products';
+import { productCategoryType } from 'Pages/ProductCategory/types';
+import { brandType } from 'Pages/Brand/types';
+import { storeType } from 'Pages/Store/types';
 
 class ProductFormPage extends PureComponent {
   constructor(props) {
@@ -54,12 +54,13 @@ class ProductFormPage extends PureComponent {
   goToProductsPage = () => {
     const { history } = this.props;
 
-    history.push("/productos");
+    history.push('/productos');
   };
 
   createProduct = (values, dispatch) => {
     const { history } = this.props;
     const data = new FormData();
+    const finalData = new FormData();
 
     Object.keys(values).map(key => {
       if (key !== 'image') {
@@ -69,16 +70,18 @@ class ProductFormPage extends PureComponent {
       }
     });
 
+    finalData.append('product', data);
+    console.log(finalData);
     // console.log(values);
     swal({
       title: 'Se esta creando su producto',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
-    dispatch(createProductAction(history, data));
-  }
+    dispatch(createProductAction(history, finalData));
+  };
 
   updateProduct = (values, dispatch, id) => {
     const { history } = this.props;
@@ -90,8 +93,8 @@ class ProductFormPage extends PureComponent {
         weight: values.weight,
         height: values.height,
         length: values.length,
-      }
-    }
+      },
+    };
 
     Object.keys(newValues).map(key => {
       if (key !== 'image') {
@@ -105,14 +108,16 @@ class ProductFormPage extends PureComponent {
       title: 'Se esta actualiazando su producto',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
     dispatch(updateProductAction(history, data, id));
-  }
+  };
 
   onProductSubmit = (values, dispatch) => {
-    const isFormValid = $(this.form).parsley().isValid();
+    const isFormValid = $(this.form)
+      .parsley()
+      .isValid();
     const params = this.props.match.params;
 
     if (isFormValid && !params.id) {
@@ -145,8 +150,8 @@ class ProductFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Nombre del producto",
-                        required: "required"
+                        placeholder: 'Nombre del producto',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -157,8 +162,8 @@ class ProductFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Precio del producto",
-                        required: "required"
+                        placeholder: 'Precio del producto',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -169,14 +174,12 @@ class ProductFormPage extends PureComponent {
                       type="select"
                       component={Select}
                       props={{
-                        placeholder: "Seleccione una marca",
-                        options: this.props.brands.map(
-                          brand => ({
-                            value: brand.id,
-                            label: brand.name,
-                          })
-                        ),
-                        required: "required"
+                        placeholder: 'Seleccione una marca',
+                        options: this.props.brands.map(brand => ({
+                          value: brand.id,
+                          label: brand.name,
+                        })),
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -186,14 +189,14 @@ class ProductFormPage extends PureComponent {
                       name="product_category_id"
                       component={Select}
                       props={{
-                        placeholder: "Seleccionar una categoria",
+                        placeholder: 'Seleccionar una categoria',
                         options: this.props.productCategories.map(
                           productCategory => ({
                             value: productCategory.id,
                             label: productCategory.name,
                           })
                         ),
-                        required: "required"
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -203,14 +206,12 @@ class ProductFormPage extends PureComponent {
                       name="store_id"
                       component={Select}
                       props={{
-                        placeholder: "Seleccionar una categoria",
-                        options: this.props.stores.map(
-                          store => ({
-                            value: store.id,
-                            label: store.name,
-                          })
-                        ),
-                        required: "required"
+                        placeholder: 'Seleccionar una categoria',
+                        options: this.props.stores.map(store => ({
+                          value: store.id,
+                          label: store.name,
+                        })),
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -221,8 +222,8 @@ class ProductFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Descripción del producto",
-                        required: "required"
+                        placeholder: 'Descripción del producto',
+                        required: 'required',
                       }}
                     />
                     <Field
@@ -230,8 +231,8 @@ class ProductFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Peso del producto",
-                        required: "required"
+                        placeholder: 'Peso del producto',
+                        required: 'required',
                       }}
                     />
                     <Field
@@ -239,8 +240,8 @@ class ProductFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Largo del producto",
-                        required: "required"
+                        placeholder: 'Largo del producto',
+                        required: 'required',
                       }}
                     />
                     <Field
@@ -248,8 +249,8 @@ class ProductFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Alto del producto",
-                        required: "required"
+                        placeholder: 'Alto del producto',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -259,7 +260,7 @@ class ProductFormPage extends PureComponent {
                       name="image"
                       component={DropZone}
                       props={{
-                        required: "required"
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -307,17 +308,19 @@ const mapStateToProps = ({
   brands,
   productCategories,
   stores,
-  initialValues: selectedProduct.id ? {
-    ...selectedProduct,
-    product_category_id: selectedProduct.product_category.id,
-    brand_id: selectedProduct.brand.id,
-    store_id: selectedProduct.store.id,
-    description: selectedProduct.technical_specification.description,
-    weight: selectedProduct.technical_specification.weight,
-    length: selectedProduct.technical_specification.length,
-    height: selectedProduct.technical_specification.height,
-  } : {},
-})
+  initialValues: selectedProduct.id
+    ? {
+        ...selectedProduct,
+        product_category_id: selectedProduct.product_category.id,
+        brand_id: selectedProduct.brand.id,
+        store_id: selectedProduct.store.id,
+        description: selectedProduct.technical_specification.description,
+        weight: selectedProduct.technical_specification.weight,
+        length: selectedProduct.technical_specification.length,
+        height: selectedProduct.technical_specification.height,
+      }
+    : {},
+});
 
 const mapDispatchToProps = dispatch => ({
   getProductCategories: () => {
@@ -331,15 +334,15 @@ const mapDispatchToProps = dispatch => ({
   },
   removeSelected: () => {
     dispatch(clearSelected());
-  }
-})
+  },
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
   reduxForm({
-    form: "productForm",
-    enableReinitialize: true
+    form: 'productForm',
+    enableReinitialize: true,
   })(ProductFormPage)
 );
