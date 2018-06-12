@@ -67,7 +67,7 @@ class ProductFormPage extends PureComponent {
         const value = values[key];
         data['technical_specification_attributes'] = {
           ...data['technical_specification_attributes'],
-          value,
+          [key]: value,
         };
       } else if (key !== 'image') {
         data[key] = values[key];
