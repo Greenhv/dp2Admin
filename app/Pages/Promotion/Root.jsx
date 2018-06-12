@@ -1,13 +1,14 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { Route } from "react-router";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
-import ContentWrapper from 'Components/Layout/ContentWrapper'
-import ErrorHandler from 'Shared/ErrorHandler';
-import ListPage from './pages/ListPage';
-import PromotionFormPage from './pages/PromotionFormPage';
+import ContentWrapper from "Components/Layout/ContentWrapper";
+import ErrorHandler from "Shared/ErrorHandler";
+import ListPage from "./pages/ListPage";
+import PromotionFormPage from "./pages/PromotionFormPage";
+import promotions from "../../Modules/promotions";
 
 const Root = ({ match, location }) => (
   <ContentWrapper>

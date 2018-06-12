@@ -9,6 +9,7 @@ import {
   deletePromotionAction,
   getPromotions as requestPromotions,
 } from 'Modules/promotions';
+
 import { transformToMoney, applyDiscount } from 'Utils/money';
 import DataTables from 'Shared/DataTable';
 import DataTableEmptyMsg from 'Shared/DataTableEmptyMsg.jsx';
@@ -27,22 +28,9 @@ class DataTableWithPromotions extends PureComponent {
     getPromotions();
   }
 
-  state = {
-    modalOpen: false,
+  openImgModal = () => {
+    console.log("Modal!");
   };
-
-  openImgModal = seeImg => () => {
-    seeImg();
-    this.setState({
-      modalOpen: true,
-    });
-  };
-
-  closeImgModal = () => {
-    this.setState({
-      modalOpen: false,
-    });
-  }
 
   parsePromotions = () => {
     const {
@@ -65,7 +53,8 @@ class DataTableWithPromotions extends PureComponent {
       isLoadingPromotions,
       promotionsError,
       removePromotion,
-      editPromotion
+      selectPromotion,
+      editPromotion,
     } = this.props;
 
     if (promotionsError) {
@@ -73,11 +62,11 @@ class DataTableWithPromotions extends PureComponent {
     }
 
     const headers = [
-      { name: 'Sólo móvil' },
-      { name: 'Valor de Descuento' },
-      { name: 'Fecha de Inicio' },
-      { name: 'Fecha de Fin' },
-      { name: 'Tienda Asociada' },
+      { name: 'Solo mobil' },
+      { name: 'Fecha inicial' },
+      { name: 'Fecha final' },
+      { name: 'Valor del descuento' },
+      { name: 'Tienda' },
     ];
     const data = this.parsePromotions();
     const options = {
@@ -94,14 +83,14 @@ class DataTableWithPromotions extends PureComponent {
               headers={headers}
               data={data}
               options={options}
-              // viewAction={selectPromotion}
+              viewAction={selectPromotion}
               deleteAction={removePromotion}
               editAction={editPromotion}
             />
           ) : (
             <Table responsive striped hover>
               <tbody>
-                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
+                <DataTableEmptyMsg colSpan={6}>No hay promociones para mostrar</DataTableEmptyMsg>
               </tbody>
             </Table>
           )
@@ -118,6 +107,7 @@ DataTableWithPromotions.propTypes = {
   promotions: PropTypes.arrayOf(promotionType).isRequired,
   isLoadingPromotions: PropTypes.bool.isRequired,
   promotionsError: PropTypes.string.isRequired,
+  selectPromotion: PropTypes.func.isRequired,
   getPromotions: PropTypes.func.isRequired,
   editPromotion: PropTypes.func.isRequired,
   removePromotion: PropTypes.func.isRequired,
@@ -126,7 +116,7 @@ DataTableWithPromotions.propTypes = {
 const mapStateToProps = ({ promotions: { promotions, isLoading, error } }) => ({
   promotions,
   isLoadingPromotions: isLoading,
-  promotionsError: error,
+  promotionsError: error
 });
 
 const mapDispatchToProps = dispatch => ({
