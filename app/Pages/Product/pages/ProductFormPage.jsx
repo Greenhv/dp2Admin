@@ -63,7 +63,7 @@ class ProductFormPage extends PureComponent {
     const data = {};
 
     Object.keys(values).map(key => {
-      if (['weigth', 'height', 'length', 'description'].indexOf(key) >= 0) {
+      if (['weight', 'height', 'length', 'description'].indexOf(key) >= 0) {
         const value = values[key];
         data['technical_specification_attributes'] = {
           ...data['technical_specification_attributes'],
@@ -91,24 +91,23 @@ class ProductFormPage extends PureComponent {
 
   updateProduct = (values, dispatch, id) => {
     const { history } = this.props;
-    const data = new FormData();
-    let newValues = {
-      ...values,
-      technical_specification_attributes: {
-        description: values.description,
-        weight: values.weight,
-        height: values.height,
-        length: values.length,
-      },
-    };
+    const data = {};
 
-    Object.keys(newValues).map(key => {
-      if (key !== 'image') {
-        data.append(key, newValues[key]);
+    Object.keys(values).map(key => {
+      if (['weight', 'height', 'length', 'description'].indexOf(key) >= 0) {
+        const value = values[key];
+        data['technical_specification_attributes'] = {
+          ...data['technical_specification_attributes'],
+          [key]: value,
+        };
+      } else if (key !== 'image') {
+        data[key] = values[key];
       } else {
-        data.append(key, newValues[key][0]);
+        data[key] = values[key][0];
       }
     });
+
+    const finalData = objectToFormData(data, null, 'product');
 
     swal({
       title: 'Se esta actualiazando su producto',
@@ -117,7 +116,7 @@ class ProductFormPage extends PureComponent {
         swal.showLoading();
       },
     });
-    dispatch(updateProductAction(history, data, id));
+    dispatch(updateProductAction(history, finalData, id));
   };
 
   onProductSubmit = (values, dispatch) => {
