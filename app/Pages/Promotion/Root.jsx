@@ -13,7 +13,7 @@ import promotions from "../../Modules/promotions";
 const Root = ({ match, location }) => (
   <ContentWrapper>
     <h3 className="header-container">
-      <span>Promoción</span>
+      <span>Promociones</span>
       <div>
         { match.url === location.pathname && (
           <Link to="/promociones/nuevo">
