@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+import moment from 'moment';
 import React, { PureComponent } from "react";
 import ReactDOM from "react-dom";
 import { shape, func, arrayOf } from "prop-types";
@@ -17,7 +19,8 @@ import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
-import renderDateTimePicker from "Shared/DateTimePicker";
+
+import DatePicker from "Shared/DateTimePicker";
 import { getStores as requestStores } from "Modules/stores";
 import {
   createPromotion as createPromotionAction,
@@ -26,6 +29,8 @@ import {
 } from "Modules/promotions";
 import { storeType } from "Pages/Store/types";
 import { promotionType } from "Pages/Promotion/types";
+
+var date = moment();
 
 class PromotionFormPage extends PureComponent {
   constructor(props) {
@@ -109,16 +114,24 @@ class PromotionFormPage extends PureComponent {
                     <ControlLabel>Fecha de inicio</ControlLabel>
                     <Field
                       name="initial_date"
-                      showTime={false}
-                      component={renderDateTimePicker}
+                      component={DatePicker}
+                      props={{
+                        placeholder: 'Ingrese una fecha de inicio',
+                        //placeholder: date.format("MM/DD/YYYY"),
+                        required: 'required',
+                      }}
                     />
-                  </FormGroup>
+                    </FormGroup>
                   <FormGroup>
                   <ControlLabel>Fecha de fin</ControlLabel>
                     <Field
                       name="final_date"
-                      showTime={false}
-                      component={renderDateTimePicker}
+                      component={DatePicker}
+                      props={{
+                        placeholder: 'Ingrese una fecha de fin',
+                        //placeholder: date.format("MM/DD/YYYY"),
+                        required: 'required',
+                      }}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -135,6 +148,7 @@ class PromotionFormPage extends PureComponent {
                   </FormGroup>
                   <FormGroup>
                     <ControlLabel>Solo movil</ControlLabel>
+                    <br></br>
                     <Field name="only_mobile" id="only_mobile" component="input" type="checkbox"/>
                   </FormGroup>
                   <FormGroup>
