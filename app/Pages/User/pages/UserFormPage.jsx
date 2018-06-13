@@ -131,7 +131,7 @@ class UserFormPage extends PureComponent {
             <FormGroup>
               <ControlLabel>Rol del usuario</ControlLabel>
               <Field
-                name="rol_id"
+                name="role_id"
                 component={Select}
                 props={{
                   placeholder: "Seleccione un rol",
