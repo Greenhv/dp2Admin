@@ -65,7 +65,6 @@ class Select extends PureComponent {
         {...input}
         {...props}
       >
-        <option value="-1"></option>
         { options.map((option, index) => (
           <option key={index} value={option.value}>{ option.label }</option>
         )) }

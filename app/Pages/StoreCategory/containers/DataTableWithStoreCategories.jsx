@@ -65,7 +65,6 @@ class DataTableWithStoreCategories extends PureComponent {
       selectableRows: false,
     };
 
-    console.log(data);
     return (
       <div>
         {isLoadingStoreCategories ? (

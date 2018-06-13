@@ -17,14 +17,18 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
+import DropZone from 'Shared/Form/DropZone';
 import CustomInput from "Shared/Form/CustomInput";
 
 import DatePicker from "Shared/DateTimePicker";
+import CustomRadio from "Shared/Form/CustomRadio";
+
 import {
   createEvent as createEventAction,
   updateEvent as updateEventAction,
   clearSelected,
 } from "Modules/events";
+import objectToFormData from 'Utils/objectToFormData';
 import { eventType } from "Pages/Event/types";
 
 class EventFormPage extends PureComponent {
@@ -46,6 +50,7 @@ class EventFormPage extends PureComponent {
 
   createEvent = (values, dispatch) => {
     const { history } = this.props;
+    const finalData = objectToFormData(values, null, 'event');
 
     swal({
       title: 'Se esta creando su evento',
@@ -54,11 +59,12 @@ class EventFormPage extends PureComponent {
           swal.showLoading()
       }
     });
-    dispatch(createEventAction(history, values));
+    dispatch(createEventAction(history, finalData));
   }
 
   updateEvent = (values, dispatch, id) => {
     const { history } = this.props;
+    const finalData = objectToFormData(values, null, 'event');
 
     swal({
       title: 'Se esta actualiazando su evento',
@@ -67,7 +73,7 @@ class EventFormPage extends PureComponent {
           swal.showLoading()
       }
     });
-    dispatch(updateEventAction(history, values, id));
+    dispatch(updateEventAction(history, finalData, id));
   }
 
   onEventSubmit = (values, dispatch) => {
@@ -135,11 +141,25 @@ class EventFormPage extends PureComponent {
                   <FormGroup>
                     <ControlLabel>¿Todo el día?</ControlLabel>
                     <br></br>
-                    <Radio name='all_day' type='integer' inline
-                    value={true}>Sí</Radio>{' '}
+                    <Field
+                      name="all_day"
+                      component={CustomRadio}
+                      props={{
+                        label: 'Si',
+                        required: 'required',
+                        value: true,
+                      }}
+                    />
                     <br></br>
-                    <Radio name='all_day' type='integer' inline
-                    value={true}>No</Radio>{' '}
+                    <Field
+                      name="all_day"
+                      component={CustomRadio}
+                      props={{
+                        label: 'No',
+                        required: 'required',
+                        value: false,
+                      }}
+                    />
                   </FormGroup>
                   <FormGroup>
                     <ControlLabel>Hora de Inicio</ControlLabel>
@@ -160,6 +180,16 @@ class EventFormPage extends PureComponent {
                       props={{
                         placeholder: "Hora de fin del evento",
                         required: "required"
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Baner</ControlLabel>
+                    <Field
+                      name="banner"
+                      component={DropZone}
+                      props={{
+                        required: 'required',
                       }}
                     />
                   </FormGroup>

@@ -10,6 +10,7 @@ const EDIT = 'admin/events/EDIT';
 const DELETE = 'admin/events/DELETE';
 const ERROR = 'admin/events/ERROR';
 const CLEAR_SELECTED = 'admin/events/CLEAR_SELECTED';
+const DISPLAY_IMAGE = 'admin/events/DISPLAY_IMAGE';
 
 // Initial State
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   isLoading: false,
   error: '',
   isModalOpen: true,
+  bannerImage: '',
 };
 
 // Reducer
@@ -72,6 +74,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         error: action.error,
       };
+    case DISPLAY_IMAGE:
+      return {
+        ...state,
+        bannerImage: action.img,
+      };
     default:
       return state;
   }
@@ -112,6 +119,11 @@ export const setError = (error) => ({
   error,
 });
 
+export const displayImage = (img) => ({
+  type: DISPLAY_IMAGE,
+  img,
+});
+
 // Side effects
 
 const showErrorMsg = (error) => {
@@ -142,9 +154,11 @@ export const deleteEventAction = id => dispatch => fetch(`${defaultUrl}/events/$
 
 export const updateEvent = (history, values, id) => dispatch => fetch(`${defaultUrl}/events/${id}`, {
   method: 'PUT',
-  body: JSON.stringify(values), 
+  // body: JSON.stringify(values), 
+  body: values, 
   headers: {
-    ...customHeaders
+    // ...customHeaders
+    'Authorization': auth ? auth.authToken : '',
   },
 }).then(() => {
   swal({
@@ -162,9 +176,11 @@ export const updateEvent = (history, values, id) => dispatch => fetch(`${default
 
 export const createEvent = (history, values) => dispatch => fetch(`${defaultUrl}/events`, {
   method: 'POST',
-  body: JSON.stringify(values), 
+  // body: JSON.stringify(values), 
+  body: values, 
   headers: {
-    ...customHeaders
+    // ...customHeaders
+    'Authorization': auth ? auth.authToken : '',
   },
 }).then(response => response.json())
 .then((data) => {
