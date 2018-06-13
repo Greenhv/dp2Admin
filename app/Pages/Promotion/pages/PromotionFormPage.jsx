@@ -1,8 +1,8 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import moment from 'moment';
-import React, { PureComponent } from "react";
-import ReactDOM from "react-dom";
-import { shape, func, arrayOf } from "prop-types";
+import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
+import { shape, func, arrayOf } from 'prop-types';
 import {
   FormGroup,
   ControlLabel,
@@ -12,23 +12,23 @@ import {
   Panel,
   Button,
   Label,
-  Input
-} from "react-bootstrap";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
+  Input,
+} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
 
-import Select from "Shared/Select";
-import CustomInput from "Shared/Form/CustomInput";
+import Select from 'Shared/Select';
+import CustomInput from 'Shared/Form/CustomInput';
 
-import DatePicker from "Shared/DateTimePicker";
-import { getStores as requestStores } from "Modules/stores";
+import DatePicker from 'Shared/DateTimePicker';
+import { getStores as requestStores } from 'Modules/stores';
 import {
   createPromotion as createPromotionAction,
   updatePromotion as updatePromotionAction,
   clearSelected,
-} from "Modules/promotions";
-import { storeType } from "Pages/Store/types";
-import { promotionType } from "Pages/Promotion/types";
+} from 'Modules/promotions';
+import { storeType } from 'Pages/Store/types';
+import { promotionType } from 'Pages/Promotion/types';
 
 var date = moment();
 
@@ -54,7 +54,7 @@ class PromotionFormPage extends PureComponent {
   goToPromotionsPage = () => {
     const { history } = this.props;
 
-    history.push("/promociones");
+    history.push('/promociones');
   };
 
   createPromotion = (values, dispatch) => {
@@ -64,11 +64,11 @@ class PromotionFormPage extends PureComponent {
       title: 'Se esta creando su promocion',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
     dispatch(createPromotionAction(history, values));
-  }
+  };
 
   updatePromotion = (values, dispatch, id) => {
     const { history } = this.props;
@@ -77,14 +77,16 @@ class PromotionFormPage extends PureComponent {
       title: 'Se esta actualiazando su promocion',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
     dispatch(updatePromotionAction(history, values, id));
-  }
+  };
 
   onPromotionSubmit = (values, dispatch) => {
-    const isFormValid = $(this.form).parsley().isValid();
+    const isFormValid = $(this.form)
+      .parsley()
+      .isValid();
     const params = this.props.match.params;
 
     if (isFormValid && !params.id) {
@@ -121,9 +123,9 @@ class PromotionFormPage extends PureComponent {
                         required: 'required',
                       }}
                     />
-                    </FormGroup>
+                  </FormGroup>
                   <FormGroup>
-                  <ControlLabel>Fecha de fin</ControlLabel>
+                    <ControlLabel>Fecha de fin</ControlLabel>
                     <Field
                       name="final_date"
                       component={DatePicker}
@@ -135,36 +137,39 @@ class PromotionFormPage extends PureComponent {
                     />
                   </FormGroup>
                   <FormGroup>
-                  <ControlLabel>Descuento</ControlLabel>
+                    <ControlLabel>Descuento</ControlLabel>
                     <Field
                       name="value"
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Valor del descuento",
-                        required: "required"
+                        placeholder: 'Valor del descuento',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
                   <FormGroup>
                     <ControlLabel>Solo movil</ControlLabel>
-                    <br></br>
-                    <Field name="only_mobile" id="only_mobile" component="input" type="checkbox"/>
+                    <br />
+                    <Field
+                      name="only_mobile"
+                      id="only_mobile"
+                      component="input"
+                      type="checkbox"
+                    />
                   </FormGroup>
                   <FormGroup>
                     <ControlLabel>Tienda</ControlLabel>
                     <Field
-                      name="store"
+                      name="store_id"
                       component={Select}
                       props={{
-                        placeholder: "Seleccionar una tienda",
-                        options: this.props.stores.map(
-                          store => ({
-                            value: store.id,
-                            label: store.name
-                          })
-                        ),
-                        required: "required"
+                        placeholder: 'Seleccionar una tienda',
+                        options: this.props.stores.map(store => ({
+                          value: store.id,
+                          label: store.name,
+                        })),
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -172,7 +177,9 @@ class PromotionFormPage extends PureComponent {
                 <Panel.Footer>
                   <div className="form-footer">
                     <div className="form-button">
-                      <Button onClick={this.goToPromotionsPage}>Cancelar</Button>
+                      <Button onClick={this.goToPromotionsPage}>
+                        Cancelar
+                      </Button>
                     </div>
                     <div className="form-button">
                       <Button type="submit">Crear</Button>
@@ -189,7 +196,7 @@ class PromotionFormPage extends PureComponent {
 }
 
 PromotionFormPage.defaultProps = {
-  stores: []
+  stores: [],
 };
 
 PromotionFormPage.propTypes = {
@@ -199,29 +206,34 @@ PromotionFormPage.propTypes = {
   removeSelected: func.isRequired,
 };
 
-const mapStateToProps = ({ promotions: { selectedPromotion }, stores: { stores }}) => ({
+const mapStateToProps = ({
+  promotions: { selectedPromotion },
+  stores: { stores },
+}) => ({
   stores,
-  initialValues: selectedPromotion.id ? {
-    ...selectedPromotion,
-    store: selectedPromotion.store.id,
-  } : {},
-})
+  initialValues: selectedPromotion.id
+    ? {
+        ...selectedPromotion,
+        store: selectedPromotion.store.id,
+      }
+    : {},
+});
 
 const mapDispatchToProps = dispatch => ({
   getStores: () => {
-    dispatch(requestStores())
+    dispatch(requestStores());
   },
   removeSelected: () => {
     dispatch(clearSelected());
-  }
-})
+  },
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
   reduxForm({
-    form: "promotionForm",
-    enableReinitialize: true
+    form: 'promotionForm',
+    enableReinitialize: true,
   })(PromotionFormPage)
 );
