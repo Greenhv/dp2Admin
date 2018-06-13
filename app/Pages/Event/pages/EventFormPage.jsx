@@ -21,6 +21,7 @@ import DropZone from 'Shared/Form/DropZone';
 import CustomInput from "Shared/Form/CustomInput";
 
 import DatePicker from "Shared/DateTimePicker";
+import DateTime from "Shared/DateTimeField";
 import CustomRadio from "Shared/Form/CustomRadio";
 
 import {
@@ -165,7 +166,7 @@ class EventFormPage extends PureComponent {
                     <ControlLabel>Hora de Inicio</ControlLabel>
                     <Field
                       name="initial_time"
-                      component={CustomInput}
+                      component={DateTime}
                       props={{
                         placeholder: "Hora de inicio del evento",
                         required: "required"
@@ -176,7 +177,7 @@ class EventFormPage extends PureComponent {
                     <ControlLabel>Hora de Fin</ControlLabel>
                     <Field
                       name="final_time"
-                      component={CustomInput}
+                      component={DateTime}
                       props={{
                         placeholder: "Hora de fin del evento",
                         required: "required"
