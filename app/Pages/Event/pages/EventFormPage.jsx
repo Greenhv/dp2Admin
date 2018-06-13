@@ -18,6 +18,8 @@ import { reduxForm, Field } from "redux-form";
 
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
+
+import DatePicker from "Shared/DateTimePicker";
 import {
   createEvent as createEventAction,
   updateEvent as updateEventAction,
@@ -123,8 +125,7 @@ class EventFormPage extends PureComponent {
                     <ControlLabel>Fecha</ControlLabel>
                     <Field
                       name="event_date"
-                      type="text"
-                      component={CustomInput}
+                      component={DatePicker}
                       props={{
                         placeholder: "Fecha del evento",
                         required: "required"
