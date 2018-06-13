@@ -168,7 +168,7 @@ export const createStoreCategory = (history, values) => dispatch => fetch(`${pro
   },
 }).then(response => response.json())
 .then(data => {
-  dispatch(addStoreCategory(data.storeCategory));
+  dispatch(addStoreCategory(data.store_category));
   swal({
     type: 'success',
     title: 'Categoria de tienda creada',
