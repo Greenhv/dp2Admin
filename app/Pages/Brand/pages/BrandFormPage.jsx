@@ -98,7 +98,7 @@ class BrandFormPage extends PureComponent {
             <form
               onSubmit={handleSubmit(this.onBrandSubmit)}
               noValidate
-              ref={node => {
+              ref={(node) => {
                 this.form = node;
               }}
             >
@@ -164,7 +164,7 @@ BrandFormPage.propTypes = {
   removeSelected: func.isRequired,
 }
 
-const mapStateToProps = ({ brands: {selectedBrand } }) => ({
+const mapStateToProps = ({ brands: { selectedBrand } }) => ({
   initialValues: selectedBrand.id ? selectedBrand: {},
 })
 
