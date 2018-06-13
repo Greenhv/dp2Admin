@@ -1,15 +1,19 @@
 import fetchStatusHandler from 'Utils/fetchStatusHandler';
-import { getCookie } from 'Utils/cookies';
+import {
+  getCookie
+} from 'Utils/cookies';
 
 // Actions
 const FETCH = 'admin/stores/FETCH';
 const ADD_STORES = 'admin/stores/ADD_STORES';
 const ADD_STORE = 'admin/stores/ADD_STORE';
 const SELECT = 'admin/stores/SELECT';
-const CLEAR_SELECT = 'admin/stores/CLEAR_SELECT';
 const EDIT = 'admin/stores/EDIT';
-const DELETE = 'admin/stores/DELETE';
 const ERROR = 'admin/stores/ERROR';
+const DELETE = 'admin/stores/DELETE';
+const CLEAR_SELECT = 'admin/stores/CLEAR_SELECT';
+const DISPlAY_LOGO = 'admin/stores/DISPLAY_LOGO';
+const DISPlAY_BANNER = 'admin/stores/DISPLAY_BANNER';
 
 // Initial State
 const initialState = {
@@ -18,6 +22,8 @@ const initialState = {
   isLoading: false,
   error: '',
   isModalOpen: true,
+  storeLogo: '',
+  storeBanner: '',
 };
 
 // Reducer
@@ -72,6 +78,16 @@ export default (state = initialState, action = {}) => {
         ...state,
         error: action.error,
       };
+    case DISPlAY_BANNER:
+      return {
+        ...state,
+        storeBanner: action.banner,
+      };
+    case DISPlAY_LOGO:
+      return {
+        ...state,
+        storeLogo: action.logo,
+      }
     default:
       return state;
   }
@@ -112,6 +128,15 @@ export const setError = (error) => ({
   error,
 });
 
+export const displayBanner = (banner) => ({
+  type: DISPlAY_BANNER,
+  banner,
+});
+
+export const displayLogo = (logo) => ({
+  type: DISPlAY_LOGO,
+  logo,
+});
 // Side effects
 
 const showErrorMsg = (error) => {
@@ -126,70 +151,76 @@ const showErrorMsg = (error) => {
 };
 
 export const deleteStoreAction = id => dispatch => fetch(`${defaultUrl}/stores/${id}`, {
-  method: 'DELETE',
-  headers: {
-    ...customHeaders,
-  },
-}).then(() => {
-  swal(
-    'Borrada!',
-    'La tienda ha sido borrada.',
-    'success'
-  );
-  dispatch(deleteStore(id));
-})
-.catch((error) => { showErrorMsg(error) });
+    method: 'DELETE',
+    headers: {
+      ...customHeaders,
+    },
+  }).then(() => {
+    swal(
+      'Borrada!',
+      'La tienda ha sido borrada.',
+      'success'
+    );
+    dispatch(deleteStore(id));
+  })
+  .catch((error) => {
+    showErrorMsg(error)
+  });
 
 export const updateStore = (history, values, id) => dispatch => fetch(`${defaultUrl}/stores/${id}`, {
-  method: 'PUT',
-  body: JSON.stringify(values),
-  headers: {
-    ...customHeaders
-  },
-}).then(() => {
-  swal({
-    type: 'success',
-    title: 'Tienda Actualizada',
-    text: 'En un momento se te redireccionara al listado de tiendas',
-    showConfirmButton: false,
-    timer: 1500,
-  });
-  setTimeout(() => {
-    history.push('/tiendas');
-  }, 1500);
-})
-.catch((error) => { showErrorMsg(error); })
+    method: 'PUT',
+    body: JSON.stringify(values),
+    headers: {
+      ...customHeaders
+    },
+  }).then(() => {
+    swal({
+      type: 'success',
+      title: 'Tienda Actualizada',
+      text: 'En un momento se te redireccionara al listado de tiendas',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    setTimeout(() => {
+      history.push('/tiendas');
+    }, 1500);
+  })
+  .catch((error) => {
+    showErrorMsg(error);
+  })
 
 export const createStore = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/stores`, {
-  method: "POST",
-  body: JSON.stringify(values),
-  headers: {
-    ...customHeaders
-  },
-}).then(response => response.json())
-.then(data => {
-  dispatch(addStore(data.store));
-  swal({
-    type: 'success',
-    title: 'Tienda creada',
-    text: 'En un momento se te redireccionara al listado de tiendas',
-    showConfirmButton: false,
-    timer: 1500,
+    method: "POST",
+    body: JSON.stringify(values),
+    headers: {
+      ...customHeaders
+    },
+  }).then(response => response.json())
+  .then(data => {
+    dispatch(addStore(data.store));
+    swal({
+      type: 'success',
+      title: 'Tienda creada',
+      text: 'En un momento se te redireccionara al listado de tiendas',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    setTimeout(() => {
+      history.push('/tiendas')
+    }, 1500);
+  })
+  .catch((error) => {
+    showErrorMsg(error)
   });
-  setTimeout(() => {
-    history.push('/tiendas')
-  }, 1500);
-})
-.catch((error) => { showErrorMsg(error) });
 
 export const getStores = () => dispatch => fetch(`${defaultUrl}/stores`, {
-  headers: {
-    ...customHeaders
-  },
-}).then(fetchStatusHandler)
-.then(response => response.json())
-.then(data => dispatch(addStores(data.stores)))
-.catch(error => {
-  console.log(error);
-  console.log('Error al cargar las tiendas, recarga la pagina porfavor');
-});
+    headers: {
+      ...customHeaders
+    },
+  }).then(fetchStatusHandler)
+  .then(response => response.json())
+  .then(data => dispatch(addStores(data.stores)))
+  .catch(error => {
+    console.log(error);
+    console.log('Error al cargar las tiendas, recarga la pagina porfavor');
+  });
