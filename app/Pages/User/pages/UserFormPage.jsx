@@ -95,10 +95,19 @@ class UserFormPage extends PureComponent {
             <FormGroup>
               <ControlLabel>Nombre del usuario</ControlLabel>
               <Field
-                name="name"
+                name="first_name"
                 component={CustomInput}
                 type="text"
-                props = {{ placeholder: 'Nombre del usuario', required: 'required'}}
+                props = {{ placeholder: 'Nombres del usuario', required: 'required'}}
+              />
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Apellidos del usuario</ControlLabel>
+              <Field
+                name="last_name"
+                component={CustomInput}
+                type="text"
+                props = {{ placeholder: 'Apellidos del usuario', required: 'required'}}
               />
             </FormGroup>
             <FormGroup>

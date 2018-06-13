@@ -36,7 +36,7 @@ class DataTableWithRoles extends PureComponent {
 
     return roles.map(role => [
       role.name,
-      roles.description
+      '-',
       `${role.id}`,
     ]);
   }

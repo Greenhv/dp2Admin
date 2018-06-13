@@ -32,7 +32,7 @@ class DataTableWithUsers extends PureComponent {
     } = this.props;
 
     return users.map(user => [
-      user.name,
+      `${user.first_name} ${user.last_name}`,
       user.email,
       `${user.id}`,
     ]);

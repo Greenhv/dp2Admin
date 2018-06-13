@@ -15,7 +15,7 @@ const Root = ({ match, location }) => (
       <div>
         { match.url === location.pathname && (
           <Link to="/usuarios/nuevo">
-            <Button> Nueva usuario</Button>
+            <Button> Nuevo usuario</Button>
           </Link>
         )}
       </div>

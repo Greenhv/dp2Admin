@@ -160,7 +160,7 @@ export const updateUser = (history, values, id) => dispatch => fetch(`${defaultU
 })
 .catch((error) => { showErrorMsg(error); })
 
-export const createUser = (history, values) => dispatch => fetch(`${defaultUrl}/users`, {
+export const createUser = (history, values) => dispatch => fetch(`${defaultUrl}/users/create_admin`, {
   method: "POST",
   body: JSON.stringify(values),
   headers: {
@@ -182,7 +182,7 @@ export const createUser = (history, values) => dispatch => fetch(`${defaultUrl}/
 })
 .catch((error) => { showErrorMsg(error) });
 
-export const getUsers = () => dispatch => fetch(`${defaultUrl}/users`, {
+export const getUsers = () => dispatch => fetch(`${defaultUrl}/users/get_admins`, {
   headers: {
     ...customHeaders
   },
