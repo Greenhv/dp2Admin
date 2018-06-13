@@ -163,7 +163,7 @@ class StoreFormPage extends PureComponent {
                             label: `${user.first_name} ${user.last_name}`
                           })
                         ),
-                        required: "required"
+                        
                       }}
                     />
                   </FormGroup>
