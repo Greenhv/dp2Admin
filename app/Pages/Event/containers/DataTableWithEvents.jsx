@@ -1,12 +1,13 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Modal } from "react-bootstrap";
 
 import {
   fetchEvents,
   selectEvent,
   deleteEventAction,
+  displayImage,
   getEvents as requestEvents,
 } from 'Modules/events';
 import DataTables from 'Shared/DataTable';
@@ -26,23 +27,36 @@ class DataTableWithEvents extends PureComponent {
     getEvents();
   }
 
-  openImgModal = () => {
-    console.log("Modal!");
+  state = {
+    modalOpen: false,
   };
+
+  openImgModal = seeImg => () => {
+    seeImg();
+    this.setState({
+      modalOpen: true,
+    });
+  };
+
+  closeImgModal = () => {
+    this.setState({
+      modalOpen: false,
+    });
+  }
 
   parseEvents = () => {
     const {
       events,
     } = this.props;
 
-    return events.map(event => [
-      event.name,
-      event.location,
-      event.initial_time ? event.initial_time : 'all day',
-      event.final_time ? event.final_time : 'all day',
-      event.event_date,
-      event.banner,
-      `${event.id}`,
+    return events.map(myEvent => [
+      myEvent.name,
+      myEvent.location,
+      myEvent.initial_time ? myEvent.initial_time : 'all day',
+      myEvent.final_time ? myEvent.final_time : 'all day',
+      myEvent.event_date,
+      myEvent.banner,
+      `${myEvent.id}`,
     ]);
   }
 
@@ -53,6 +67,8 @@ class DataTableWithEvents extends PureComponent {
       eventsError,
       removeEvent,
       editEvent,
+      seeImg,
+      bannerImage,
     } = this.props;
 
     if (eventsError) {
@@ -65,7 +81,16 @@ class DataTableWithEvents extends PureComponent {
       { name: 'Inicio' },
       { name: 'Fin' },
       { name: 'Fecha' },
-      { name: 'Imagen' },
+      {
+        name: 'Baner',
+        options: {
+          customRender: (index, value) => (
+            <Button onClick={this.openImgModal(seeImg(value))}>
+              <em className="fa fa-image"></em>
+            </Button>
+          ),
+        },
+      },
     ];
     const data = this.parseEvents();
     const options = {
@@ -94,10 +119,24 @@ class DataTableWithEvents extends PureComponent {
             </Table>
           )
         )}
+        <Modal show={this.state.modalOpen} onHide={this.closeImgModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Imagen del Evento</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div>
+              <img src={bannerImage} alt="Event Image" style={{ width: '100%' }} />
+            </div>
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }
 }
+
+DataTableWithEvents.defaultProps = {
+  bannerImage: '',
+};
 
 DataTableWithEvents.propTypes = {
   events: PropTypes.arrayOf(eventType).isRequired,
@@ -106,12 +145,15 @@ DataTableWithEvents.propTypes = {
   getEvents: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   removeEvent: PropTypes.func.isRequired,
+  seeImg: PropTypes.func.isRequired,
+  bannerImage: PropTypes.string,
 };
 
-const mapStateToProps = ({ events: { events, isLoading, error } }) => ({
+const mapStateToProps = ({ events: { events, isLoading, error, bannerImage } }) => ({
   events,
+  bannerImage,
   isLoadingEvents: isLoading,
-  eventsError: error
+  eventsError: error,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -138,6 +180,9 @@ const mapDispatchToProps = dispatch => ({
         dispatch(deleteEventAction(event));
       }
     })
+  },
+  seeImg: img => () => {
+    dispatch(displayImage(img));
   }
 });
 

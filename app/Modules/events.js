@@ -10,6 +10,7 @@ const EDIT = 'admin/events/EDIT';
 const DELETE = 'admin/events/DELETE';
 const ERROR = 'admin/events/ERROR';
 const CLEAR_SELECTED = 'admin/events/CLEAR_SELECTED';
+const DISPLAY_IMAGE = 'admin/events/DISPLAY_IMAGE';
 
 // Initial State
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   isLoading: false,
   error: '',
   isModalOpen: true,
+  bannerImage: '',
 };
 
 // Reducer
@@ -72,6 +74,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         error: action.error,
       };
+    case DISPLAY_IMAGE:
+      return {
+        ...state,
+        bannerImage: action.img,
+      };
     default:
       return state;
   }
@@ -110,6 +117,11 @@ export const fetchEvents = () => ({
 export const setError = (error) => ({
   type: ERROR,
   error,
+});
+
+export const displayImage = (img) => ({
+  type: DISPLAY_IMAGE,
+  img,
 });
 
 // Side effects
