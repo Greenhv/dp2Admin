@@ -15,7 +15,9 @@ import {
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
+import objectToFormData from 'Utils/objectToFormData';
 import Select from "Shared/Select";
+import DropZone from 'Shared/Form/DropZone';
 import CustomInput from "Shared/Form/CustomInput";
 import { getStoreCategories as requestCategories } from "Modules/storeCategories";
 import { getUsers as requestUsers } from "Modules/users";
@@ -33,7 +35,7 @@ class StoreFormPage extends PureComponent {
 
     const params = props.match.params;
 
-    if (Object.keys(params).length < 1) {
+    if (!params.id) {
       props.removeSelected();
     }
   }
@@ -47,13 +49,14 @@ class StoreFormPage extends PureComponent {
     $(element).parsley();
   }
 
-  goToStores = () => {
+  goToStoresPage = () => {
     const { history } = this.props;
     history.push("/tiendas");
   };
 
   createStore = (values, dispatch) => {
     const { history } = this.props;
+    const finalData = objectToFormData(values, null, 'store');
 
     swal({
       title: 'Se esta creando su tienda',
@@ -62,11 +65,12 @@ class StoreFormPage extends PureComponent {
           swal.showLoading()
       }
     });
-    dispatch(createStoreAction(history, values));
+    dispatch(createStoreAction(history, finalData));
   }
 
   updateStore = (values, dispatch, id) => {
     const { history } = this.props;
+    const finalData = objectToFormData(values, null, 'store');
 
     swal({
       title: 'Se esta actualiazando su tienda',
@@ -196,11 +200,31 @@ class StoreFormPage extends PureComponent {
                       props={{ placeholder: "Telefono", required: "required" }}
                     />
                   </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Logo</ControlLabel>
+                    <Field
+                      name="logo"
+                      component={DropZone}
+                      props={{
+                        required: 'required',
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Banner</ControlLabel>
+                    <Field
+                      name="banner"
+                      component={DropZone}
+                      props={{
+                        required: 'required',
+                      }}
+                    />
+                  </FormGroup>
                 </Panel.Body>
                 <Panel.Footer>
                   <div className="form-footer">
                     <div className="form-button">
-                      <Button onClick={this.goToStores}>Cancelar</Button>
+                      <Button onClick={this.goToStoresPage}>Cancelar</Button>
                     </div>
                     <div className="form-button">
                       <Button type="submit">Crear</Button>

@@ -32,7 +32,7 @@ const defaultUrl = process.env.API_BASE_URL;
 const auth = getCookie('authToken');
 const customHeaders = {
   'Authorization': auth ? auth.authToken : '',
-  'content-type': 'application/json',
+  //'content-type': 'application/json',
 };
 
 export default (state = initialState, action = {}) => {
@@ -169,9 +169,11 @@ export const deleteStoreAction = id => dispatch => fetch(`${defaultUrl}/stores/$
 
 export const updateStore = (history, values, id) => dispatch => fetch(`${defaultUrl}/stores/${id}`, {
     method: 'PUT',
-    body: JSON.stringify(values),
+    // body: JSON.stringify(values),
+    body: values,
     headers: {
-      ...customHeaders
+      // ...customHeaders
+      'Authorization': auth ? auth.authToken : '',
     },
   }).then(() => {
     swal({
@@ -191,9 +193,11 @@ export const updateStore = (history, values, id) => dispatch => fetch(`${default
 
 export const createStore = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/stores`, {
     method: "POST",
-    body: JSON.stringify(values),
+    // body: JSON.stringify(values),
+    body: values,
     headers: {
-      ...customHeaders
+      //...customHeaders
+      'Authorization': auth ? auth.authToken : '',
     },
   }).then(response => response.json())
   .then(data => {
