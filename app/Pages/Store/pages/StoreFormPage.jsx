@@ -18,12 +18,14 @@ import { reduxForm, Field } from "redux-form";
 import Select from "Shared/Select";
 import CustomInput from "Shared/Form/CustomInput";
 import { getStoreCategories as requestCategories } from "Modules/storeCategories";
+import { getUsers as requestUsers } from "Modules/users";
 import {
   createStore as createStoreAction,
   clearSelected,
   updateStore as updateStoreAction,
 } from "Modules/stores";
 import { storeCategoryType } from "Pages/StoreCategory/types";
+import { userType } from "Pages/User/types";
 
 class StoreFormPage extends PureComponent {
   constructor(props) {
@@ -37,10 +39,11 @@ class StoreFormPage extends PureComponent {
   }
 
   componentWillMount() {
-    const { getStoreCategories } = this.props;
+    const { getStoreCategories, getUsers } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
 
     getStoreCategories();
+    getUsers();
     $(element).parsley();
   }
 
@@ -150,10 +153,10 @@ class StoreFormPage extends PureComponent {
                       component={Select}
                       props={{
                         placeholder: "Administrador de la tienda",
-                        options: this.props.storeCategories.map(
-                          storeCategory => ({
-                            value: storeCategory.id,
-                            label: storeCategory.name
+                        options: this.props.users.map(
+                          user => ({
+                            value: user.id,
+                            label: `${user.first_name} ${user.last_name}`
                           })
                         ),
                         required: "required"
@@ -220,18 +223,24 @@ StoreFormPage.defaultProps = {
 StoreFormPage.propTypes = {
   history: shape({}).isRequired,
   storeCategories: arrayOf(storeCategoryType),
+  users: arrayOf(userType),
   getStoreCategories: func.isRequired,
   removeSelected: func.isRequired,
+  getUsers: func.isRequired,
 };
 
-const mapStateToProps = ({ stores: { selectedStore }, storeCategories: { storeCategories } }) => ({
+const mapStateToProps = ({ stores: { selectedStore }, storeCategories: { storeCategories }, users: { users } }) => ({
   storeCategories,
+  users,
   initialValues: selectedStore.id ? selectedStore : {},
 });
 
 const mapDispatchToProps = dispatch => ({
   getStoreCategories: () => {
     dispatch(requestCategories());
+  },
+  getUsers: () => {
+    dispatch(requestUsers());
   },
   removeSelected: () => {
     dispatch(clearSelected());
