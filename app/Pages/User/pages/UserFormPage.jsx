@@ -149,6 +149,8 @@ class UserFormPage extends PureComponent {
                       props={{
                         placeholder: 'Ingrese la contraseña del usuario',
                         required: 'required',
+                        minlength: '6',
+                        'data-parsley-type': 'number',
                       }}
                     />
                   </FormGroup>
