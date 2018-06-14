@@ -56,13 +56,13 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         event: [...state.event]
-          .filter(category => event.id !== action.event),
+          .filter(customEvent => customEvent.id !== action.event),
       };
     case SELECT:
       return {
         ...state,
         event: state.event
-          .filter(category => event.id === action.event)[0],
+          .filter(customEvent => customEvent.id === action.event)[0],
       };
     case CLEAR_SELECTED:
       return {
