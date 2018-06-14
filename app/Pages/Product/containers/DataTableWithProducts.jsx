@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Button, Table, Modal } from "react-bootstrap";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Button, Table, Modal } from 'react-bootstrap';
 
 import {
   fetchProducts,
@@ -21,9 +21,7 @@ class DataTableWithProducts extends PureComponent {
   constructor(props) {
     super(props);
 
-    const {
-      getProducts
-    } = props;
+    const { getProducts } = props;
 
     getProducts();
   }
@@ -43,23 +41,23 @@ class DataTableWithProducts extends PureComponent {
     this.setState({
       modalOpen: false,
     });
-  }
+  };
 
   parseProducts = () => {
-    const {
-      products,
-    } = this.props;
+    const { products } = this.props;
 
     return products.map(product => [
       product.name,
       transformToMoney(product.price),
       product.promotion.id ? product.promotion.value : '-',
-      product.promotion.id ? applyDiscount(product.price, product.promotion.value) : '-',
+      product.promotion.id
+        ? applyDiscount(product.price, product.promotion.value)
+        : transformToMoney(product.price),
       product.brand.name,
       product.image,
       `${product.id}`,
     ]);
-  }
+  };
 
   render() {
     const {
@@ -73,7 +71,7 @@ class DataTableWithProducts extends PureComponent {
     } = this.props;
 
     if (productsError) {
-      $.notify(productsError, "danger");
+      $.notify(productsError, 'danger');
     }
 
     const headers = [
@@ -87,7 +85,7 @@ class DataTableWithProducts extends PureComponent {
         options: {
           customRender: (index, value) => (
             <Button onClick={this.openImgModal(seeImg(value))}>
-              <em className="fa fa-image"></em>
+              <em className="fa fa-image" />
             </Button>
           ),
         },
@@ -102,23 +100,23 @@ class DataTableWithProducts extends PureComponent {
       <div>
         {isLoadingProducts ? (
           <Loader />
+        ) : products.length > 0 ? (
+          <DataTables
+            headers={headers}
+            data={data}
+            options={options}
+            // viewAction={selectProduct}
+            deleteAction={removeProduct}
+            editAction={editProduct}
+          />
         ) : (
-          products.length > 0 ? (
-            <DataTables
-              headers={headers}
-              data={data}
-              options={options}
-              // viewAction={selectProduct}
-              deleteAction={removeProduct}
-              editAction={editProduct}
-            />
-          ) : (
-            <Table responsive striped hover>
-              <tbody>
-                <DataTableEmptyMsg colSpan={6}>No hay productos para mostrar</DataTableEmptyMsg>
-              </tbody>
-            </Table>
-          )
+          <Table responsive striped hover>
+            <tbody>
+              <DataTableEmptyMsg colSpan={6}>
+                No hay productos para mostrar
+              </DataTableEmptyMsg>
+            </tbody>
+          </Table>
         )}
         <Modal show={this.state.modalOpen} onHide={this.closeImgModal}>
           <Modal.Header closeButton>
@@ -126,7 +124,11 @@ class DataTableWithProducts extends PureComponent {
           </Modal.Header>
           <Modal.Body>
             <div>
-              <img src={productImage} alt="Product Image" style={{ width: '100%' }} />
+              <img
+                src={productImage}
+                alt="Product Image"
+                style={{ width: '100%' }}
+              />
             </div>
           </Modal.Body>
         </Modal>
@@ -150,7 +152,9 @@ DataTableWithProducts.propTypes = {
   productImage: PropTypes.string,
 };
 
-const mapStateToProps = ({ products: { products, isLoading, error, productImage } }) => ({
+const mapStateToProps = ({
+  products: { products, isLoading, error, productImage },
+}) => ({
   products,
   isLoadingProducts: isLoading,
   productsError: error,
@@ -168,25 +172,26 @@ const mapDispatchToProps = dispatch => ({
   removeProduct: product => () => {
     swal({
       title: 'Estas seguro?',
-      text: "No se podrá revertir este cambio",
+      text: 'No se podrá revertir este cambio',
       type: 'warning',
       showCancelButton: true,
       reverseButtons: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si, deseo borrarlo',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
+      cancelButtonText: 'Cancelar',
+    }).then(result => {
       if (result.value) {
         dispatch(deleteProductAction(product));
       }
-    })
+    });
   },
   seeImg: img => () => {
     dispatch(displayImage(img));
-  }
+  },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  DataTableWithProducts
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DataTableWithProducts);
