@@ -51,7 +51,8 @@ class EventFormPage extends PureComponent {
 
   createEvent = (values, dispatch) => {
     const { history } = this.props;
-    const finalData = objectToFormData(values, null, 'event');
+    const data = { ...values, banner: values.banner[0] };
+    const finalData = objectToFormData(data, null, 'event');
 
     swal({
       title: 'Se esta creando su evento',
@@ -65,7 +66,8 @@ class EventFormPage extends PureComponent {
 
   updateEvent = (values, dispatch, id) => {
     const { history } = this.props;
-    const finalData = objectToFormData(values, null, 'event');
+    const data = { ...values, banner: values.banner[0] };
+    const finalData = objectToFormData(data, null, 'event');
 
     swal({
       title: 'Se esta actualiazando su evento',
