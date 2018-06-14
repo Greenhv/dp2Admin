@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import ReactDOM from "react-dom";
-import { shape, func, arrayOf } from "prop-types";
+import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
+import { shape, func, arrayOf } from 'prop-types';
 import {
   FormGroup,
   ControlLabel,
@@ -10,24 +10,24 @@ import {
   Panel,
   Button,
   Label,
-  Input
-} from "react-bootstrap";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
+  Input,
+} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
 
 import objectToFormData from 'Utils/objectToFormData';
-import Select from "Shared/Select"; 
+import Select from 'Shared/Select';
 import DropZone from 'Shared/Form/DropZone';
-import CustomInput from "Shared/Form/CustomInput";
-import { getStoreCategories as requestCategories } from "Modules/storeCategories";
-import { getUsers as requestUsers } from "Modules/users";
+import CustomInput from 'Shared/Form/CustomInput';
+import { getStoreCategories as requestCategories } from 'Modules/storeCategories';
+import { getUsers as requestUsers } from 'Modules/users';
 import {
   createStore as createStoreAction,
   clearSelected,
   updateStore as updateStoreAction,
-} from "Modules/stores";
-import { storeCategoryType } from "Pages/StoreCategory/types";
-import { userType } from "Pages/User/types";
+} from 'Modules/stores';
+import { storeCategoryType } from 'Pages/StoreCategory/types';
+import { userType } from 'Pages/User/types';
 
 class StoreFormPage extends PureComponent {
   constructor(props) {
@@ -51,39 +51,43 @@ class StoreFormPage extends PureComponent {
 
   goToStoresPage = () => {
     const { history } = this.props;
-    history.push("/tiendas");
+    history.push('/tiendas');
   };
 
   createStore = (values, dispatch) => {
     const { history } = this.props;
-    const finalData = objectToFormData(values, null, 'store');
+    const data = { ...values, banner: values.banner[0], logo: values.logo[0] };
+    const finalData = objectToFormData(data, null, 'store');
 
     swal({
       title: 'Se esta creando su tienda',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
     dispatch(createStoreAction(history, finalData));
-  }
+  };
 
   updateStore = (values, dispatch, id) => {
     const { history } = this.props;
-    const finalData = objectToFormData(values, null, 'store');
+    const data = { ...values, banner: values.banner[0], logo: values.logo[0] };
+    const finalData = objectToFormData(data, null, 'store');
 
     swal({
       title: 'Se esta actualiazando su tienda',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
-    dispatch(updateStoreAction(history, values, id));
-  }
+    dispatch(updateStoreAction(history, finalData, id));
+  };
 
   onStoreSubmit = (values, dispatch) => {
-    const isFormValid = $(this.form).parsley().isValid();
+    const isFormValid = $(this.form)
+      .parsley()
+      .isValid();
     const params = this.props.match.params;
 
     if (isFormValid && !params.id) {
@@ -115,8 +119,8 @@ class StoreFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Nombre de la tienda",
-                        required: "required"
+                        placeholder: 'Nombre de la tienda',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -127,8 +131,8 @@ class StoreFormPage extends PureComponent {
                       component={CustomInput}
                       type="textarea"
                       props={{
-                        placeholder: "Descripcion de la tienda",
-                        required: "required"
+                        placeholder: 'Descripcion de la tienda',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -138,14 +142,14 @@ class StoreFormPage extends PureComponent {
                       name="categories_id"
                       component={Select}
                       props={{
-                        placeholder: "Categorias de la tienda",
+                        placeholder: 'Categorias de la tienda',
                         options: this.props.storeCategories.map(
                           storeCategory => ({
                             value: storeCategory.id,
-                            label: storeCategory.name
+                            label: storeCategory.name,
                           })
                         ),
-                        required: "required",
+                        required: 'required',
                         multiple: true,
                       }}
                     />
@@ -156,14 +160,11 @@ class StoreFormPage extends PureComponent {
                       name="admin_id"
                       component={Select}
                       props={{
-                        placeholder: "Administrador de la tienda",
-                        options: this.props.users.map(
-                          user => ({
-                            value: user.id,
-                            label: `${user.first_name} ${user.last_name}`
-                          })
-                        ),
-                        
+                        placeholder: 'Administrador de la tienda',
+                        options: this.props.users.map(user => ({
+                          value: user.id,
+                          label: `${user.first_name} ${user.last_name}`,
+                        })),
                       }}
                     />
                   </FormGroup>
@@ -174,8 +175,8 @@ class StoreFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Página de la tienda",
-                        required: "required"
+                        placeholder: 'Página de la tienda',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -186,8 +187,8 @@ class StoreFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Nombre del contacto",
-                        required: "required"
+                        placeholder: 'Nombre del contacto',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -197,7 +198,7 @@ class StoreFormPage extends PureComponent {
                       name="phone_number"
                       component={CustomInput}
                       type="text"
-                      props={{ placeholder: "Telefono", required: "required" }}
+                      props={{ placeholder: 'Telefono', required: 'required' }}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -241,7 +242,7 @@ class StoreFormPage extends PureComponent {
 }
 
 StoreFormPage.defaultProps = {
-  storeCategories: []
+  storeCategories: [],
 };
 
 StoreFormPage.propTypes = {
@@ -253,7 +254,11 @@ StoreFormPage.propTypes = {
   getUsers: func.isRequired,
 };
 
-const mapStateToProps = ({ stores: { selectedStore }, storeCategories: { storeCategories }, users: { users } }) => ({
+const mapStateToProps = ({
+  stores: { selectedStore },
+  storeCategories: { storeCategories },
+  users: { users },
+}) => ({
   storeCategories,
   users,
   initialValues: selectedStore.id ? selectedStore : {},
@@ -276,6 +281,6 @@ export default connect(
   mapDispatchToProps
 )(
   reduxForm({
-    form: "storeForm"
+    form: 'storeForm',
   })(StoreFormPage)
 );
