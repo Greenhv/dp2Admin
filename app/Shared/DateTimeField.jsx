@@ -25,8 +25,8 @@ const DateTimeField = ({
       timeFormat="HH:mm"
       value={
         input.value
-          ? moment(input.value, ['h:m a', 'H:m']).format('H:mm')
-          : input.value
+          ? moment(input.value, ['h:m a', 'H:m']).format('HH:mm')
+          : null
       }
       onChange={date => input.onChange(moment(date).format('HH:mm'))}
       disabled={disabled}
