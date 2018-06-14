@@ -58,7 +58,7 @@ class DataTableWithPromotions extends PureComponent {
     }
 
     const headers = [
-      { name: "Solo mobil" },
+      { name: "Solo movil" },
       { name: "Fecha inicial" },
       { name: "Fecha final" },
       { name: "Valor del descuento" },
