@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import ReactDOM from "react-dom";
-import { shape, func, arrayOf } from "prop-types";
+import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
+import { shape, func, arrayOf } from 'prop-types';
 import {
   FormGroup,
   ControlLabel,
@@ -11,26 +11,26 @@ import {
   Panel,
   Button,
   Label,
-  Input
-} from "react-bootstrap";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
+  Input,
+} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
 
-import Select from "Shared/Select";
+import Select from 'Shared/Select';
 import DropZone from 'Shared/Form/DropZone';
-import CustomInput from "Shared/Form/CustomInput";
+import CustomInput from 'Shared/Form/CustomInput';
 
-import DatePicker from "Shared/DateTimePicker";
-import DateTime from "Shared/DateTimeField";
-import CustomRadio from "Shared/Form/CustomRadio";
+import DatePicker from 'Shared/DateTimePicker';
+import DateTime from 'Shared/DateTimeField';
+import CustomRadio from 'Shared/Form/CustomRadio';
 
 import {
   createEvent as createEventAction,
   updateEvent as updateEventAction,
   clearSelected,
-} from "Modules/events";
+} from 'Modules/events';
 import objectToFormData from 'Utils/objectToFormData';
-import { eventType } from "Pages/Event/types";
+import { eventType } from 'Pages/Event/types';
 
 class EventFormPage extends PureComponent {
   constructor(props) {
@@ -46,7 +46,7 @@ class EventFormPage extends PureComponent {
   goToEventsPage = () => {
     const { history } = this.props;
 
-    history.push("/eventos");
+    history.push('/eventos');
   };
 
   createEvent = (values, dispatch) => {
@@ -58,11 +58,11 @@ class EventFormPage extends PureComponent {
       title: 'Se esta creando su evento',
       text: 'Espere por favor',
       onOpen: () => {
-        swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
     dispatch(createEventAction(history, finalData));
-  }
+  };
 
   updateEvent = (values, dispatch, id) => {
     const { history } = this.props;
@@ -73,14 +73,16 @@ class EventFormPage extends PureComponent {
       title: 'Se esta actualiazando su evento',
       text: 'Espere por favor',
       onOpen: () => {
-        swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
     dispatch(updateEventAction(history, finalData, id));
-  }
+  };
 
   onEventSubmit = (values, dispatch) => {
-    const isFormValid = $(this.form).parsley().isValid();
+    const isFormValid = $(this.form)
+      .parsley()
+      .isValid();
     const params = this.props.match.params;
 
     if (isFormValid && !params.id) {
@@ -113,8 +115,8 @@ class EventFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Nombre del evento",
-                        required: "required"
+                        placeholder: 'Nombre del evento',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -125,8 +127,8 @@ class EventFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Localizacion del evento",
-                        required: "required"
+                        placeholder: 'Localizacion del evento',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -136,31 +138,31 @@ class EventFormPage extends PureComponent {
                       name="event_date"
                       component={DatePicker}
                       props={{
-                        placeholder: "Fecha del evento",
-                        required: "required"
+                        placeholder: 'Fecha del evento',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
                   <FormGroup>
                     <ControlLabel>¿Todo el día?</ControlLabel>
-                    <br></br>
+                    <br />
                     <Field
                       name="all_day"
                       component={CustomRadio}
                       props={{
                         label: 'Si',
                         required: 'required',
-                        value: true,
+                        value: 'true',
                       }}
                     />
-                    <br></br>
+                    <br />
                     <Field
                       name="all_day"
                       component={CustomRadio}
                       props={{
                         label: 'No',
                         required: 'required',
-                        value: false,
+                        value: 'false',
                       }}
                     />
                   </FormGroup>
@@ -170,8 +172,8 @@ class EventFormPage extends PureComponent {
                       name="initial_time"
                       component={DateTime}
                       props={{
-                        placeholder: "Hora de inicio del evento",
-                        required: "required"
+                        placeholder: 'Hora de inicio del evento',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -181,8 +183,8 @@ class EventFormPage extends PureComponent {
                       name="final_time"
                       component={DateTime}
                       props={{
-                        placeholder: "Hora de fin del evento",
-                        required: "required"
+                        placeholder: 'Hora de fin del evento',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -216,8 +218,7 @@ class EventFormPage extends PureComponent {
   }
 }
 
-EventFormPage.defaultProps = {
-};
+EventFormPage.defaultProps = {};
 
 EventFormPage.propTypes = {
   history: shape({}).isRequired,
@@ -226,15 +227,18 @@ EventFormPage.propTypes = {
 
 const mapStateToProps = ({ events: { selectedEvent } }) => ({
   initialValues: selectedEvent.id ? selectedEvent : {},
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   removeSelected: () => {
     dispatch(clearSelected());
-  }
-})
+  },
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
   reduxForm({
     form: 'eventForm',
   })(EventFormPage)
