@@ -169,9 +169,11 @@ export const updateUser = (history, values, id) => dispatch =>
 export const createUser = (history, values) => dispatch =>
   fetch(`${defaultUrl}/users/create_admin`, {
     method: 'POST',
-    body: JSON.stringify(values),
+    // body: JSON.stringify(values),
+    body: values,
     headers: {
-      ...customHeaders,
+      // ...customHeaders,
+      Authorization: auth ? auth.authToken : '',
     },
   })
     .then(response => response.json())
