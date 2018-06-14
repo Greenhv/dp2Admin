@@ -14,8 +14,8 @@ const DateTimeField = ({ name, disabled, input, label, placeholder, ...props}) =
       name={name}
       locale='en'
       dateFormat={false}
-      timeFormat='hh:mm'
-      onChange={date => input.onChange(moment(date).format('hh:mm A'))}
+      timeFormat='HH:mm'
+      onChange={date => input.onChange(moment(date).format('HH:mm'))}
       disabled={disabled}
     />
     )
