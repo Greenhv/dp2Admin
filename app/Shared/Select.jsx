@@ -5,7 +5,7 @@ import { FormControl } from 'react-bootstrap';
 class Select extends PureComponent {
   state = {
     selectedValues: [],
-  }
+  };
 
   componentDidMount() {
     $(this.select).select2({
@@ -20,54 +20,64 @@ class Select extends PureComponent {
 
   componentDidUpdate() {
     if (this.select.value === '-1') {
-      $(this.select).val(null).trigger('change');
+      $(this.select)
+        .val(null)
+        .trigger('change');
     }
   }
 
-  selectItem = (values) => {
+  selectItem = values => {
     const id = values.params.data.id;
     const selectedValues = [...this.state.selectedValues];
     const newSelectedValues = [...selectedValues, id];
 
-    this.props.input.onChange(newSelectedValues.length > 1 ? newSelectedValues : newSelectedValues[0]);
+    this.props.input.onChange(
+      newSelectedValues.length > 1 ? newSelectedValues : newSelectedValues[0]
+    );
     this.setState({
       selectedValues: newSelectedValues,
     });
-  }
+  };
 
-  unSelectItem = (values) => {
+  unSelectItem = values => {
     const id = values.params.data.id;
     const selectedValues = [...this.state.selectedValues];
-    const newSelectedValues = [...selectedValues].filter(selectedValue => selectedValue !== id);
+    const newSelectedValues = [...selectedValues].filter(
+      selectedValue => selectedValue !== id
+    );
 
-    this.props.input.onChange(newSelectedValues.length > 1 ? newSelectedValues : newSelectedValues[0]);
+    this.props.input.onChange(
+      newSelectedValues.length > 1 ? newSelectedValues : newSelectedValues[0]
+    );
     this.setState({
       selectedValues: newSelectedValues,
     });
-  }
+  };
 
   render() {
-    const {
-      options,
-      multiple,
-      name,
-      input,
-      ...props
-    } = this.props;
+    const { options, multiple, name, input, ...props } = this.props;
 
     return (
       <select
         className="form-control"
         name={name}
-        ref={(node) => { this.select = node; }}
+        ref={node => {
+          this.select = node;
+        }}
+        value={
+          this.state.selectedValues.length < 1 ? -1 : this.state.selectedValues
+        }
         defaultValue="-1"
         multiple={multiple}
         {...input}
         {...props}
       >
-        { options.map((option, index) => (
-          <option key={index} value={option.value}>{ option.label }</option>
-        )) }
+        <option value="-1" />
+        {options.map((option, index) => (
+          <option key={index} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
     );
   }
@@ -76,17 +86,16 @@ class Select extends PureComponent {
 Select.defaultProps = {
   options: [],
   multiple: false,
-}
+};
 
 Select.propTypes = {
-  options: arrayOf(shape({
-    value: oneOfType([
-      string,
-      number
-    ]),
-    name: string,
-    multiple: bool,
-  })),
+  options: arrayOf(
+    shape({
+      value: oneOfType([string, number]),
+      name: string,
+      multiple: bool,
+    })
+  ),
 };
 
 export default Select;

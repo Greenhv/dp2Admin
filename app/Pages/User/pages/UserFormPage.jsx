@@ -49,6 +49,7 @@ class UserFormPage extends PureComponent {
   createUser = (values, dispatch) => {
     const { history } = this.props;
 
+    const finalData = objectToFormData(values, null, 'user');
     swal({
       title: 'Se esta creando su usuario',
       text: 'Espere por favor',
@@ -56,12 +57,13 @@ class UserFormPage extends PureComponent {
         swal.showLoading();
       },
     });
-    dispatch(createUserAction(history, values));
+    dispatch(createUserAction(history, finalData));
   };
 
   updateUser = (values, dispatch, id) => {
     const { history } = this.props;
 
+    const finalData = objectToFormData(values, null, 'user');
     swal({
       title: 'Se esta actualiazando su usuario',
       text: 'Espere por favor',
@@ -69,7 +71,7 @@ class UserFormPage extends PureComponent {
         swal.showLoading();
       },
     });
-    dispatch(updateUserAction(history, values, id));
+    dispatch(updateUserAction(history, finalData, id));
   };
 
   onUserSubmit = (values, dispatch) => {
