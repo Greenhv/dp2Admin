@@ -18,11 +18,12 @@ const CustomDatePicker = ({
   return (
     <DatePicker
       {...input}
+      required
       name={name}
-      dateForm="MM/DD/YYYY"
+      dateForm="DD/MM/YYYY"
       placeholderText={placeholder}
       selected={input.value ? moment(input.value) : null}
-      onChange={date => input.onChange(moment(date).format('MM/DD/YYYY'))}
+      onChange={date => input.onChange(moment(date).format('DD/MM/YYYY'))}
       className="form-control date-picker"
     />
   );

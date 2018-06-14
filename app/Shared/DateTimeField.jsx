@@ -6,19 +6,22 @@ import DateTime from 'react-datetime'
 
 import '../styles/pages/react-datetime.scss'
 
-const DateTimeField = ({ name, disabled, input, label, placeholder, ...props}) => {
+const DateTimeField = ({ name, disabled, input, label, placeholder, ...props }) => {
 
 
   return (
     <DateTime
       name={name}
+      inputProps={{
+        required: true
+      }}
       locale='en'
       dateFormat={false}
       timeFormat='HH:mm'
       onChange={date => input.onChange(moment(date).format('HH:mm'))}
       disabled={disabled}
     />
-    )
+  )
 };
 
 
