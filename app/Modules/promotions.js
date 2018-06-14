@@ -185,7 +185,7 @@ export const createPromotion = (history, values) => dispatch => fetch(`${default
     showErrorMsg(error)
   });
 
-export const getPromotions = () => dispatch => fetch(`${defaultUrl}/promotions`, {
+export const getPromotions = () => dispatch => fetch(`${defaultUrl}/promotions/all_promotions`, {
     headers: {
       ...customHeaders
     },
@@ -194,5 +194,5 @@ export const getPromotions = () => dispatch => fetch(`${defaultUrl}/promotions`,
   .then(response => response.json())
   .then(data => dispatch(addPromotions(data.promotions)))
   .catch(error => {
-    dispatch(setError('Error al cargar las promotciones, recarga la pagina porfavor'));
+    dispatch(setError('Error al cargar las promociones, recarga la pagina porfavor'));
   });
