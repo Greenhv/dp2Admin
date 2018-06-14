@@ -29,7 +29,9 @@ class Select extends PureComponent {
   selectItem = values => {
     const id = values.params.data.id;
     const selectedValues = [...this.state.selectedValues];
-    const newSelectedValues = [...selectedValues, id];
+    const newSelectedValues = this.props.multiple
+      ? [...selectedValues, id]
+      : [id];
 
     this.props.input.onChange(
       newSelectedValues.length > 1 ? newSelectedValues : newSelectedValues[0]
@@ -42,12 +44,12 @@ class Select extends PureComponent {
   unSelectItem = values => {
     const id = values.params.data.id;
     const selectedValues = [...this.state.selectedValues];
-    const newSelectedValues = [...selectedValues].filter(
-      selectedValue => selectedValue !== id
-    );
+    const newSelectedValues = this.props.multiple
+      ? [...selectedValues].filter(selectedValue => selectedValue !== id)
+      : [];
 
     this.props.input.onChange(
-      newSelectedValues.length > 1 ? newSelectedValues : newSelectedValues[0]
+      newSelectedValues.length > 0 ? newSelectedValues : ''
     );
     this.setState({
       selectedValues: newSelectedValues,
