@@ -145,7 +145,7 @@ export const deleteEventAction = id => dispatch => fetch(`${defaultUrl}/events/$
 }).then(() => {
   dispatch(deleteEvents(id));
   swal(
-    'Borrada!',
+    'Borrado!',
     'El evento ha sido borrado.',
     'success'
   );
