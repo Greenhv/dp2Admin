@@ -1,7 +1,5 @@
 import fetchStatusHandler from 'Utils/fetchStatusHandler';
-import {
-  getCookie
-} from 'Utils/cookies';
+import { getCookie } from 'Utils/cookies';
 
 // Actions
 const FETCH = 'admin/stores/FETCH';
@@ -31,8 +29,8 @@ const initialState = {
 const defaultUrl = process.env.API_BASE_URL;
 const auth = getCookie('authToken');
 const customHeaders = {
-  'Authorization': auth ? auth.authToken : '',
-  //'content-type': 'application/json',
+  Authorization: auth ? auth.authToken : '',
+  'content-type': 'application/json',
 };
 
 export default (state = initialState, action = {}) => {
@@ -59,14 +57,14 @@ export default (state = initialState, action = {}) => {
     case DELETE:
       return {
         ...state,
-        stores: [...state.stores]
-          .filter(store => store.id !== action.storeId),
+        stores: [...state.stores].filter(store => store.id !== action.storeId),
       };
     case SELECT:
       return {
         ...state,
-        selectedStore: state.stores
-          .filter(store => store.id === action.storeId)[0],
+        selectedStore: state.stores.filter(
+          store => store.id === action.storeId
+        )[0],
       };
     case CLEAR_SELECT:
       return {
@@ -87,7 +85,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         storeLogo: action.logo,
-      }
+      };
     default:
       return state;
   }
@@ -103,7 +101,7 @@ export const addStores = stores => ({
 export const addStore = store => ({
   type: ADD_STORE,
   store,
-})
+});
 
 export const selectStore = storeId => ({
   type: SELECT,
@@ -123,23 +121,23 @@ export const fetchStores = () => ({
   type: FETCH,
 });
 
-export const setError = (error) => ({
+export const setError = error => ({
   type: ERROR,
   error,
 });
 
-export const displayBanner = (banner) => ({
+export const displayBanner = banner => ({
   type: DISPlAY_BANNER,
   banner,
 });
 
-export const displayLogo = (logo) => ({
+export const displayLogo = logo => ({
   type: DISPlAY_LOGO,
   logo,
 });
 // Side effects
 
-const showErrorMsg = (error) => {
+const showErrorMsg = error => {
   console.log(error);
   swal({
     type: 'error',
@@ -150,81 +148,85 @@ const showErrorMsg = (error) => {
   });
 };
 
-export const deleteStoreAction = id => dispatch => fetch(`${defaultUrl}/stores/${id}`, {
+export const deleteStoreAction = id => dispatch =>
+  fetch(`${defaultUrl}/stores/${id}`, {
     method: 'DELETE',
     headers: {
       ...customHeaders,
     },
-  }).then(() => {
-    swal(
-      'Borrada!',
-      'La tienda ha sido borrada.',
-      'success'
-    );
-    dispatch(deleteStore(id));
   })
-  .catch((error) => {
-    showErrorMsg(error)
-  });
+    .then(() => {
+      swal('Borrada!', 'La tienda ha sido borrada.', 'success');
+      dispatch(deleteStore(id));
+    })
+    .catch(error => {
+      showErrorMsg(error);
+    });
 
-export const updateStore = (history, values, id) => dispatch => fetch(`${defaultUrl}/stores/${id}`, {
+export const updateStore = (history, values, id) => dispatch =>
+  fetch(`${defaultUrl}/stores/${id}`, {
     method: 'PUT',
     // body: JSON.stringify(values),
     body: values,
     headers: {
       // ...customHeaders
-      'Authorization': auth ? auth.authToken : '',
+      Authorization: auth ? auth.authToken : '',
     },
-  }).then(() => {
-    swal({
-      type: 'success',
-      title: 'Tienda Actualizada',
-      text: 'En un momento se te redireccionara al listado de tiendas',
-      showConfirmButton: false,
-      timer: 1500,
+  })
+    .then(() => {
+      swal({
+        type: 'success',
+        title: 'Tienda Actualizada',
+        text: 'En un momento se te redireccionara al listado de tiendas',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      setTimeout(() => {
+        history.push('/tiendas');
+      }, 1500);
+    })
+    .catch(error => {
+      showErrorMsg(error);
     });
-    setTimeout(() => {
-      history.push('/tiendas');
-    }, 1500);
-  })
-  .catch((error) => {
-    showErrorMsg(error);
-  })
 
-export const createStore = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/stores`, {
-    method: "POST",
+export const createStore = (history, values) => dispatch =>
+  fetch(`${process.env.API_BASE_URL}/stores`, {
+    method: 'POST',
     // body: JSON.stringify(values),
     body: values,
     headers: {
       //...customHeaders
-      'Authorization': auth ? auth.authToken : '',
+      Authorization: auth ? auth.authToken : '',
     },
-  }).then(response => response.json())
-  .then(data => {
-    dispatch(addStore(data.store));
-    swal({
-      type: 'success',
-      title: 'Tienda creada',
-      text: 'En un momento se te redireccionara al listado de tiendas',
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    setTimeout(() => {
-      history.push('/tiendas')
-    }, 1500);
   })
-  .catch((error) => {
-    showErrorMsg(error)
-  });
+    .then(response => response.json())
+    .then(data => {
+      dispatch(addStore(data.store));
+      swal({
+        type: 'success',
+        title: 'Tienda creada',
+        text: 'En un momento se te redireccionara al listado de tiendas',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      setTimeout(() => {
+        history.push('/tiendas');
+      }, 1500);
+    })
+    .catch(error => {
+      showErrorMsg(error);
+    });
 
-export const getStores = () => dispatch => fetch(`${defaultUrl}/stores`, {
+export const getStores = () => dispatch =>
+  fetch(`${defaultUrl}/stores`, {
     headers: {
-      ...customHeaders
+      ...customHeaders,
     },
-  }).then(fetchStatusHandler)
-  .then(response => response.json())
-  .then(data => dispatch(addStores(data.stores)))
-  .catch(error => {
-    console.log(error);
-    console.log('Error al cargar las tiendas, recarga la pagina porfavor');
-  });
+  })
+    .then(fetchStatusHandler)
+    .then(response => response.json())
+    .then(data => dispatch(addStores(data.stores)))
+    .catch(error => {
+      console.log(error);
+      console.log('Error al cargar las tiendas, recarga la pagina porfavor');
+    });
