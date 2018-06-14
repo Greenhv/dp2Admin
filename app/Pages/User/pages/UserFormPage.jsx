@@ -23,6 +23,7 @@ import {
 import { getRoles as requestRoles } from 'Modules/roles';
 import Select from 'Shared/Select';
 import CustomInput from 'Shared/Form/CustomInput';
+import objectToFormData from 'Utils/objectToFormData';
 
 class UserFormPage extends PureComponent {
   constructor(props) {
