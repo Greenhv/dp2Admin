@@ -48,26 +48,26 @@ export default (state = initialState, action = {}) => {
     case ADD_EVENT:
       return {
         ...state,
-        event: [...state.events, action.event],
+        events: [...state.events, action.event],
         isLoading: false,
         error: '',
       };
     case DELETE:
       return {
         ...state,
-        event: [...state.event]
-          .filter(customEvent => customEvent.id !== action.event),
+        events: [...state.events]
+          .filter(customEvent => customEvent.id !== action.eventId),
       };
     case SELECT:
       return {
         ...state,
-        event: state.event
-          .filter(customEvent => customEvent.id === action.event)[0],
+        selectedEvent: state.events
+          .filter(customEvent => customEvent.id === action.eventId)[0],
       };
     case CLEAR_SELECTED:
       return {
         ...state,
-        event: {},
+        selectedEvent: {},
       };
     case ERROR:
       return {

@@ -7,8 +7,6 @@ import DateTime from 'react-datetime'
 import '../styles/pages/react-datetime.scss'
 
 const DateTimeField = ({ name, disabled, input, label, placeholder, ...props }) => {
-
-
   return (
     <DateTime
       name={name}
@@ -18,6 +16,7 @@ const DateTimeField = ({ name, disabled, input, label, placeholder, ...props }) 
       locale='en'
       dateFormat={false}
       timeFormat='HH:mm'
+      value={input.value ? moment(input.value, ['h:m a', 'H:m']).format('H:mm') : null}
       onChange={date => input.onChange(moment(date).format('HH:mm'))}
       disabled={disabled}
     />

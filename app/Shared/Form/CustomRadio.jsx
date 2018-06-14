@@ -3,8 +3,9 @@ import { shape } from 'prop-types';
 import { Radio } from 'react-bootstrap';
 
 const CustomRadio = ({ input, label, value, required }) => {
+  console.log(input.value);
   return (
-    <Radio {...input} value={value} required={required} inline>
+    <Radio {...input} value={value} required={required} inline checked={input.value === value}>
       {label}
     </Radio>
   )
