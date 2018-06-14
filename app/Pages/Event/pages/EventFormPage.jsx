@@ -57,7 +57,7 @@ class EventFormPage extends PureComponent {
       title: 'Se esta creando su evento',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
+        swal.showLoading()
       }
     });
     dispatch(createEventAction(history, finalData));
@@ -71,7 +71,7 @@ class EventFormPage extends PureComponent {
       title: 'Se esta actualiazando su evento',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
+        swal.showLoading()
       }
     });
     dispatch(updateEventAction(history, finalData, id));
@@ -222,7 +222,7 @@ EventFormPage.propTypes = {
   removeSelected: func.isRequired,
 };
 
-const mapStateToProps = ({ events: { selectedEvent }}) => ({
+const mapStateToProps = ({ events: { selectedEvent } }) => ({
   initialValues: selectedEvent.id ? selectedEvent : {},
 })
 

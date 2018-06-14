@@ -32,7 +32,7 @@ const customHeaders = {
 };
 
 export default (state = initialState, action = {}) => {
-  switch(action.type) {
+  switch (action.type) {
     case FETCH:
       return {
         ...state,
@@ -48,7 +48,7 @@ export default (state = initialState, action = {}) => {
     case ADD_EVENT:
       return {
         ...state,
-        event: [...state.event, action.event],
+        event: [...state.events, action.event],
         isLoading: false,
         error: '',
       };
@@ -150,12 +150,12 @@ export const deleteEventAction = id => dispatch => fetch(`${defaultUrl}/events/$
     'success'
   );
 })
-.catch((error) => { showErrorMsg(error) });
+  .catch((error) => { showErrorMsg(error) });
 
 export const updateEvent = (history, values, id) => dispatch => fetch(`${defaultUrl}/events/${id}`, {
   method: 'PUT',
   // body: JSON.stringify(values), 
-  body: values, 
+  body: values,
   headers: {
     // ...customHeaders
     'Authorization': auth ? auth.authToken : '',
@@ -172,31 +172,31 @@ export const updateEvent = (history, values, id) => dispatch => fetch(`${default
     history.push('/eventos');
   }, 1500);
 })
-.catch((error) => { showErrorMsg(error) });
+  .catch((error) => { showErrorMsg(error) });
 
 export const createEvent = (history, values) => dispatch => fetch(`${defaultUrl}/events`, {
   method: 'POST',
   // body: JSON.stringify(values), 
-  body: values, 
+  body: values,
   headers: {
     // ...customHeaders
     'Authorization': auth ? auth.authToken : '',
   },
 }).then(response => response.json())
-.then((data) => {
-  dispatch(addEvent(data.event));
-  swal({
-    type: 'success',
-    title: 'Evento creado',
-    text: 'En un momento se te redireccionara al listado de eventos',
-    showConfirmButton: false,
-    timer: 1500,
-  });
-  setTimeout(() => {
-    history.push('/eventos');
-  }, 1500);
-})
-.catch((error) => { showErrorMsg(error) });
+  .then((data) => {
+    dispatch(addPlazaEvent(data.event));
+    swal({
+      type: 'success',
+      title: 'Evento creado',
+      text: 'En un momento se te redireccionara al listado de eventos',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    setTimeout(() => {
+      history.push('/eventos');
+    }, 1500);
+  })
+  .catch((error) => { showErrorMsg(error) });
 
 export const getEvents = () => dispatch => fetch(`${defaultUrl}/events`, {
   headers: {

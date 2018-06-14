@@ -23,7 +23,7 @@ const CustomDatePicker = ({
       placeholderText={placeholder}
       selected={input.value ? moment(input.value) : null}
       onChange={date => input.onChange(moment(date).format('MM/DD/YYYY'))}
-      className="form-control"
+      className="form-control date-picker"
     />
   );
 };
