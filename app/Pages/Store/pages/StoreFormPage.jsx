@@ -57,7 +57,12 @@ class StoreFormPage extends PureComponent {
   createStore = (values, dispatch) => {
     const { history } = this.props;
     const data = { ...values, banner: values.banner[0], logo: values.logo[0] };
+    const storeCategories = data.store_categories;
+    delete data.store_categories;
     const finalData = objectToFormData(data, null, 'store');
+    storeCategories.forEach(category => {
+      finalData.append('store[store_categories[]]', category);
+    });
 
     swal({
       title: 'Se esta creando su tienda',
@@ -72,7 +77,12 @@ class StoreFormPage extends PureComponent {
   updateStore = (values, dispatch, id) => {
     const { history } = this.props;
     const data = { ...values, banner: values.banner[0], logo: values.logo[0] };
+    const storeCategories = data.store_categories;
+    delete data.store_categories;
     const finalData = objectToFormData(data, null, 'store');
+    storeCategories.forEach(category => {
+      finalData.append('store[store_categories[]]', category);
+    });
 
     swal({
       title: 'Se esta actualiazando su tienda',
@@ -139,7 +149,7 @@ class StoreFormPage extends PureComponent {
                   <FormGroup>
                     <ControlLabel>Categorias de la tienda</ControlLabel>
                     <Field
-                      name="categories_id"
+                      name="store_categories"
                       component={Select}
                       props={{
                         placeholder: 'Categorias de la tienda',
