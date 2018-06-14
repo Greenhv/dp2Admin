@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import ReactDOM from "react-dom";
-import { shape, func } from "prop-types";
+import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
+import { shape, func } from 'prop-types';
 import {
   FormGroup,
   ControlLabel,
@@ -10,19 +10,19 @@ import {
   Panel,
   Button,
   Label,
-  Input
-} from "react-bootstrap";
+  Input,
+} from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from "redux-form";
+import { reduxForm, Field } from 'redux-form';
 
 import {
   createUser as createUserAction,
   updateUser as updateUserAction,
-  clearSelected
+  clearSelected,
 } from 'Modules/users';
 import { getRoles as requestRoles } from 'Modules/roles';
-import Select from "Shared/Select";
-import CustomInput from "Shared/Form/CustomInput";
+import Select from 'Shared/Select';
+import CustomInput from 'Shared/Form/CustomInput';
 
 class UserFormPage extends PureComponent {
   constructor(props) {
@@ -43,7 +43,7 @@ class UserFormPage extends PureComponent {
 
   goToUsersPage = () => {
     const { history } = this.props;
-    history.push("/usuarios");
+    history.push('/usuarios');
   };
 
   createUser = (values, dispatch) => {
@@ -53,11 +53,11 @@ class UserFormPage extends PureComponent {
       title: 'Se esta creando su usuario',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
     dispatch(createUserAction(history, values));
-  }
+  };
 
   updateUser = (values, dispatch, id) => {
     const { history } = this.props;
@@ -66,16 +66,19 @@ class UserFormPage extends PureComponent {
       title: 'Se esta actualiazando su usuario',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
-      }
+        swal.showLoading();
+      },
     });
     dispatch(updateUserAction(history, values, id));
-  }
+  };
 
   onUserSubmit = (values, dispatch) => {
-    const isFormValid = $(this.form).parsley().isValid();
+    const isFormValid = $(this.form)
+      .parsley()
+      .isValid();
     const params = this.props.match.params;
 
+    console.log(values);
     if (isFormValid && !params.id) {
       this.createUser(values, dispatch);
     } else if (isFormValid && params.id) {
@@ -85,83 +88,99 @@ class UserFormPage extends PureComponent {
 
   render() {
     const { history, handleSubmit } = this.props;
-    return(
+    return (
       <Grid fluid>
-      <Row>
-        <Col lg={12}>
-        <Panel>
-          <form onSubmit ={handleSubmit(this.onUserSubmit)} noValidate ref={(node) => {this.form = node}}>
-          <Panel.Body>
-            <FormGroup>
-              <ControlLabel>Nombre del usuario</ControlLabel>
-              <Field
-                name="first_name"
-                component={CustomInput}
-                type="text"
-                props = {{ placeholder: 'Nombres del usuario', required: 'required'}}
-              />
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Apellidos del usuario</ControlLabel>
-              <Field
-                name="last_name"
-                component={CustomInput}
-                type="text"
-                props = {{ placeholder: 'Apellidos del usuario', required: 'required'}}
-              />
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Email del usuario</ControlLabel>
-              <Field
-                name="email"
-                component={CustomInput}
-                type="email"
-                props={{ placeholder: 'Ingrese el email del usuario', required: 'required' }}
-              />
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Contraseña del usuario</ControlLabel>
-              <Field
-                name="password"
-                component={CustomInput}
-                type="text"
-                props={{ placeholder: 'Ingrese la contraseña del usuario', required: 'required' }}
-              />
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Rol del usuario</ControlLabel>
-              <Field
-                name="role_id"
-                component={Select}
-                props={{
-                  placeholder: "Seleccione un rol",
-                  options: this.props.roles.map(
-                    role => ({
-                      value: role.id,
-                      label: role.name,
-                    })
-                  ),
-                  required: "required"
+        <Row>
+          <Col lg={12}>
+            <Panel>
+              <form
+                onSubmit={handleSubmit(this.onUserSubmit)}
+                noValidate
+                ref={node => {
+                  this.form = node;
                 }}
-              />
-            </FormGroup>
-          </Panel.Body>
-          <Panel.Footer>
-            <div className="form-footer">
-            <div className="form-button">
-            <Button onClick={this.goToUsersPage}>Cancelar</Button>
-            </div>
-            <div className="form-button">
-              <Button type="submit">Crear</Button>
-            </div>
-            </div>
-          </Panel.Footer>
-          </form>
-        </Panel>
-        </Col>
-      </Row>
+              >
+                <Panel.Body>
+                  <FormGroup>
+                    <ControlLabel>Nombre del usuario</ControlLabel>
+                    <Field
+                      name="first_name"
+                      component={CustomInput}
+                      type="text"
+                      props={{
+                        placeholder: 'Nombres del usuario',
+                        required: 'required',
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Apellidos del usuario</ControlLabel>
+                    <Field
+                      name="last_name"
+                      component={CustomInput}
+                      type="text"
+                      props={{
+                        placeholder: 'Apellidos del usuario',
+                        required: 'required',
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Email del usuario</ControlLabel>
+                    <Field
+                      name="email"
+                      component={CustomInput}
+                      type="email"
+                      props={{
+                        placeholder: 'Ingrese el email del usuario',
+                        required: 'required',
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Contraseña del usuario</ControlLabel>
+                    <Field
+                      name="password"
+                      component={CustomInput}
+                      type="text"
+                      props={{
+                        placeholder: 'Ingrese la contraseña del usuario',
+                        required: 'required',
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Rol del usuario</ControlLabel>
+                    <Field
+                      name="role_id"
+                      component={Select}
+                      props={{
+                        placeholder: 'Seleccione un rol',
+                        options: this.props.roles.map(role => ({
+                          value: role.id,
+                          label: role.name,
+                        })),
+                        required: 'required',
+                      }}
+                    />
+                  </FormGroup>
+                </Panel.Body>
+                <Panel.Footer>
+                  <div className="form-footer">
+                    <div className="form-button">
+                      <Button onClick={this.goToUsersPage}>Cancelar</Button>
+                    </div>
+                    <div className="form-button">
+                      <Button type="submit">Crear</Button>
+                    </div>
+                  </div>
+                </Panel.Footer>
+              </form>
+            </Panel>
+          </Col>
+        </Row>
       </Grid>
-    )
+    );
   }
 }
 
@@ -171,10 +190,7 @@ UserFormPage.propTypes = {
   requestRoles: func.isRequired,
 };
 
-const mapStateToProps = ({
-  roles: { roles },
-  users: { selectedUser },
-}) => ({
+const mapStateToProps = ({ roles: { roles }, users: { selectedUser } }) => ({
   roles,
   initialValues: selectedUser.id ? selectedUser : {},
 });
@@ -185,10 +201,13 @@ const mapDispatchToProps = dispatch => ({
   },
   getRoles: () => {
     dispatch(requestRoles());
-  }
-})
+  },
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
   reduxForm({
     form: 'userForm',
   })(UserFormPage)
