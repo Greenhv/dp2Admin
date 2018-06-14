@@ -7,23 +7,21 @@ import {
   fetchPromotions,
   selectPromotion,
   deletePromotionAction,
-  getPromotions as requestPromotions,
-} from 'Modules/promotions';
+  getPromotions as requestPromotions
+} from "Modules/promotions";
 
-import { transformToMoney, applyDiscount } from 'Utils/money';
-import DataTables from 'Shared/DataTable';
-import DataTableEmptyMsg from 'Shared/DataTableEmptyMsg.jsx';
-import Loader from 'Shared/Loader.jsx';
-import 'Components/Common/notify';
-import { promotionType } from '../types';
+import { transformToMoney, applyDiscount } from "Utils/money";
+import DataTables from "Shared/DataTable";
+import DataTableEmptyMsg from "Shared/DataTableEmptyMsg.jsx";
+import Loader from "Shared/Loader.jsx";
+import "Components/Common/notify";
+import { promotionType } from "../types";
 
 class DataTableWithPromotions extends PureComponent {
   constructor(props) {
     super(props);
 
-    const {
-      getPromotions
-    } = props;
+    const { getPromotions } = props;
 
     getPromotions();
   }
@@ -33,19 +31,17 @@ class DataTableWithPromotions extends PureComponent {
   };
 
   parsePromotions = () => {
-    const {
-      promotions,
-    } = this.props;
+    const { promotions } = this.props;
 
     return promotions.map(promotion => [
-      promotion.only_mobile,
-      promotion.value,
-      promotion.initial_date,
-      promotion.final_date,
-      promotion.store_id,
-      `${promotion.id}`,
+      promotion.only_mobile ? promotion.only_mobile : "-",
+      promotion.value ? promotion.value : "-",
+      promotion.initial_date ? promotion.initial_date : "-",
+      promotion.final_date ? promotion.final_date : "-",
+      promotion.store.id ? promotion.store.name : "-",
+      `${promotion.id}`
     ]);
-  }
+  };
 
   render() {
     const {
@@ -54,7 +50,7 @@ class DataTableWithPromotions extends PureComponent {
       promotionsError,
       removePromotion,
       selectPromotion,
-      editPromotion,
+      editPromotion
     } = this.props;
 
     if (promotionsError) {
@@ -62,46 +58,45 @@ class DataTableWithPromotions extends PureComponent {
     }
 
     const headers = [
-      { name: 'Solo mobil' },
-      { name: 'Fecha inicial' },
-      { name: 'Fecha final' },
-      { name: 'Valor del descuento' },
-      { name: 'Tienda' },
+      { name: "Solo movil" },
+      { name: "Fecha inicial" },
+      { name: "Fecha final" },
+      { name: "Valor del descuento" },
+      { name: "Tienda" }
     ];
     const data = this.parsePromotions();
     const options = {
-      selectableRows: false,
+      selectableRows: false
     };
 
     return (
       <div>
         {isLoadingPromotions ? (
           <Loader />
+        ) : promotions.length > 0 ? (
+          <DataTables
+            headers={headers}
+            data={data}
+            options={options}
+            viewAction={selectPromotion}
+            deleteAction={removePromotion}
+            editAction={editPromotion}
+          />
         ) : (
-          promotions.length > 0 ? (
-            <DataTables
-              headers={headers}
-              data={data}
-              options={options}
-              viewAction={selectPromotion}
-              deleteAction={removePromotion}
-              editAction={editPromotion}
-            />
-          ) : (
-            <Table responsive striped hover>
-              <tbody>
-                <DataTableEmptyMsg colSpan={6}>No hay promociones para mostrar</DataTableEmptyMsg>
-              </tbody>
-            </Table>
-          )
+          <Table responsive striped hover>
+            <tbody>
+              <DataTableEmptyMsg colSpan={6}>
+                No hay promociones para mostrar
+              </DataTableEmptyMsg>
+            </tbody>
+          </Table>
         )}
       </div>
     );
   }
 }
 
-DataTableWithPromotions.defaultProps = {
-};
+DataTableWithPromotions.defaultProps = {};
 
 DataTableWithPromotions.propTypes = {
   promotions: PropTypes.arrayOf(promotionType).isRequired,
@@ -110,7 +105,7 @@ DataTableWithPromotions.propTypes = {
   selectPromotion: PropTypes.func.isRequired,
   getPromotions: PropTypes.func.isRequired,
   editPromotion: PropTypes.func.isRequired,
-  removePromotion: PropTypes.func.isRequired,
+  removePromotion: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({ promotions: { promotions, isLoading, error } }) => ({
@@ -129,23 +124,24 @@ const mapDispatchToProps = dispatch => ({
   },
   removePromotion: promotion => () => {
     swal({
-      title: 'Estas seguro?',
+      title: "Estas seguro?",
       text: "No se podrá revertir este cambio",
-      type: 'warning',
+      type: "warning",
       showCancelButton: true,
       reverseButtons: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, deseo borrarlo',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, deseo borrarlo",
+      cancelButtonText: "Cancelar"
+    }).then(result => {
       if (result.value) {
         dispatch(deletePromotionAction(promotion));
       }
-    })
+    });
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  DataTableWithPromotions
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DataTableWithPromotions);

@@ -20,6 +20,7 @@ import CustomInput from 'Shared/Form/CustomInput';
 import DropZone from 'Shared/Form/DropZone';
 import { getStores as requestStores } from 'Modules/stores';
 import { getBrands as requestBrands } from 'Modules/brands';
+import { getPromotions as requestPromotions } from 'Modules/promotions';
 import { getProductCategories as requestCategories } from 'Modules/productCategories';
 import {
   createProduct as createProductAction,
@@ -29,6 +30,7 @@ import {
 import { productCategoryType } from 'Pages/ProductCategory/types';
 import { brandType } from 'Pages/Brand/types';
 import { storeType } from 'Pages/Store/types';
+import { promotionType } from 'Pages/Promotion/types';
 import objectToFormData from 'Utils/objectToFormData';
 
 class ProductFormPage extends PureComponent {
@@ -43,12 +45,13 @@ class ProductFormPage extends PureComponent {
   }
 
   componentWillMount() {
-    const { getProductCategories, getBrands, getStores } = this.props;
+    const { getProductCategories, getBrands, getStores, getPromotions } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
 
     getBrands();
     getProductCategories();
     getStores();
+    getPromotions();
     $(element).parsley();
   }
 
@@ -221,6 +224,20 @@ class ProductFormPage extends PureComponent {
                     />
                   </FormGroup>
                   <FormGroup>
+                    <ControlLabel>Promocion</ControlLabel>
+                    <Field
+                      name="promotion_id"
+                      component={Select}
+                      props={{
+                        placeholder: 'Seleccionar una promocion',
+                        options: this.props.promotions.map(promotion => ({
+                          value: promotion.id,
+                          label: promotion.value,
+                        })),
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
                     <ControlLabel>Información Técnica</ControlLabel>
                     <Field
                       name="description"
@@ -292,6 +309,7 @@ class ProductFormPage extends PureComponent {
 ProductFormPage.defaultProps = {
   productCategories: [],
   brands: [],
+  promotions: [],
 };
 
 ProductFormPage.propTypes = {
@@ -299,8 +317,10 @@ ProductFormPage.propTypes = {
   productCategories: arrayOf(productCategoryType),
   brands: arrayOf(brandType),
   stores: arrayOf(storeType),
+  promotions: arrayOf(promotionType),
   getBrands: func.isRequired,
   getProductCategories: func.isRequired,
+  getPromotions: func.isRequired,
   removeSelected: func.isRequired,
 };
 
@@ -309,16 +329,19 @@ const mapStateToProps = ({
   productCategories: { productCategories },
   brands: { brands },
   stores: { stores },
+  promotions: { promotions },
 }) => ({
   brands,
   productCategories,
   stores,
+  promotions,
   initialValues: selectedProduct.id
     ? {
         ...selectedProduct,
         product_category_id: selectedProduct.product_category.id,
         brand_id: selectedProduct.brand.id,
         store_id: selectedProduct.store.id,
+        promotion_id: selectedProduct.promotion.id,
         description: selectedProduct.technical_specification.description,
         weight: selectedProduct.technical_specification.weight,
         length: selectedProduct.technical_specification.length,
@@ -333,6 +356,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getBrands: () => {
     dispatch(requestBrands());
+  },
+  getPromotions: () => {
+    dispatch(requestPromotions());
   },
   getStores: () => {
     dispatch(requestStores());
