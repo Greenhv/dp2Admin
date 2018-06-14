@@ -6,10 +6,11 @@ const FETCH = 'admin/storeCategories/FETCH';
 const ADD_STORE_CATEGORIES = 'admin/storeCategories/ADD_STORE_CATEGORIES';
 const ADD_STORE_CATEGORY = 'admin/storeCategories/ADD_STORE_CATEGORY';
 const SELECT = 'admin/storeCategories/SELECT';
-const CLEAR_SELECT = 'admin/storeCategories/CLEAR_SELECT';
 const EDIT = 'admin/storeCategories/EDIT';
 const DELETE = 'admin/storeCategories/DELETE';
 const ERROR = 'admin/storeCategories/ERROR';
+const CLEAR_SELECT = 'admin/storeCategories/CLEAR_SELECT';
+const DISPLAY_IMAGE = 'admin/storeCategories/DISPLAY_IMAGE';
 
 // Initial State
 const initialState = {
@@ -67,6 +68,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         selectedCategory: {},
       };
+    case DISPLAY_IMAGE:
+      return {
+        ...state,
+        storeCategoryIcon: action.img
+      };
     case ERROR:
       return {
         ...state,
@@ -107,6 +113,10 @@ export const fetchStoreCategories = () => ({
   type: FETCH,
 });
 
+export const displayImage = (img) => ({
+  type: DISPLAY_IMAGE,
+  img,
+})
 export const setError = (error) => ({
   type: ERROR,
   error,
@@ -142,9 +152,11 @@ export const deleteStoreCategoryAction = id => dispatch => fetch(`${defaultUrl}/
 
 export const updateStoreCategory = (history, values, id) => dispatch => fetch(`${defaultUrl}/store_categories/${id}`, {
   method: 'PUT',
-  body: JSON.stringify(values),
+  // body: JSON.stringify(values),
+  body: values,
   headers: {
-    ...customHeaders
+    // ...customHeaders
+    'Authorization': auth ? auth.authToken : '',
   },
 }).then(() => {
   swal({
@@ -162,9 +174,11 @@ export const updateStoreCategory = (history, values, id) => dispatch => fetch(`$
 
 export const createStoreCategory = (history, values) => dispatch => fetch(`${process.env.API_BASE_URL}/store_categories`, {
   method: "POST",
-  body: JSON.stringify(values),
+  // body: JSON.stringify(values),
+  body: values,
   headers: {
-    ...customHeaders
+    // ...customHeaders
+    'Authorization': auth ? auth.authToken : '',
   },
 }).then(response => response.json())
 .then(data => {
