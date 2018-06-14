@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 
 import objectToFormData from 'Utils/objectToFormData';
-import Select from "Shared/Select";
+import Select from "Shared/Select"; 
 import DropZone from 'Shared/Form/DropZone';
 import CustomInput from "Shared/Form/CustomInput";
 import { getStoreCategories as requestCategories } from "Modules/storeCategories";
