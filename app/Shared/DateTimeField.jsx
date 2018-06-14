@@ -1,27 +1,37 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import classNames from 'classnames'
-import moment from 'moment'
-import DateTime from 'react-datetime'
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import moment from 'moment';
+import DateTime from 'react-datetime';
 
-import '../styles/pages/react-datetime.scss'
+import '../styles/pages/react-datetime.scss';
 
-const DateTimeField = ({ name, disabled, input, label, placeholder, ...props }) => {
+const DateTimeField = ({
+  name,
+  disabled,
+  input,
+  label,
+  placeholder,
+  ...props
+}) => {
   return (
     <DateTime
       name={name}
       inputProps={{
-        required: true
+        required: true,
       }}
-      locale='en'
+      locale="en"
       dateFormat={false}
-      timeFormat='HH:mm'
-      value={input.value ? moment(input.value, ['h:m a', 'H:m']).format('H:mm') : null}
+      timeFormat="HH:mm"
+      value={
+        input.value
+          ? moment(input.value, ['h:m a', 'H:m']).format('H:mm')
+          : input.value
+      }
       onChange={date => input.onChange(moment(date).format('HH:mm'))}
       disabled={disabled}
     />
-  )
+  );
 };
 
-
-export default DateTimeField
+export default DateTimeField;
