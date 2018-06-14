@@ -186,8 +186,7 @@ export const createPromotion = (history, values) => dispatch =>
       showErrorMsg(error);
     });
 
-export const getPromotions = () => dispatch =>
-  fetch(`${defaultUrl}/promotions`, {
+export const getPromotions = () => dispatch => fetch(`${defaultUrl}/promotions/all_promotions`, {
     headers: {
       ...customHeaders,
     },
