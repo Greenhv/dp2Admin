@@ -271,7 +271,10 @@ const mapStateToProps = ({
 }) => ({
   storeCategories,
   users,
-  initialValues: selectedStore.id ? selectedStore : {},
+  initialValues: selectedStore.id ? {
+    ...selectedStore,
+    store_categories: selectedStore.store_categories.length > 0 ? selectedStore.store_categories.map(category => category.id) : [],
+  } : {},
 });
 
 const mapDispatchToProps = dispatch => ({

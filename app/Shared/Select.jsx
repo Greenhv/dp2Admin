@@ -3,9 +3,13 @@ import { arrayOf, string, number, shape, oneOfType, bool } from 'prop-types';
 import { FormControl } from 'react-bootstrap';
 
 class Select extends PureComponent {
-  state = {
-    selectedValues: [],
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedValues: [],
+    };
+  }
 
   componentDidMount() {
     $(this.select).select2({
