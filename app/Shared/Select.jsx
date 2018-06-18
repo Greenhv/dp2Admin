@@ -7,7 +7,7 @@ class Select extends PureComponent {
     super(props);
 
     this.state = {
-      selectedValues: [],
+      selectedValues: props.input.value ? props.input.value : [],
     };
   }
 
