@@ -57,7 +57,7 @@ class StoreFormPage extends PureComponent {
   createStore = (values, dispatch) => {
     const { history } = this.props;
     const data = { ...values, banner: values.banner[0], logo: values.logo[0] };
-    const storeCategories = data.store_categories;
+    const storeCategories = Array.isArray(data.store_categories) ? [...data.store_categories] : [data.store_categories];
     delete data.store_categories;
     const finalData = objectToFormData(data, null, 'store');
     storeCategories.forEach(category => {
