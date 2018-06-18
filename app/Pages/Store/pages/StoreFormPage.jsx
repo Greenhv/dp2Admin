@@ -80,8 +80,9 @@ class StoreFormPage extends PureComponent {
     const storeCategories = data.store_categories;
     delete data.store_categories;
     const finalData = objectToFormData(data, null, 'store');
-    storeCategories.forEach(category => {
-      finalData.append('store[store_categories[]]', category);
+    console.log(storeCategories);
+    storeCategories.forEach((category, index) => {
+      finalData.append(`store[store_categories[${index}]]`, category);
     });
 
     swal({
