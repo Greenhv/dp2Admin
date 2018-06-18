@@ -13,13 +13,13 @@ const CustomDropZone = ({ name, input, meta, ...props }) => {
       <DropZone
         name={name}
         onDrop={(filesToUpload, e) => input.onChange(filesToUpload)}
-        inputProps={{...props}}
+        inputProps={{ ...props, required: files && files.length > 0 ? false : 'required' }}
       >
-        { files && files.length > 0 ? (
-          files.map((file, index) => ( <img key={index} src={file.preview} alt={file.name} style={{ maxHeight: '195px', maxWidth: '195px' }} /> ))
+        {files && files.length > 0 ? (
+          files.map((file, index) => (<img key={index} src={file.preview} alt={file.name} style={{ maxHeight: '195px', maxWidth: '195px' }} />))
         ) : (
-          <div>Arrastre la imagen que desea subir o de click en la caja para seleccionar un archivo</div>
-        ) } 
+            <div>Arrastre la imagen que desea subir o de click en la caja para seleccionar un archivo</div>
+          )}
       </DropZone>
       {meta.touched && meta.error && (
         <span>{meta.error}</span>

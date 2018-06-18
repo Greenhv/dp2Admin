@@ -60,11 +60,9 @@ class StoreFormPage extends PureComponent {
     const storeCategories = Array.isArray(data.store_categories) ? [...data.store_categories] : [data.store_categories];
     delete data.store_categories;
     const finalData = objectToFormData(data, null, 'store');
-    finalData.append('store[store_categories]', storeCategories);
+    finalData.append('store[store_categories][]', storeCategories);
 
     console.log(storeCategories);
-    console.log(finalData.getAll('store[store_categories]'));
-    console.log(data);
     swal({
       title: 'Se esta creando su tienda',
       text: 'Espere por favor',
@@ -81,8 +79,9 @@ class StoreFormPage extends PureComponent {
     const storeCategories = Array.isArray(data.store_categories) ? [...data.store_categories] : [data.store_categories];
     delete data.store_categories;
     const finalData = objectToFormData(data, null, 'store');
-    finalData.append('store[store_categories]', storeCategories);
+    finalData.append('store[store_categories][]', storeCategories);
 
+    console.log(storeCategories);
     swal({
       title: 'Se esta actualiazando su tienda',
       text: 'Espere por favor',
