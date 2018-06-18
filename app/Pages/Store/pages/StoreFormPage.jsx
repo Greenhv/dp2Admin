@@ -50,7 +50,8 @@ class StoreFormPage extends PureComponent {
   }
 
   goToStoresPage = () => {
-    const { history } = this.props;
+    const { history, removeSelected } = this.props;
+    removeSelected();
     history.push('/tiendas');
   };
 
@@ -62,7 +63,6 @@ class StoreFormPage extends PureComponent {
     const finalData = objectToFormData(data, null, 'store');
     finalData.append('store[store_categories][]', storeCategories);
 
-    console.log(storeCategories);
     swal({
       title: 'Se esta creando su tienda',
       text: 'Espere por favor',
@@ -81,7 +81,6 @@ class StoreFormPage extends PureComponent {
     const finalData = objectToFormData(data, null, 'store');
     finalData.append('store[store_categories][]', storeCategories);
 
-    console.log(storeCategories);
     swal({
       title: 'Se esta actualiazando su tienda',
       text: 'Espere por favor',
@@ -98,6 +97,7 @@ class StoreFormPage extends PureComponent {
       .isValid();
     const params = this.props.match.params;
 
+    this.props.removeSelected();
     if (isFormValid && !params.id) {
       this.createStore(values, dispatch);
     } else if (isFormValid && params.id) {

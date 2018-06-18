@@ -34,8 +34,10 @@ class ProductCategoryFormPage extends PureComponent {
   goToProductsPage = () => {
     const {
       history,
+      removeSelected,
     } = this.props;
 
+    removeSelected();
     history.push('/categoria-de-productos');
   };
 
@@ -46,7 +48,7 @@ class ProductCategoryFormPage extends PureComponent {
       title: 'Se esta creando su categoria de producto',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
+        swal.showLoading()
       }
     });
     dispatch(createProductCategoryAction(history, values));
@@ -59,7 +61,7 @@ class ProductCategoryFormPage extends PureComponent {
       title: 'Se esta actualiazando su categoria de producto',
       text: 'Espere por favor',
       onOpen: () => {
-          swal.showLoading()
+        swal.showLoading()
       }
     });
     dispatch(updateProductCategoryAction(history, values, id));
@@ -69,6 +71,7 @@ class ProductCategoryFormPage extends PureComponent {
     const isFormValid = $(this.form).parsley().isValid();
     const params = this.props.match.params;
 
+    this.props.removeSelected();
     if (isFormValid && !params.id) {
       this.createProductCategory(values, dispatch);
     } else if (isFormValid && params.id) {
@@ -89,25 +92,25 @@ class ProductCategoryFormPage extends PureComponent {
             <Panel>
               <form onSubmit={handleSubmit(this.onProductCategorySubmit)} noValidate ref={(node) => { this.form = node; }}>
                 <Panel.Body>
-                    <FormGroup>
-                      <ControlLabel>Category</ControlLabel>
-                      <Field
-                        name="name"
-                        component={CustomInput}
-                        type="text"
-                        props={{ placeholder: 'Nombre de la categoria', required: 'required' }}
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                      <ControlLabel>Descripción de la Categoría</ControlLabel>
-                      <Field
-                        name="description"
-                        component={CustomInput}
-                        componentClass="textarea"
-                        type="text"
-                        props={{ placeholder: 'Ingrese la descripción de su categoría', required: 'required' }}
-                      />
-                    </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Category</ControlLabel>
+                    <Field
+                      name="name"
+                      component={CustomInput}
+                      type="text"
+                      props={{ placeholder: 'Nombre de la categoria', required: 'required' }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Descripción de la Categoría</ControlLabel>
+                    <Field
+                      name="description"
+                      component={CustomInput}
+                      componentClass="textarea"
+                      type="text"
+                      props={{ placeholder: 'Ingrese la descripción de su categoría', required: 'required' }}
+                    />
+                  </FormGroup>
                 </Panel.Body>
                 <Panel.Footer>
                   <div className="form-footer">

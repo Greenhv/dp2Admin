@@ -42,7 +42,9 @@ class StoreCategoryFormPage extends PureComponent {
   }
 
   goToStoreCategoriesPage = () => {
-    const { history } = this.props;
+    const { history, removeSelected } = this.props;
+
+    removeSelected();
     history.push("/categoria-de-tiendas");
   };
 
@@ -98,6 +100,7 @@ class StoreCategoryFormPage extends PureComponent {
       .isValid();
     const params = this.props.match.params;
 
+    this.props.removeSelected();
     if (isFormValid && !params.id) {
       this.createStoreCategory(values, dispatch);
     } else if (isFormValid && params.id) {

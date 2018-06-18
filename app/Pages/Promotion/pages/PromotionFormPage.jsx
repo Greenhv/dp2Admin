@@ -52,8 +52,9 @@ class PromotionFormPage extends PureComponent {
   }
 
   goToPromotionsPage = () => {
-    const { history } = this.props;
+    const { history, removeSelected } = this.props;
 
+    removeSelected();
     history.push('/promociones');
   };
 
@@ -89,6 +90,7 @@ class PromotionFormPage extends PureComponent {
       .isValid();
     const params = this.props.match.params;
 
+    this.props.removeSelected();
     if (isFormValid && !params.id) {
       this.createPromotion(values, dispatch);
     } else if (isFormValid && params.id) {
@@ -213,9 +215,9 @@ const mapStateToProps = ({
   stores,
   initialValues: selectedPromotion.id
     ? {
-        ...selectedPromotion,
-        store: selectedPromotion.store.id,
-      }
+      ...selectedPromotion,
+      store: selectedPromotion.store.id,
+    }
     : {},
 });
 

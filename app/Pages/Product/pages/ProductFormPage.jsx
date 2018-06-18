@@ -56,8 +56,9 @@ class ProductFormPage extends PureComponent {
   }
 
   goToProductsPage = () => {
-    const { history } = this.props;
+    const { history, removeSelected } = this.props;
 
+    removeSelected();
     history.push('/productos');
   };
 
@@ -81,7 +82,6 @@ class ProductFormPage extends PureComponent {
 
     const finalData = objectToFormData(data, null, 'product');
 
-    console.log(data);
     swal({
       title: 'Se esta creando su producto',
       text: 'Espere por favor',
@@ -128,6 +128,7 @@ class ProductFormPage extends PureComponent {
       .isValid();
     const params = this.props.match.params;
 
+    this.props.removeSelected();
     if (isFormValid && !params.id) {
       this.createProduct(values, dispatch);
     } else if (isFormValid && params.id) {
@@ -337,16 +338,16 @@ const mapStateToProps = ({
   promotions,
   initialValues: selectedProduct.id
     ? {
-        ...selectedProduct,
-        product_category_id: selectedProduct.product_category.id,
-        brand_id: selectedProduct.brand.id,
-        store_id: selectedProduct.store.id,
-        promotion_id: selectedProduct.promotion.id,
-        description: selectedProduct.technical_specification.description,
-        weight: selectedProduct.technical_specification.weight,
-        length: selectedProduct.technical_specification.length,
-        height: selectedProduct.technical_specification.height,
-      }
+      ...selectedProduct,
+      product_category_id: selectedProduct.product_category.id,
+      brand_id: selectedProduct.brand.id,
+      store_id: selectedProduct.store.id,
+      promotion_id: selectedProduct.promotion.id,
+      description: selectedProduct.technical_specification.description,
+      weight: selectedProduct.technical_specification.weight,
+      length: selectedProduct.technical_specification.length,
+      height: selectedProduct.technical_specification.height,
+    }
     : {},
 });
 

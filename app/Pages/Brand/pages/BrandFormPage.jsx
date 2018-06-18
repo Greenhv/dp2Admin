@@ -42,8 +42,9 @@ class BrandFormPage extends PureComponent {
   }
 
   goToBrandsPage = () => {
-    const { history } = this.props;
+    const { history, removeSelected } = this.props;
 
+    removeSelected();
     history.push("/marcas");
   };
 
@@ -81,6 +82,7 @@ class BrandFormPage extends PureComponent {
       .isValid();
     const params = this.props.match.params;
 
+    this.props.removeSelected();
     if (isFormValid && !params.id) {
       this.createBrand(values, dispatch);
     } else if (isFormValid && !params.id) {
@@ -143,12 +145,12 @@ class BrandFormPage extends PureComponent {
               </Panel.Body>
               <Panel.Footer>
                 <div className="form-footer">
-                    <div className="form-button">
-                      <Button onClick={this.goToBrandsPage}>Cancelar</Button>
-                    </div>
-                    <div className="form-button">
-                      <Button type="submit">Crear</Button>
-                    </div>
+                  <div className="form-button">
+                    <Button onClick={this.goToBrandsPage}>Cancelar</Button>
+                  </div>
+                  <div className="form-button">
+                    <Button type="submit">Crear</Button>
+                  </div>
                 </div>
               </Panel.Footer>
             </form>
@@ -165,7 +167,7 @@ BrandFormPage.propTypes = {
 }
 
 const mapStateToProps = ({ brands: { selectedBrand } }) => ({
-  initialValues: selectedBrand.id ? selectedBrand: {},
+  initialValues: selectedBrand.id ? selectedBrand : {},
 })
 
 const mapDispatchToProps = dispatch => ({

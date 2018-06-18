@@ -43,7 +43,11 @@ class UserFormPage extends PureComponent {
   }
 
   goToUsersPage = () => {
-    const { history } = this.props;
+    const { history, removeSelected } = this.props;
+
+    removeSelected();
+    this.props.removeSelected();
+
     history.push('/usuarios');
   };
 
@@ -81,7 +85,7 @@ class UserFormPage extends PureComponent {
       .isValid();
     const params = this.props.match.params;
 
-    console.log(values);
+    this.props.removeSelected();
     if (isFormValid && !params.id) {
       this.createUser(values, dispatch);
     } else if (isFormValid && params.id) {

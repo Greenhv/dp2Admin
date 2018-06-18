@@ -44,8 +44,9 @@ class EventFormPage extends PureComponent {
   }
 
   goToEventsPage = () => {
-    const { history } = this.props;
+    const { history, removeSelected } = this.props;
 
+    removeSelected()
     history.push('/eventos');
   };
 
@@ -85,6 +86,7 @@ class EventFormPage extends PureComponent {
       .isValid();
     const params = this.props.match.params;
 
+    this.props.removeSelected();
     if (isFormValid && !params.id) {
       this.createEvent(values, dispatch);
     } else if (isFormValid && params.id) {
