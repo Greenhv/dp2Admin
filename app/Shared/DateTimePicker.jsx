@@ -8,6 +8,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
+const parseDate = date => date ? moment(date, 'DD/MM/YYYY') : '';
+const formatDate = date => date.format('DD/MM/YYYY');
+
+
 const CustomDatePicker = ({
   input,
   name,
@@ -22,8 +26,9 @@ const CustomDatePicker = ({
       name={name}
       dateForm="DD/MM/YYYY"
       placeholderText={placeholder}
-      selected={input.value ? moment(input.value) : null}
-      onChange={date => input.onChange(moment(date).format('DD/MM/YYYY'))}
+      selected={parseDate(input.value)}
+      onChange={date => input.onChange(formatDate(date))}
+      onBlur={() => input.onBlur()}
       className="form-control date-picker"
     />
   );
