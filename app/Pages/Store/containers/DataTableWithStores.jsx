@@ -40,7 +40,7 @@ class DataTableWithStores extends PureComponent {
       store.description,
       store.webpage,
       store.contact_name ? store.contact_name : '',
-      store.phone_number ? store.contact_name : '',
+      store.phone_number ? store.phone_number : '',
       `${store.id}`,
     ]);
   }

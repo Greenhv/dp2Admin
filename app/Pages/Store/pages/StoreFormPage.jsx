@@ -210,7 +210,7 @@ class StoreFormPage extends PureComponent {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <ControlLabel>Logo</ControlLabel>
+                    <ControlLabel>Logo (Miniatura Waze)</ControlLabel>
                     <Field
                       name="logo"
                       component={DropZone}
@@ -220,7 +220,7 @@ class StoreFormPage extends PureComponent {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <ControlLabel>Banner</ControlLabel>
+                    <ControlLabel>Banner (Detalle de la tienda)</ControlLabel>
                     <Field
                       name="banner"
                       component={DropZone}
