@@ -93,7 +93,7 @@ class ProductCategoryFormPage extends PureComponent {
               <form onSubmit={handleSubmit(this.onProductCategorySubmit)} noValidate ref={(node) => { this.form = node; }}>
                 <Panel.Body>
                   <FormGroup>
-                    <ControlLabel>Category</ControlLabel>
+                    <ControlLabel>Categoria de Productos</ControlLabel>
                     <Field
                       name="name"
                       component={CustomInput}
