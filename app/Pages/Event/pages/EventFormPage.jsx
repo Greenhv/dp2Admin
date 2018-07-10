@@ -69,6 +69,7 @@ class EventFormPage extends PureComponent {
     const { history } = this.props;
     const data = { ...values };
 
+    delete data.banner;
     if (Array.isArray(values.banner)) {
       data.banner = values.banner[0];
     }
