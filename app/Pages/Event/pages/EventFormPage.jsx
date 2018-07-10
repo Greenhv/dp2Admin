@@ -67,10 +67,12 @@ class EventFormPage extends PureComponent {
 
   updateEvent = (values, dispatch, id) => {
     const { history } = this.props;
-    const data = {
-      ...values,
-      banner: Array.isArray(values.banner) ? values.banner[0] : values.banner,
-    };
+    const data = { ...values };
+
+    if (Array.isArray(values.banner)) {
+      data.banner = values.banner[0];
+    }
+
     const finalData = objectToFormData(data, null, 'event');
 
     console.log(data);
