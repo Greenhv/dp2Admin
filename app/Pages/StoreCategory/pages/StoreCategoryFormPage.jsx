@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import ReactDOM from "react-dom";
-import { shape, func } from "prop-types";
+import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
+import { shape, func } from 'prop-types';
 import {
   FormGroup,
   ControlLabel,
@@ -10,20 +10,20 @@ import {
   Panel,
   Button,
   Label,
-  Input
-} from "react-bootstrap";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
+  Input,
+} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
 
-import Select from "Shared/Select";
-import DropZone from "Shared/Form/DropZone";
-import CustomInput from "Shared/Form/CustomInput";
+import Select from 'Shared/Select';
+import DropZone from 'Shared/Form/DropZone';
+import CustomInput from 'Shared/Form/CustomInput';
 import {
   createStoreCategory as createStoreCategoryAction,
   clearSelected,
-  updateStoreCategory as updateStoreCategoryAction
-} from "Modules/storeCategories";
-import objectToFormData from "Utils/objectToFormData";
+  updateStoreCategory as updateStoreCategoryAction,
+} from 'Modules/storeCategories';
+import objectToFormData from 'Utils/objectToFormData';
 
 class StoreCategoryFormPage extends PureComponent {
   constructor(props) {
@@ -45,7 +45,7 @@ class StoreCategoryFormPage extends PureComponent {
     const { history, removeSelected } = this.props;
 
     removeSelected();
-    history.push("/categoria-de-tiendas");
+    history.push('/categoria-de-tiendas');
   };
 
   createStoreCategory = (values, dispatch) => {
@@ -53,20 +53,20 @@ class StoreCategoryFormPage extends PureComponent {
     const data = {};
 
     Object.keys(values).map(key => {
-      if (key === "icon") {
+      if (key === 'icon') {
         data[key] = values[key][0];
       } else {
         data[key] = values[key];
       }
     });
 
-    const finalData = objectToFormData(data, null, "store_category");
+    const finalData = objectToFormData(data, null, 'store_category');
     swal({
-      title: "Se esta creando su categoria de tienda",
-      text: "Espere por favor",
+      title: 'Se esta creando su categoria de tienda',
+      text: 'Espere por favor',
       onOpen: () => {
         swal.showLoading();
-      }
+      },
     });
     dispatch(createStoreCategoryAction(history, finalData));
   };
@@ -76,20 +76,20 @@ class StoreCategoryFormPage extends PureComponent {
     const data = {};
 
     Object.keys(values).map(key => {
-      if (key === "icon") {
-        data[key] = values[key][0];
+      if (key === 'icon') {
+        if (Array.isArray(values[key])) data[key] = values[key][0];
       } else {
         data[key] = values[key];
       }
     });
 
-    const finalData = objectToFormData(data, null, "store_category");
+    const finalData = objectToFormData(data, null, 'store_category');
     swal({
-      title: "Se esta actualiazando su categoria de tienda",
-      text: "Espere por favor",
+      title: 'Se esta actualiazando su categoria de tienda',
+      text: 'Espere por favor',
       onOpen: () => {
         swal.showLoading();
-      }
+      },
     });
     dispatch(updateStoreCategoryAction(history, finalData, id));
   };
@@ -130,8 +130,8 @@ class StoreCategoryFormPage extends PureComponent {
                       component={CustomInput}
                       type="text"
                       props={{
-                        placeholder: "Nombre de la categoría",
-                        required: "required"
+                        placeholder: 'Nombre de la categoría',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -143,8 +143,8 @@ class StoreCategoryFormPage extends PureComponent {
                       componentClass="textarea"
                       type="text"
                       props={{
-                        placeholder: "Ingrese la descripción de su categoría",
-                        required: "required"
+                        placeholder: 'Ingrese la descripción de su categoría',
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -154,7 +154,7 @@ class StoreCategoryFormPage extends PureComponent {
                       name="icon"
                       component={DropZone}
                       props={{
-                        required: "required"
+                        required: 'required',
                       }}
                     />
                   </FormGroup>
@@ -182,17 +182,17 @@ class StoreCategoryFormPage extends PureComponent {
 
 StoreCategoryFormPage.propTypes = {
   history: shape({}).isRequired,
-  removeSelected: func.isRequired
+  removeSelected: func.isRequired,
 };
 
 const mapStateToProps = ({ storeCategories: { selectedCategory } }) => ({
-  initialValues: selectedCategory.id ? selectedCategory : {}
+  initialValues: selectedCategory.id ? selectedCategory : {},
 });
 
 const mapDispatchToProps = dispatch => ({
   removeSelected: () => {
     dispatch(clearSelected());
-  }
+  },
 });
 
 export default connect(
@@ -200,6 +200,6 @@ export default connect(
   mapDispatchToProps
 )(
   reduxForm({
-    form: "storeCategoryForm"
+    form: 'storeCategoryForm',
   })(StoreCategoryFormPage)
 );

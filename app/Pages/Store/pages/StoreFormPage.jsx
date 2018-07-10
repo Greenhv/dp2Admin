@@ -58,7 +58,9 @@ class StoreFormPage extends PureComponent {
   createStore = (values, dispatch) => {
     const { history } = this.props;
     const data = { ...values, banner: values.banner[0], logo: values.logo[0] };
-    const storeCategories = Array.isArray(data.store_categories) ? [...data.store_categories] : [data.store_categories];
+    const storeCategories = Array.isArray(data.store_categories)
+      ? [...data.store_categories]
+      : [data.store_categories];
     delete data.store_categories;
     const finalData = objectToFormData(data, null, 'store');
     finalData.append('store[store_categories][]', storeCategories);
@@ -75,8 +77,20 @@ class StoreFormPage extends PureComponent {
 
   updateStore = (values, dispatch, id) => {
     const { history } = this.props;
-    const data = { ...values, banner: values.banner[0], logo: values.logo[0] };
-    const storeCategories = Array.isArray(data.store_categories) ? [...data.store_categories] : [data.store_categories];
+    const data = { ...values };
+
+    delete data.banner;
+    delete data.logo;
+    if (Array.isArray(values.banner)) {
+      data.banner = values.banner[0];
+    }
+    if (Array.isArray(values.logo)) {
+      data.logo = values.logo[0];
+    }
+
+    const storeCategories = Array.isArray(data.store_categories)
+      ? [...data.store_categories]
+      : [data.store_categories];
     delete data.store_categories;
     const finalData = objectToFormData(data, null, 'store');
     finalData.append('store[store_categories][]', storeCategories);
@@ -269,10 +283,15 @@ const mapStateToProps = ({
 }) => ({
   storeCategories,
   users,
-  initialValues: selectedStore.id ? {
-    ...selectedStore,
-    store_categories: selectedStore.store_categories.length > 0 ? selectedStore.store_categories.map(category => category.id) : [],
-  } : {},
+  initialValues: selectedStore.id
+    ? {
+        ...selectedStore,
+        store_categories:
+          selectedStore.store_categories.length > 0
+            ? selectedStore.store_categories.map(category => category.id)
+            : [],
+      }
+    : {},
 });
 
 const mapDispatchToProps = dispatch => ({

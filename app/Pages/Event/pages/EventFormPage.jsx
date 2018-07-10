@@ -76,7 +76,6 @@ class EventFormPage extends PureComponent {
 
     const finalData = objectToFormData(data, null, 'event');
 
-    console.log(data);
     swal({
       title: 'Se esta actualiazando su evento',
       text: 'Espere por favor',

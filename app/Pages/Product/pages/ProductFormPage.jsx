@@ -45,7 +45,12 @@ class ProductFormPage extends PureComponent {
   }
 
   componentWillMount() {
-    const { getProductCategories, getBrands, getStores, getPromotions } = this.props;
+    const {
+      getProductCategories,
+      getBrands,
+      getStores,
+      getPromotions,
+    } = this.props;
     const element = ReactDOM.findDOMNode(this.form);
 
     getBrands();
@@ -106,7 +111,7 @@ class ProductFormPage extends PureComponent {
       } else if (key !== 'image') {
         data[key] = values[key];
       } else {
-        data[key] = values[key][0];
+        if (Array.isArray(values[key])) data[key] = values[key][0];
       }
     });
 
@@ -338,16 +343,16 @@ const mapStateToProps = ({
   promotions,
   initialValues: selectedProduct.id
     ? {
-      ...selectedProduct,
-      product_category_id: selectedProduct.product_category.id,
-      brand_id: selectedProduct.brand.id,
-      store_id: selectedProduct.store.id,
-      promotion_id: selectedProduct.promotion.id,
-      description: selectedProduct.technical_specification.description,
-      weight: selectedProduct.technical_specification.weight,
-      length: selectedProduct.technical_specification.length,
-      height: selectedProduct.technical_specification.height,
-    }
+        ...selectedProduct,
+        product_category_id: selectedProduct.product_category.id,
+        brand_id: selectedProduct.brand.id,
+        store_id: selectedProduct.store.id,
+        promotion_id: selectedProduct.promotion.id,
+        description: selectedProduct.technical_specification.description,
+        weight: selectedProduct.technical_specification.weight,
+        length: selectedProduct.technical_specification.length,
+        height: selectedProduct.technical_specification.height,
+      }
     : {},
 });
 
