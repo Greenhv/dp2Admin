@@ -46,7 +46,7 @@ class EventFormPage extends PureComponent {
   goToEventsPage = () => {
     const { history, removeSelected } = this.props;
 
-    removeSelected()
+    removeSelected();
     history.push('/eventos');
   };
 
@@ -70,6 +70,7 @@ class EventFormPage extends PureComponent {
     const data = { ...values, banner: values.banner[0] };
     const finalData = objectToFormData(data, null, 'event');
 
+    console.log(data);
     swal({
       title: 'Se esta actualiazando su evento',
       text: 'Espere por favor',
